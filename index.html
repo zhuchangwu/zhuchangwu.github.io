@@ -383,11 +383,11 @@
 <blockquote>
 <p>  <strong>对象指针</strong>: 取当前对象的地址,赋值给和此对象相同类型的指针就好了<br>  <strong>引用</strong>: 也称他是取别名.<br>    <strong>相同点</strong>: 他们实现的<strong>功能是相同</strong>的…<br>    <strong>不同点</strong>: 对象指针返回的是指向那个对象的指针,虽然通过指针可以对该对象进行操作,但是这个指针终究不是该对象 引用的话,返回我们的就是这个对象,只不过就是换了个名字,取了个小名</p>
 </blockquote>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">		class Time&#123;&#125;;</span><br><span class="line">		//对象指针:</span><br><span class="line">			Time t;</span><br><span class="line">			Time* p = &amp;t;</span><br><span class="line">		//引用</span><br><span class="line">			Time t;</span><br><span class="line">			Time&amp; p1 = t;</span><br><span class="line">	```	   </span><br><span class="line">## 8. 指针</span><br><span class="line">- 指向普通函数的指针</span><br></pre></td></tr></table></figure>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">		class Time&#123;&#125;;</span><br><span class="line">		//对象指针:</span><br><span class="line">			Time t;</span><br><span class="line">			Time* p = &amp;t;</span><br><span class="line">		//引用</span><br><span class="line">			Time t;</span><br><span class="line">			Time&amp; p1 = t;</span><br><span class="line">	```	   </span><br><span class="line">## 8. 指针</span><br><span class="line"></span><br><span class="line">#### 1. 指向普通函数的指针</span><br></pre></td></tr></table></figure>
 </code></pre><p> //类型名(<em> 指针变量名)(参数表)<br>    void (</em>p)() // p是指向返回值为void 类型的,且函数无入参的函数的指针<br>    p=fun;<br>    (*p)(); //调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 指向对象的成员函数的指针</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#### 2. 指向对象的成员函数的指针</span><br></pre></td></tr></table></figure>
 <p>  //数据类型名(类名:: <em>指针名)(参数列表)  ////类名::不能省略,这两种函数区别<br>  //声明<br>  void (Time:: </em>p)();<br>  p=&amp;Time::get();  //后面的&amp;不建议省略</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- this指针  </span><br><span class="line">    -  每个对象中的数据成员都占有不同的存储空间.假设我们如果创建了同一个类的多个对象,那么,当不同的对象调用同一个函数的目标代码时,它在这个目标函数中所使用的数据成员是不会出现A对象使用B对象的数据成员的现象的,原因就是,存在隐式的this指针</span><br><span class="line">    -  this指针是指向本类对象的指针,当前用到那个对象,this就指向谁,他的值就是当前被调用的成员函数所在的对象的起始地址</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 3. this指针  </span><br><span class="line">    *  每个对象中的数据成员都占有不同的存储空间.假设我们如果创建了同一个类的多个对象,那么,当不同的对象调用同一个函数的目标代码时,它在这个目标函数中所使用的数据成员是不会出现A对象使用B对象的数据成员的现象的,原因就是,存在隐式的this指针</span><br><span class="line">    *  this指针是指向本类对象的指针,当前用到那个对象,this就指向谁,他的值就是当前被调用的成员函数所在的对象的起始地址</span><br></pre></td></tr></table></figure>
 <pre><code>//场景1;
     class Time{
         private:
@@ -423,12 +423,12 @@
         }
 
     };
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 指向对象的**常指针**</span><br></pre></td></tr></table></figure>
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#### 4. 指向对象的**常指针**</span><br></pre></td></tr></table></figure>
 <p>   // 类名* const 指针变量名<br>    Time t(1,2,3);</p>
 <pre><code>Time* const p;
 p=&amp;t;          //p是一个常指针,对他自己而言,它始终如一的指向t对象,   
                //而对t对象来说,它的值是可以后续通过set方法改变的
-</code></pre>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">- **指向常对象**的指针变量</span><br></pre></td></tr></table></figure>
+</code></pre>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">#### 5. **指向常对象**的指针变量</span><br></pre></td></tr></table></figure>
 <pre><code>//const 类型名* 指针变量名
  const  Time t(1,2,3);   //t是Time类型的变量,而且被const修饰,说明它是个常对象  
                         //即,对象里面的数据成员不可改变
