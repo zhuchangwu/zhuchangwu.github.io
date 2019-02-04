@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="At Gongda">
 <meta property="og:description" content="一 进程&amp;amp;线程&amp;amp;基本的线程机制 进程是运行在自己的地址空间内的自包容程序(一个程序至少包含一个进程,而一个进程至少包含一条线程),多任务操作系统周期性的将CPU在进程之间切换,来实现同时运行多个程序,尽管进程的运行歇歇停停,但是CPU的运算速度太快了,以至于给人一种进程一直运行而没有停的假象. windows系统中的一个 .exe 的程序,实际上就是一个进程   线程就是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-04T04:31:16.326Z">
+<meta property="og:updated_time" content="2019-02-04T04:40:19.234Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多线程一 多线程技能序言">
 <meta name="twitter:description" content="一 进程&amp;amp;线程&amp;amp;基本的线程机制 进程是运行在自己的地址空间内的自包容程序(一个程序至少包含一个进程,而一个进程至少包含一条线程),多任务操作系统周期性的将CPU在进程之间切换,来实现同时运行多个程序,尽管进程的运行歇歇停停,但是CPU的运算速度太快了,以至于给人一种进程一直运行而没有停的假象. windows系统中的一个 .exe 的程序,实际上就是一个进程   线程就是">
@@ -455,33 +455,34 @@
 <li>在java的内存模型中,如果一个操作的执行结果需要对另一个操作可见,那么这两个操作之间必然存在happens-before的关系</li>
 </ul>
 <h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ul>
-<li><p>程序顺序规则 </p>
-<ul>
-<li>单个线程中的每个操作,总是前一个操作happens-before于该线程的任意后续操作 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">1</span>; <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">int</span> b =<span class="number">2</span>; <span class="comment">//2</span></span><br><span class="line"><span class="keyword">int</span> c =<span class="number">3</span>;   <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+<li>程序顺序规则 <ul>
+<li>单个线程中的每个操作,总是前一个操作happens-before于该线程的任意后续操作 </li>
+</ul>
 </li>
 </ul>
-<p>在上面代码中 1happens-before 2 3</p>
-</li>
-<li><p>监视器规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">1</span>; <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">int</span> b =<span class="number">2</span>; <span class="comment">//2</span></span><br><span class="line"><span class="keyword">int</span> c =<span class="number">3</span>;   <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+<p> 在上面代码中 1happens-before 2 3</p>
 <ul>
-<li><p>对于同一个锁的解锁,总是 happens-before于 随后对这个锁的加锁</p>
+<li>监视器规则<ul>
+<li>对于同一个锁的解锁,总是 happens-before于 随后对这个锁的加锁</li>
+</ul>
+</li>
+</ul>
 <pre><code class="java"><span class="keyword">private</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();
 
 <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span></span>{
-  lock.lock();
-  <span class="comment">//do something ...</span>
-  lock.unlock();  <span class="comment">//1 解锁</span>
+    lock.lock();
+    <span class="comment">//do something ...</span>
+    lock.unlock();  <span class="comment">//1 解锁</span>
 }
 
 <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">()</span></span>{
-  lock.lock();  <span class="comment">// 加锁</span>
-  <span class="comment">//do something ...</span>
-  lock.unlock();
+    lock.lock();  <span class="comment">// 加锁</span>
+    <span class="comment">//do something ...</span>
+    lock.unlock();
 </code></pre>
 <p>如上, 1的解锁,后跟着2的加锁</p>
-</li>
-</ul>
-</li>
+<ul>
 <li><p>volatile变量规则</p>
 <ul>
 <li>对一个volatile域的写,happens-before于任意后续对这个变量的读</li>
