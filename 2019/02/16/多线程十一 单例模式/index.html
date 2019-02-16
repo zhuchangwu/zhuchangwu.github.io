@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本篇博文,将整理关于单例模式(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与多线程摩擦出的火花  1 . 懒汉模式(存在线程安全性问题)123456789101112131415161718public class demo01 &amp;#123;//要实现单例,肯定不能new对象,因此我们私有化构造函数private demo01()&amp;#123;&amp;#125;/">
+<meta name="description" content="本篇博文,将整理关于单例模式(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与多线程摩擦出的火花">
 <meta name="keywords" content="多线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程十一 单例模式">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/多线程十一 单例模式/index.html">
 <meta property="og:site_name" content="At Gongda">
-<meta property="og:description" content="本篇博文,将整理关于单例模式(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与多线程摩擦出的火花  1 . 懒汉模式(存在线程安全性问题)123456789101112131415161718public class demo01 &amp;#123;//要实现单例,肯定不能new对象,因此我们私有化构造函数private demo01()&amp;#123;&amp;#125;/">
+<meta property="og:description" content="本篇博文,将整理关于单例模式(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与多线程摩擦出的火花">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-16T05:31:49.936Z">
+<meta property="og:updated_time" content="2019-02-16T05:38:34.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多线程十一 单例模式">
-<meta name="twitter:description" content="本篇博文,将整理关于单例模式(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与多线程摩擦出的火花  1 . 懒汉模式(存在线程安全性问题)123456789101112131415161718public class demo01 &amp;#123;//要实现单例,肯定不能new对象,因此我们私有化构造函数private demo01()&amp;#123;&amp;#125;/">
+<meta name="twitter:description" content="本篇博文,将整理关于单例模式(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与多线程摩擦出的火花">
 
 
 
@@ -353,7 +353,7 @@
 
       
         <blockquote>
-<p>本篇博文,将整理关于<strong>单例模式</strong>(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与<strong>多线程</strong>摩擦出的火花</p>
+<p>本篇博文,将整理关于<strong>单例模式</strong>(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与<strong>多线程</strong>摩擦出的火花<br><a id="more"></a></p>
 </blockquote>
 <h3 id="1-懒汉模式-存在线程安全性问题"><a href="#1-懒汉模式-存在线程安全性问题" class="headerlink" title="1 . 懒汉模式(存在线程安全性问题)"></a>1 . 懒汉模式(存在线程安全性问题)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//要实现单例,肯定不能new对象,因此我们私有化构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">demo01</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个属于本类的单例对象,每次返回的都是这个对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> demo01  instance = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//因为我们没有自己创造出来的对象了,故提供一个静态工厂方法,返回对象的实例</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> demo01 <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (instance==<span class="keyword">null</span>)&#123;  <span class="comment">//在多线程并发访问的情况下,是存在线程安全问题的</span></span><br><span class="line">        instance = <span class="keyword">new</span> demo01();</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
