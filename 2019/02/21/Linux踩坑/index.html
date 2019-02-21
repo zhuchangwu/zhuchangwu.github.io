@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置下面是解决步骤1. 切换到root  1sudo su - 2. 修">
+<meta name="description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="两个Demo">
+<meta property="og:title" content="解决root无法登陆">
 <meta property="og:url" content="http://yoursite.com/2019/02/21/Linux踩坑/index.html">
 <meta property="og:site_name" content="At Gongda">
-<meta property="og:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置下面是解决步骤1. 切换到root  1sudo su - 2. 修">
+<meta property="og:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-21T12:29:53.795Z">
+<meta property="og:updated_time" content="2019-02-21T12:32:55.805Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="两个Demo">
-<meta name="twitter:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置下面是解决步骤1. 切换到root  1sudo su - 2. 修">
+<meta name="twitter:title" content="解决root无法登陆">
+<meta name="twitter:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>两个Demo | At Gongda</title>
+  <title>解决root无法登陆 | At Gongda</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">两个Demo</h1>
+          <h1 class="post-title" itemprop="name headline">解决root无法登陆</h1>
         
 
         <div class="post-meta">
@@ -353,7 +353,7 @@
 
       
         <blockquote>
-<p>今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户<br>鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置<br>下面是解决步骤<br><strong>1. 切换到root</strong></p>
+<p>今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户<br>鼓捣好一阵才知道,<a id="more"></a>因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置<br>下面是解决步骤<br><strong>1. 切换到root</strong></p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su -</span><br></pre></td></tr></table></figure>
 <p><strong>2. 修改root的密码</strong></p>
