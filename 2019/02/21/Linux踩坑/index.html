@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Linux,">
 
 
 
@@ -79,19 +79,18 @@
 
 
 
-<meta name="description" content="我的第一张图片">
+<meta name="description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置下面是解决步骤1. 切换到root  1sudo su - 2. 修">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图片">
-<meta property="og:url" content="http://yoursite.com/2019/02/21/图片/index.html">
+<meta property="og:title" content="两个Demo">
+<meta property="og:url" content="http://yoursite.com/2019/02/21/Linux踩坑/index.html">
 <meta property="og:site_name" content="At Gongda">
-<meta property="og:description" content="我的第一张图片">
+<meta property="og:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置下面是解决步骤1. 切换到root  1sudo su - 2. 修">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/02/21/图片/1.jpg">
-<meta property="og:updated_time" content="2019-02-21T02:39:05.930Z">
+<meta property="og:updated_time" content="2019-02-21T12:29:53.795Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="图片">
-<meta name="twitter:description" content="我的第一张图片">
-<meta name="twitter:image" content="http://yoursite.com/2019/02/21/图片/1.jpg">
+<meta name="twitter:title" content="两个Demo">
+<meta name="twitter:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置下面是解决步骤1. 切换到root  1sudo su - 2. 修">
 
 
 
@@ -121,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/21/图片/">
+  <link rel="canonical" href="http://yoursite.com/2019/02/21/Linux踩坑/">
 
 
 
 
 
-  <title>图片 | At Gongda</title>
+  <title>两个Demo | At Gongda</title>
   
 
 
@@ -264,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/21/图片/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/21/Linux踩坑/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ZhuChangwu">
@@ -281,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">图片</h1>
+          <h1 class="post-title" itemprop="name headline">两个Demo</h1>
         
 
         <div class="post-meta">
@@ -293,7 +292,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-21T10:35:19+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-21T19:45:01+08:00">
                 2019-02-21
               </time>
             
@@ -303,6 +302,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -331,8 +352,20 @@
       
 
       
-        <p>我的第一张图片<br><img src="/2019/02/21/图片/1.jpg" title="my first image"></p>
-
+        <blockquote>
+<p>今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户<br>鼓捣好一阵才知道,因为root权限太高了,可以针对root进行暴力破解密码,因此在/etc/sshd_config配置文件中默认是禁止使用账号密码登录root账户,我们要做的就是修改这个配置<br>下面是解决步骤<br><strong>1. 切换到root</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su -</span><br></pre></td></tr></table></figure>
+<p><strong>2. 修改root的密码</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd -u root</span><br><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure>
+<p><strong>3. 重新编辑配置文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/ssh/</span><br></pre></td></tr></table></figure>
+<p>ls可以查看到目标配置文件 sshd_config</p>
+<p><strong>4. 修改配置</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi sshd_config</span><br></pre></td></tr></table></figure>
+<p>将配置中的<strong>PermitRootLogin</strong>修改为 <strong>PermitRootLogin yes</strong></p>
+<p><strong>5. 重新加载配置</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service sshd restart</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -347,6 +380,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          
+        </div>
+      
 
       
       
@@ -356,8 +395,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/多线程十一 单例模式/" rel="next" title="多线程十一 单例模式">
-                <i class="fa fa-chevron-left"></i> 多线程十一 单例模式
+              <a href="/2019/02/21/图片/" rel="next" title="图片">
+                <i class="fa fa-chevron-left"></i> 图片
               </a>
             
           </div>
@@ -365,10 +404,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/21/Linux踩坑/" rel="prev" title="两个Demo">
-                两个Demo <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
