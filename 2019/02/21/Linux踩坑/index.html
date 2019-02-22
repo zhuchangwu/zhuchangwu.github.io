@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="At Gongda">
 <meta property="og:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-21T12:32:55.805Z">
+<meta property="og:updated_time" content="2019-02-22T09:57:58.980Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决root无法登陆">
 <meta name="twitter:description" content="今天重装了一下虚拟机,用filezilla往Linux扔文件需要用root的超级权限,但是却不能建立连接,使用账号密码也无法登录root账户鼓捣好一阵才知道,">
@@ -361,6 +361,8 @@
 <p><strong>3. 重新编辑配置文件</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/ssh/</span><br></pre></td></tr></table></figure>
 <p>ls可以查看到目标配置文件 sshd_config</p>
+<p>如果是新机器,没有开启远程连接的服务执行下面的命令开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure>
 <p><strong>4. 修改配置</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi sshd_config</span><br></pre></td></tr></table></figure>
 <p>将配置中的<strong>PermitRootLogin</strong>修改为 <strong>PermitRootLogin yes</strong></p>
@@ -404,6 +406,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/22/nginx/" rel="prev" title="nginx">
+                nginx <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -473,7 +479,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -484,7 +490,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -495,7 +501,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
