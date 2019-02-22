@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡  安装nginx 如果是新机器,安装相关依赖环境  12345sudo apt install build-essentialsudo apt install libtoolsudo apt install libpcre3 libpcre3-devsudo apt install zlib1g-devsudo apt-get">
+<meta name="description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡">
 <meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nginx">
+<meta property="og:title" content="nginx安装及配置反向代理">
 <meta property="og:url" content="http://yoursite.com/2019/02/22/nginx/index.html">
 <meta property="og:site_name" content="At Gongda">
-<meta property="og:description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡  安装nginx 如果是新机器,安装相关依赖环境  12345sudo apt install build-essentialsudo apt install libtoolsudo apt install libpcre3 libpcre3-devsudo apt install zlib1g-devsudo apt-get">
+<meta property="og:description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-22T10:56:36.790Z">
+<meta property="og:updated_time" content="2019-02-22T11:01:07.600Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nginx">
-<meta name="twitter:description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡  安装nginx 如果是新机器,安装相关依赖环境  12345sudo apt install build-essentialsudo apt install libtoolsudo apt install libpcre3 libpcre3-devsudo apt install zlib1g-devsudo apt-get">
+<meta name="twitter:title" content="nginx安装及配置反向代理">
+<meta name="twitter:description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>nginx | At Gongda</title>
+  <title>nginx安装及配置反向代理 | At Gongda</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">nginx</h1>
+          <h1 class="post-title" itemprop="name headline">nginx安装及配置反向代理</h1>
         
 
         <div class="post-meta">
@@ -355,6 +355,7 @@
         <blockquote>
 <p>本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡</p>
 </blockquote>
+<a id="more"></a>
 <h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><ul>
 <li>如果是新机器,安装相关依赖环境</li>
 </ul>
@@ -397,7 +398,7 @@
 <ul>
 <li>新增我们自己的server</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">       listen       80;</span><br><span class="line">       server_name  域名1;</span><br><span class="line"></span><br><span class="line">       proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">       proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"></span><br><span class="line">       location / &#123;</span><br><span class="line">		proxy_pass http://127.0.0.1:9001;</span><br><span class="line">		proxy_connect_timeout 600;</span><br><span class="line">		proxy_read_timeout 600;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">server &#123;</span><br><span class="line">       listen       80;</span><br><span class="line">       server_name  域名2;</span><br><span class="line"></span><br><span class="line">       proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">       proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"></span><br><span class="line">       location / &#123;</span><br><span class="line">		proxy_pass http://127.0.0.1:10011;</span><br><span class="line">		proxy_connect_timeout 600;</span><br><span class="line">		proxy_read_timeout 600;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">       listen       80;</span><br><span class="line">       server_name  浏览器可能访问的域名1;</span><br><span class="line"></span><br><span class="line">       proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">       proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"></span><br><span class="line">       location / &#123;</span><br><span class="line">		proxy_pass http://127.0.0.1:9001;   # 转发路径</span><br><span class="line">		proxy_connect_timeout 600;</span><br><span class="line">		proxy_read_timeout 600;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">server &#123;</span><br><span class="line">       listen       80;</span><br><span class="line">       server_name  浏览器可能访问的域名2;</span><br><span class="line"></span><br><span class="line">       proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">       proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"></span><br><span class="line">       location / &#123;</span><br><span class="line">		proxy_pass http://127.0.0.1:10011;  # 转发路径</span><br><span class="line">		proxy_connect_timeout 600;</span><br><span class="line">		proxy_read_timeout 600;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>nginx 通过监听80端口 进而监听我们修改后的域名,成功匹配后呢,通过location转发到我们自定义的路径</p>
 
       
