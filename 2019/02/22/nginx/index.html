@@ -87,10 +87,12 @@
 <meta property="og:site_name" content="At Gongda">
 <meta property="og:description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-22T11:01:07.600Z">
+<meta property="og:image" content="http://yoursite.com/2019/02/22/nginx/1.jpg">
+<meta property="og:updated_time" content="2019-02-22T11:02:28.089Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx安装及配置反向代理">
 <meta name="twitter:description" content="本片博客记录在ubuntu16下安装nginx,以及如何实现负载均衡">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/22/nginx/1.jpg">
 
 
 
@@ -389,7 +391,7 @@
 <h3 id="2-什么是反向代理"><a href="#2-什么是反向代理" class="headerlink" title="2. 什么是反向代理?"></a>2. 什么是反向代理?</h3><ul>
 <li>同样它的工作也是负责转发;来自客户端的请求,但是当客户端的请求发过来之后,<strong>一开始它是不清楚往哪里转发的,他需要根据配置去解析</strong>,然后再定位,转发</li>
 </ul>
-<h3 id="3-为什么要使用反向代理"><a href="#3-为什么要使用反向代理" class="headerlink" title="3. 为什么要使用反向代理?"></a>3. 为什么要使用反向代理?</h3><p>现在流行的微服务架构,拥有相同功能的服务,通常需要做成<strong>集群</strong>,那么问题来了,我们的浏览器默认是80端口,多个功能相同的应用分别占用多个不同的端口,那谁来占用80呢?nginx通过反向代理优秀的解决了这个问题</p>
+<h3 id="3-为什么要使用反向代理"><a href="#3-为什么要使用反向代理" class="headerlink" title="3. 为什么要使用反向代理?"></a>3. 为什么要使用反向代理?</h3><p>现在流行的微服务架构,拥有相同功能的服务,通常需要做成<strong>集群</strong>,那么问题来了,我们的浏览器默认是80端口,多个功能相同的应用分别占用多个不同的端口,那谁来占用80呢?nginx通过反向代理优秀的解决了这个问题<br><img src="/2019/02/22/nginx/1.jpg" title="my first image"></p>
 <h3 id="4-nginx如何实现反向代理"><a href="#4-nginx如何实现反向代理" class="headerlink" title="4. nginx如何实现反向代理"></a>4. nginx如何实现反向代理</h3><p>通过配置实现</p>
 <p>nginx的主配置文件名叫  </p>
 <p>nginx.config<br>它在nginx的安装目录下的config目录下面</p>
