@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="nginx,">
+  <meta name="keywords" content="mysql,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间 遇到了这样一个错误 12You have an error in your SQL syntax; check the manual that corresponds to yo">
-<meta name="keywords" content="nginx">
+<meta name="description" content="需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间 遇到了这样一个错误">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决Mysql5.5不能同时设置两个CURRENT_TIMESTAMP">
 <meta property="og:url" content="http://yoursite.com/2019/02/23/Mysql-两个CURRENT-TIMESTAMP/index.html">
 <meta property="og:site_name" content="At Gongda">
-<meta property="og:description" content="需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间 遇到了这样一个错误 12You have an error in your SQL syntax; check the manual that corresponds to yo">
+<meta property="og:description" content="需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间 遇到了这样一个错误">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-23T08:26:58.126Z">
+<meta property="og:updated_time" content="2019-02-24T07:00:49.350Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决Mysql5.5不能同时设置两个CURRENT_TIMESTAMP">
-<meta name="twitter:description" content="需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间 遇到了这样一个错误 12You have an error in your SQL syntax; check the manual that corresponds to yo">
+<meta name="twitter:description" content="需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间 遇到了这样一个错误">
 
 
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
                   </a>
                 </span>
 
@@ -353,8 +353,7 @@
 
       
         <p>需求是,mysql一张表中同时有两个字段需要有这样的功能,当要向数据库执行 insert操作时，如果有个 timestamp字段属性设为 CURRENT_TIMESTAMP，则无论这个字段有没有set值都插入当前系统时间</p>
-<p>遇到了这样一个错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &apos;CURRENT_TIMESTAMP,</span><br><span class="line">`end_time` datetime NOT NULL CURRENT_TIMESTAMP,</span><br></pre></td></tr></table></figure>
+<p>遇到了这样一个错误<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &apos;CURRENT_TIMESTAMP,</span><br><span class="line">`end_time` datetime NOT NULL CURRENT_TIMESTAMP,</span><br></pre></td></tr></table></figure></p>
 <p>原因是我使用的mysql5.5 它不支持一条sql中同时出现两个包含 <strong>CURRENT_TIMESTAMP</strong> 的语句</p>
 <p>解决方案: <strong>触发器</strong>  </p>
 <p>我们可以用它去监听指定的表,当表发生变化的时候,执行我们指定的操作</p>
@@ -380,7 +379,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/nginx/" rel="tag"><i class="fa fa-tag"></i> nginx</a>
+            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
           
         </div>
       
@@ -482,7 +481,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -493,7 +492,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
