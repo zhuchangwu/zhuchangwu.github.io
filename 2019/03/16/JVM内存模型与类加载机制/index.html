@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/03/16/JVM内存模型与类加载机制/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/16/JVM内存模型与类加载机制/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/16/JVM内存模型与类加载机制/3.png">
-<meta property="og:updated_time" content="2019-03-16T14:22:36.742Z">
+<meta property="og:updated_time" content="2019-03-16T14:30:13.578Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型与类加载机制">
 <meta name="twitter:description" content="一. java虚拟机的内存模型如图: 补习一下jvm内存模型中的各个组成部分  堆: 我们new出来的对象全部放在堆中,他是jvm所能够动态分配的最大的一块空间 优点: 内存动态分配,生命周期不必事先告诉编译器,由JAVA的垃圾回收线程动态回收">
@@ -357,8 +357,7 @@
       
 
       
-        <img src="/2019/03/16/JVM内存模型与类加载机制/1.jpg" title="image">
-<h3 id="一-java虚拟机的内存模型如图"><a href="#一-java虚拟机的内存模型如图" class="headerlink" title="一. java虚拟机的内存模型如图:"></a>一. java虚拟机的内存模型如图:</h3><blockquote>
+        <h3 id="一-java虚拟机的内存模型如图"><a href="#一-java虚拟机的内存模型如图" class="headerlink" title="一. java虚拟机的内存模型如图:"></a>一. java虚拟机的内存模型如图:</h3><blockquote>
 <p>补习一下jvm内存模型中的各个组成部分</p>
 </blockquote>
 <h4 id="堆"><a href="#堆" class="headerlink" title="堆:"></a>堆:</h4><ol>
@@ -381,6 +380,7 @@
 <h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><ol>
 <li>每条线程都通过它获取自己将要执行的下一条代码在哪里</li>
 </ol>
+<img src="/2019/03/16/JVM内存模型与类加载机制/1.jpg" title="内存图">
 <h4 id="方法区-持久层"><a href="#方法区-持久层" class="headerlink" title="方法区(持久层):"></a>方法区(持久层):</h4><p>我们讲的把类加载进内存,说的就把把类加载进了方法区,方法区里面存放着类的方法,常量,静态变量等等所有信息</p>
 <blockquote>
 <p>下面的类加载机制,主要讲的就是这个阶段</p>
