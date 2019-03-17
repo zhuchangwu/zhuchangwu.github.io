@@ -88,7 +88,7 @@
 <meta property="og:description" content="消息队列是典型的生产者-消费者模型,生产者只管发送消息,消费者只管监听队列取出消息,没有业务逻辑的侵入,实现了生产者和消费者的解耦,这篇博客主要从如下几个方面整理相关RabbitMQ的知识点   消息中间件在项目中的使用场景 RabbitMQ常见的五种消息模型 如何避免消息的丢失 SpringAMQP">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/1.png">
-<meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/6.png">
@@ -96,7 +96,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/8.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/9.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/10.png">
-<meta property="og:updated_time" content="2019-03-17T05:11:37.937Z">
+<meta property="og:updated_time" content="2019-03-17T05:16:45.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RabbitMQ">
 <meta name="twitter:description" content="消息队列是典型的生产者-消费者模型,生产者只管发送消息,消费者只管监听队列取出消息,没有业务逻辑的侵入,实现了生产者和消费者的解耦,这篇博客主要从如下几个方面整理相关RabbitMQ的知识点   消息中间件在项目中的使用场景 RabbitMQ常见的五种消息模型 如何避免消息的丢失 SpringAMQP">
@@ -419,7 +419,7 @@
 <p>java代码,RabbitMQ-HelloWorld</p>
 <p>生产者</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">private final static String QUEUE_NAME = &quot;simple_queue&quot;;</span><br><span class="line">    public static void main(String[] argv) throws Exception &#123;</span><br><span class="line">        // 获取到连接</span><br><span class="line">        Connection connection = ConnectionUtil.getConnection();</span><br><span class="line">        // 从连接中创建通道，使用通道才能完成消息相关的操作</span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        // 声明（创建）队列</span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, false, false, false, null);</span><br><span class="line">        // 消息内容</span><br><span class="line">        String message = &quot;Hello World!&quot;;</span><br><span class="line">        // 向指定的队列中发送消息</span><br><span class="line">        channel.basicPublish(&quot;&quot;, QUEUE_NAME, null, message.getBytes());</span><br><span class="line">        System.out.println(&quot; [x] Sent &apos;&quot; + message + &quot;&apos;&quot;);</span><br><span class="line">        //关闭通道和连接</span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<img src="/2019/03/08/RabbitMQ/1.png" title="image">
+<img src="/2019/03/08/RabbitMQ/2.png" title="image">
 <p>消费者</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">private final static String QUEUE_NAME = &quot;simple_queue&quot;;</span><br><span class="line"></span><br><span class="line">   public static void main(String[] argv) throws Exception &#123;</span><br><span class="line">       // 获取到连接</span><br><span class="line">       Connection connection = ConnectionUtil.getConnection();</span><br><span class="line">       // 创建通道</span><br><span class="line">       Channel channel = connection.createChannel();</span><br><span class="line">       // 声明队列, 队列可以重复声明,但是做好和生产者声明的参数保持一致</span><br><span class="line">       channel.queueDeclare(QUEUE_NAME, false, false, false, null);</span><br><span class="line">       // 定义队列的消费者</span><br><span class="line">       DefaultConsumer consumer = new DefaultConsumer(channel) &#123;//这是个匿名内部类</span><br><span class="line"></span><br><span class="line">           // 获取消息，并且处理，这个方法类似事件监听，如果有消息的时候，会被自动调用(回调函数)</span><br><span class="line">           @Override</span><br><span class="line">           public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,</span><br><span class="line">                   byte[] body) throws IOException &#123;</span><br><span class="line">               // body 即消息体</span><br><span class="line">               String msg = new String(body);</span><br><span class="line">               System.out.println(&quot; [x] received : &quot; + msg + &quot;!&quot;);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;;</span><br><span class="line">       // 监听队列，第二个参数：是否自动进行消息确认。 - 一般为了安全,我们不选择把第二个参数写成true   我们选择手动ack</span><br><span class="line">       channel.basicConsume(QUEUE_NAME, true, consumer); //将上面的队列和消费者进行绑定,第二个字段设置为true,自动进行消息确认,一旦有消息就回调函数接受</span><br><span class="line">       // 消费者类启动后,整个的过程不会停止,就像js的绑定事件,可以看到右上角和左下角的红点一直亮着</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <h4 id="消息确认ACK"><a href="#消息确认ACK" class="headerlink" title="消息确认ACK"></a>消息确认ACK</h4><blockquote>
@@ -556,8 +556,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/16/JVM内存模型与类加载机制/" rel="prev" title="JVM内存模型与类加载机制">
-                JVM内存模型与类加载机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/11/玩转spring-boot-mybatis/" rel="prev" title="玩转spring-boot-mybatis">
+                玩转spring-boot-mybatis <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -637,7 +637,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -648,7 +648,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -659,7 +659,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
