@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Elasticsearch,">
+  <meta name="keywords" content="Thyleaf,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:  一:安装依赖首先:es依赖Lucene 而Lucene又依赖JVM.所以jdk的安装是免不了的">
-<meta name="keywords" content="Elasticsearch">
+<meta name="description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化">
+<meta name="keywords" content="Thyleaf">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ES&amp;IK环境搭建">
-<meta property="og:url" content="http://yoursite.com/2019/03/04/ES-IK环境搭建/index.html">
+<meta property="og:title" content="Thyleaf实现页面静态化">
+<meta property="og:url" content="http://yoursite.com/2019/03/18/Thyleaf实现页面静态化/index.html">
 <meta property="og:site_name" content="Changwu">
-<meta property="og:description" content="本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:  一:安装依赖首先:es依赖Lucene 而Lucene又依赖JVM.所以jdk的安装是免不了的">
+<meta property="og:description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-04T12:48:43.577Z">
+<meta property="og:updated_time" content="2019-03-18T12:00:35.187Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ES&amp;IK环境搭建">
-<meta name="twitter:description" content="本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:  一:安装依赖首先:es依赖Lucene 而Lucene又依赖JVM.所以jdk的安装是免不了的">
+<meta name="twitter:title" content="Thyleaf实现页面静态化">
+<meta name="twitter:description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/04/ES-IK环境搭建/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/18/Thyleaf实现页面静态化/">
 
 
 
 
 
-  <title>ES&IK环境搭建 | Changwu</title>
+  <title>Thyleaf实现页面静态化 | Changwu</title>
   
 
 
@@ -258,12 +258,12 @@
   
   
 
-  <article class="post post-type-categories" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-Thyleaf" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/04/ES-IK环境搭建/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/Thyleaf实现页面静态化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Changwu">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ES&IK环境搭建</h1>
+          <h1 class="post-title" itemprop="name headline">Thyleaf实现页面静态化</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T20:46:01+08:00">
-                2019-03-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T19:57:46+08:00">
+                2019-03-18
               </time>
             
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">Elasticsearch</span>
+                  <a href="/categories/Thyleaf/" itemprop="url" rel="index">
+                    <span itemprop="name">Thyleaf</span>
                   </a>
                 </span>
 
@@ -353,49 +353,46 @@
 
       
         <blockquote>
-<p>本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:</p>
+<p>如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化</p>
 </blockquote>
-<h3 id="一-安装依赖"><a href="#一-安装依赖" class="headerlink" title="一:安装依赖"></a>一:安装依赖</h3><p>首先:es<strong>依赖Lucene</strong> 而Lucene又依赖JVM.所以jdk的安装是免不了的</p>
 <a id="more"></a>
-<h3 id="二-下载ES修改配置"><a href="#二-下载ES修改配置" class="headerlink" title="二:下载ES修改配置"></a>二:下载ES修改配置</h3><p>这个过程中注意点有这几个:</p>
-<ul>
-<li>不推荐把es的启动权给root用户,不然会报错,不信你试试</li>
-<li>修改jvm的参数(限制内存)</li>
-<li>修改端口(支持远程连接)</li>
+<h3 id="一-什么是静态化"><a href="#一-什么是静态化" class="headerlink" title="一. 什么是静态化?"></a>一. 什么是静态化?</h3><p>静态化就是我们把Thyleaf渲染后的页面转变成静态页面,并且保存起来,用户每次访问的都是已经存在的静态页,数据库的查询压力也就小了,就比如商品详情页,只要商品的信息没有改变,无论是哪个用户查询的结果都是一样的,所以商品的详情页,完全可以静态化,事实上电商网站也是这样做的</p>
+<p>静态化的页面可以保存在nginx,这样做可以提升几个数量级的速度</p>
+<h3 id="二-如何实现静态化"><a href="#二-如何实现静态化" class="headerlink" title="二 . 如何实现静态化?"></a>二 . 如何实现静态化?</h3><ul>
+<li>回顾一下前后端的交互顺序</li>
 </ul>
-<h3 id="1-修改配置"><a href="#1-修改配置" class="headerlink" title="1.修改配置"></a>1.修改配置</h3><ol>
-<li>修改config/jvm.options<br>他默认是两个G,而我的虚拟机一共1G</li>
+<ol>
+<li>前端提交请求</li>
+<li>请求被springMVC收到了,调用持久层查库,把数据放入model</li>
+<li>Thyleaf把model里面的数据渲染到模板视图里面XXX.html</li>
+<li>把渲染后的全部信息,全部写入到response里面</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-Xms512m</span><br><span class="line">-Xms512m</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>修改elasticsearch.yml</li>
-</ol>
-<p>这里改一个地方就行,未来我们不是直接在虚拟机使用es,而是通过Windows,所以测试阶段我们配置network,允许谁都能访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">里面的 network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建新的用户组"><a href="#2-创建新的用户组" class="headerlink" title="2.创建新的用户组"></a>2.创建新的用户组</h3><p>既然不让放在root下,我们就新建用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupadd esgroup</span><br></pre></td></tr></table></figure>
-<p>添加新的用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd eszhuchangwu -g esgroup -p 2424z</span><br></pre></td></tr></table></figure>
-<h3 id="3-修改es的拥有者"><a href="#3-修改es的拥有者" class="headerlink" title="3. 修改es的拥有者"></a>3. 修改es的拥有者</h3><ol>
-<li>切换到es解压所在的文件夹里面</li>
-<li>执行下面指令,把es放在新建的用户组下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R eszhuchangwu:esgroup elasticsearch-5.6.8</span><br></pre></td></tr></table></figure>
-<h3 id="4-启动"><a href="#4-启动" class="headerlink" title="4. 启动"></a>4. 启动</h3><ol>
-<li>切换用户</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su eszhuchangwu</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>在bin目录里面启动es</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./elasticserch</span><br></pre></td></tr></table></figure>
-<p>可能会报错了: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
-<p>去root用户下, 编辑 /etc/sysctl.conf,(里面是一些系统的信息)，追加以下内容：<br>vm.max_map_count=655360<br>保存后，执行：<br>sysctl -p</p>
-<p>从新启动</p>
+<p>其实既然能写到response里面,就能写入到其他路径下,事实上,真的是这样做</p>
+<ul>
+<li>Thyleaf如何把信息写入到response里?</li>
+</ul>
+<p>做这件事的是ThymeleafAutoConfiguration里面的TemplateEngine模板引擎使用下面的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">process（String template, IContext context, Writer writer）方法</span><br></pre></td></tr></table></figure>
+<p>他是如何做的呢？新认识几个概念</p>
+<p>1 .Context 上下文</p>
 <blockquote>
-<p>好了,现在es属于eszhuchangwu了,以后想使用es,用eszhuchangwu去对应的目录启动就好了!!!</p>
+<p>这是块共享的空间,处理用户的请求时,各个servlet可以共享,事实上当我们把数据放入Model ,springMvc就会把model放入Contex</p>
 </blockquote>
-<h3 id="5-添加IK酷分词器"><a href="#5-添加IK酷分词器" class="headerlink" title="5 .添加IK酷分词器"></a>5 .添加IK酷分词器</h3><p>把ik分词器解压放入es/plugind/下面<br>重启es可以看到日志  <strong>loaded plugin [analysis-ik]</strong></p>
+<ol start="2">
+<li>TemplateResolver 模板解析器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public SpringResourceTemplateResolver defaultTemplateResolver() &#123;</span><br><span class="line">SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();</span><br><span class="line">resolver.setApplicationContext(this.applicationContext);</span><br><span class="line">resolver.setPrefix(this.properties.getPrefix());</span><br><span class="line">resolver.setSuffix(this.properties.getSuffix());</span><br><span class="line">resolver.setTemplateMode(this.properties.getMode());</span><br><span class="line">if (this.properties.getEncoding() != null) &#123;</span><br><span class="line">    resolver.setCharacterEncoding(this.properties.getEncoding().name());</span><br><span class="line">&#125;</span><br><span class="line">resolver.setCacheable(this.properties.isCache());</span><br><span class="line">Integer order = this.properties.getTemplateResolverOrder();</span><br><span class="line">if (order != null) &#123;</span><br><span class="line">    resolver.setOrder(order);</span><br><span class="line">&#125;</span><br><span class="line">resolver.setCheckExistence(this.properties.isCheckTemplate());</span><br><span class="line">return resolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>用来解析和读取配置文件,里面有我们的模拟的后缀以及路径,Thyleaf的视图解析器依然是依赖它知道的配置信息</p>
+</blockquote>
+<p>有了Context和TemplateResolver完事具备,只差渲染了</p>
+<p>TemplateEngine调用process方法,模板引擎依靠context拿到数据,依靠templateResolver拿到配置信息,第三个参数是输出流,也就是我们的目标文件</p>
+<p>具体怎么撸?</p>
+<p>spring给我们准备好了!</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@Autowired</span><br><span class="line">TemplateEngine templateEngine;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 构建静态化页面</span><br><span class="line"> * @param id</span><br><span class="line"> */</span><br><span class="line">public void createHtml(Long id)&#123;</span><br><span class="line">    // 1. 上下文</span><br><span class="line">    Context context = new Context();  //thymeleaf包下的</span><br><span class="line">    // 1.1 存入数据</span><br><span class="line">    context.setVariables(loadModel(id));</span><br><span class="line">    // 2 输出流</span><br><span class="line">    File file = new File(&quot;Nginx所在虚拟机下的目标文件&quot;, id + &quot;.html&quot;);</span><br><span class="line"></span><br><span class="line">    try(PrintWriter writer = new PrintWriter(file,&quot;UTF-8&quot;))&#123; //流在小括号里面会被自动的释放</span><br><span class="line">        //生成HTML</span><br><span class="line">        templateEngine.process(&quot;1&quot;,context,writer);</span><br><span class="line">    &#125;catch (Exception e)&#123;</span><br><span class="line">        log.error(&quot;静态页方法异常&quot;+e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Nginx出场"><a href="#Nginx出场" class="headerlink" title="Nginx出场"></a>Nginx出场</h3><p>nginx的代理静态页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.XXX.com;</span><br><span class="line"></span><br><span class="line">    proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">    proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"></span><br><span class="line">    location /item &#123;</span><br><span class="line">        # 先找本地找root这个文件夹</span><br><span class="line">        root html; </span><br><span class="line">        if (!-f $request_filename) &#123; #请求的文件不存在，就反向代理  request_filename是nginx的内置变量, 值是前段传递过来的id.html</span><br><span class="line">            proxy_pass http://127.0.0.1:8084;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:9002;</span><br><span class="line">        proxy_connect_timeout 600;</span><br><span class="line">        proxy_read_timeout 600;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Rabbit出场"><a href="#Rabbit出场" class="headerlink" title="Rabbit出场"></a>Rabbit出场</h3><p>使用Rabbit消息队列,可以第一时间了解什么啥时候更新静态页,啥时候创建新的静态页</p>
 
       
     </div>
@@ -413,7 +410,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Elasticsearch/" rel="tag"><i class="fa fa-tag"></i> Elasticsearch</a>
+            <a href="/tags/Thyleaf/" rel="tag"><i class="fa fa-tag"></i> Thyleaf</a>
           
         </div>
       
@@ -426,8 +423,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/23/Mysql-两个CURRENT-TIMESTAMP/" rel="next" title="解决Mysql5.5不能同时设置两个CURRENT_TIMESTAMP">
-                <i class="fa fa-chevron-left"></i> 解决Mysql5.5不能同时设置两个CURRENT_TIMESTAMP
+              <a href="/2019/03/18/初识JWT/" rel="next" title="初识JWT">
+                <i class="fa fa-chevron-left"></i> 初识JWT
               </a>
             
           </div>
@@ -435,10 +432,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/06/Elasticsearch笔记/" rel="prev" title="Elasticsearch笔记">
-                Elasticsearch笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -572,7 +565,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-安装依赖"><span class="nav-number">1.</span> <span class="nav-text">一:安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-下载ES修改配置"><span class="nav-number">2.</span> <span class="nav-text">二:下载ES修改配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-修改配置"><span class="nav-number">3.</span> <span class="nav-text">1.修改配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建新的用户组"><span class="nav-number">4.</span> <span class="nav-text">2.创建新的用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-修改es的拥有者"><span class="nav-number">5.</span> <span class="nav-text">3. 修改es的拥有者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-启动"><span class="nav-number">6.</span> <span class="nav-text">4. 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-添加IK酷分词器"><span class="nav-number">7.</span> <span class="nav-text">5 .添加IK酷分词器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-什么是静态化"><span class="nav-number">1.</span> <span class="nav-text">一. 什么是静态化?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-如何实现静态化"><span class="nav-number">2.</span> <span class="nav-text">二 . 如何实现静态化?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx出场"><span class="nav-number">3.</span> <span class="nav-text">Nginx出场</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rabbit出场"><span class="nav-number">4.</span> <span class="nav-text">Rabbit出场</span></a></li></ol></div>
             
 
           </div>
