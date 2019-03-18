@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="JWT,">
 
 
 
@@ -79,17 +79,23 @@
 
 
 
-<meta name="description" content="随笔">
+<meta name="description" content="tags: JWTtype: JWTcategories: JWT  做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录已经JWT和RSA是在微服务架构中的作用">
+<meta name="keywords" content="JWT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JWT">
-<meta property="og:url" content="http://yoursite.com/2019/03/18/JWT/index.html">
+<meta property="og:title" content="初识JWT">
+<meta property="og:url" content="http://yoursite.com/2019/03/18/初识JWT/index.html">
 <meta property="og:site_name" content="Changwu">
-<meta property="og:description" content="随笔">
+<meta property="og:description" content="tags: JWTtype: JWTcategories: JWT  做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录已经JWT和RSA是在微服务架构中的作用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-18T08:42:36.951Z">
+<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/3.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/4.png">
+<meta property="og:updated_time" content="2019-03-18T09:07:37.222Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JWT">
-<meta name="twitter:description" content="随笔">
+<meta name="twitter:title" content="初识JWT">
+<meta name="twitter:description" content="tags: JWTtype: JWTcategories: JWT  做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录已经JWT和RSA是在微服务架构中的作用">
+<meta name="twitter:image" content="http://yoursite.com/2019/03/18/初识JWT/1.png">
 
 
 
@@ -119,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/18/JWT/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/18/初识JWT/">
 
 
 
 
 
-  <title>JWT | Changwu</title>
+  <title>初识JWT | Changwu</title>
   
 
 
@@ -257,12 +263,12 @@
   
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-JWT" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/JWT/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/初识JWT/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Changwu">
@@ -279,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JWT</h1>
+          <h1 class="post-title" itemprop="name headline">初识JWT</h1>
         
 
         <div class="post-meta">
@@ -291,7 +297,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T16:42:36+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T17:05:47+08:00">
                 2019-03-18
               </time>
             
@@ -301,6 +307,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/JWT/" itemprop="url" rel="index">
+                    <span itemprop="name">JWT</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -329,7 +357,70 @@
       
 
       
-        
+        <p>tags: JWT<br>type: JWT<br>categories: JWT</p>
+<blockquote>
+<p>做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录已经JWT和RSA是在微服务架构中的作用</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="无状态登录原理"><a href="#无状态登录原理" class="headerlink" title="无状态登录原理"></a>无状态登录原理</h2><h3 id="先提一下啥是有状态登录"><a href="#先提一下啥是有状态登录" class="headerlink" title="先提一下啥是有状态登录"></a>先提一下啥是有状态登录</h3><p>单台tomcat的情况下:编码的流程如下</p>
+<ol>
+<li>前端提交表单里用户的输入的账号密码</li>
+<li>后台接受,查数据库,</li>
+<li>在数据库中找到用户的信息后,把用户的信息存放到session里面,返回给用户cookie</li>
+<li>以后用户的请求都会携带着cookie去访问后台,后台根据用户的cookie辨识用户的身份</li>
+</ol>
+<p>但是有缺点</p>
+<ul>
+<li>如果有千千万的用户都往session里面存放信息,</li>
+<li>session很难跨服务器,也就是说,用户每次请求,都必须访问同一台tomcat,新的tomcat不认识用户的cookie</li>
+</ul>
+<h3 id="无状态登录"><a href="#无状态登录" class="headerlink" title="无状态登录"></a>无状态登录</h3><p>微服务集群统一对外暴露的是Rest风格的接口,而Rest风格中一个很重要的规范就是:<strong>无状态</strong></p>
+<ul>
+<li>对于服务端,不再保存任何用户的信息,对于他们来说,所有的用户地位平等</li>
+<li>对于用户,他们需要自己携带着信息去访问服务端,携带的信息可以被所有服务端辨认,所以,对于用户,所有的服务地位平等</li>
+</ul>
+<p>具体如何实现呢?</p>
+<ul>
+<li>用户携带自己的信息访问服务端</li>
+<li>认证通过,将用户的信息加密成token(存放在cookie里),返回给客户端</li>
+<li>以后不论用户请求哪个微服务,都携带着token</li>
+<li>微服务对token进行解密,判断他是否有效</li>
+</ul>
+<img src="/2019/03/18/初识JWT/1.png" title="image">
+<hr>
+<p>整个登录.授权.鉴权的过程token的安全性至关重要,而JWT就是一门有关于如何生成一个不可仿造的token的规范</p>
+<h3 id="JWT-Json-Web-Token"><a href="#JWT-Json-Web-Token" class="headerlink" title="JWT(Json Web Token)"></a>JWT(Json Web Token)</h3><p>他是JSON风格轻量级的授权和身份认证规范，可实现无状态、分布式的Web应用授权,而且它不是技术,和语言无关,java有对这个规范的实现 叫做 <strong>jjwt</strong>   – <a href="https://github.com/jwtk/jjwt" target="_blank" rel="noopener">点击进入jjwt的github项目</a></p>
+<img src="/2019/03/18/初识JWT/2.png" title="image">
+<p>从图可以看出,头部和载荷被串改后,生成的编码会发生改变,因此保证了token的安全 ,还有,载荷部分可解密,因此不要往里面放入敏感的信息(比如密码 )</p>
+<p>只要密钥不泄露,别人就无法伪造任何信息</p>
+<p>jwt的交互过程</p>
+<img src="/2019/03/18/初识JWT/3.png" title="image">
+<h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><p>先说一下常见的加密方式</p>
+<ul>
+<li>对称加密，如AES<ul>
+<li>基本原理：将明文分成N个组，然后使用密钥对各个组进行加密，形成各自的密文，最后把所有的分组密文进行合并，形成最终的密文。</li>
+<li>优势：算法公开、计算量小、加密速度快、加密效率高</li>
+<li>缺陷：双方都使用同样密钥，安全性得不到保证</li>
+</ul>
+</li>
+<li>非对称加密，如RSA<ul>
+<li>基本原理：同时生成两把密钥：私钥和公钥，私钥隐秘保存，公钥可以下发给信任客户端</li>
+<li>私钥加密，持有私钥或公钥才可以解密</li>
+<li>公钥加密，持有私钥才可解密</li>
+<li>优点：安全，难以破解</li>
+<li>缺点：算法比较耗时</li>
+</ul>
+</li>
+<li>不可逆加密，如MD5，SHA</li>
+<li>基本原理：加密过程中不需要使用密钥，输入明文后由系统直接经过加密算法处理成密文，这种加密后的数据是无法被解密的，无法根据密文推算出明文。</li>
+</ul>
+<img src="/2019/03/18/初识JWT/4.png" title="image">
+<p>jwt(是一种非对称加密算法) JWT不一定非要搭配RSA算法,但是拥有RSA算法公钥私钥的特性,会使我们的业务逻辑变的简单,做到校验变少</p>
+<ul>
+<li>通过认证,我们使用私钥加密给他令牌token</li>
+<li>提供公钥就好给对外提供服务的微服务—–省去了他们远程访问,授权中心(JWT)</li>
+</ul>
+
       
     </div>
     
@@ -343,6 +434,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JWT/" rel="tag"><i class="fa fa-tag"></i> JWT</a>
+          
+        </div>
       
 
       
@@ -413,8 +510,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -442,7 +548,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -453,7 +559,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -476,6 +582,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#无状态登录原理"><span class="nav-number">1.</span> <span class="nav-text">无状态登录原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#先提一下啥是有状态登录"><span class="nav-number">1.1.</span> <span class="nav-text">先提一下啥是有状态登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无状态登录"><span class="nav-number">1.2.</span> <span class="nav-text">无状态登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-Json-Web-Token"><span class="nav-number">1.3.</span> <span class="nav-text">JWT(Json Web Token)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA"><span class="nav-number">1.4.</span> <span class="nav-text">RSA</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
