@@ -257,6 +257,156 @@
   
   
 
+  <article class="post post-type-java" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/JAVA反射机制与动态代理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Changwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Changwu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/18/JAVA反射机制与动态代理/" itemprop="url">JAVA反射机制与动态代理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T12:04:58+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>承接上篇博客里面,类加载器把类加载把类加载进内存,同时创建出了一个唯一的Class对象,其实它本质上就是一个java类,只不过功能挺特殊的—说白了,就像当初,数据多了,用集合装,还多?写个类,用对象装, 类可以对一系列数据的描述,然后谁描述类呢–&gt;Class里面有类的基本信息 <strong>1.类的属性:Field 2. 方法:Method 3 .构造器:Constructor</strong>(这三个属性都有自己的对应类)</p>
+</blockquote>
+<p>都说java是一门动态语言,怎么着他就动态了呢? reflection反射! 通过反射,我们可以动态的获取类的实例,平时我们自己写东西,用到反射的几率几乎没有,但是像Spring,Hibernate,Mybatis等等等等这些框架的底层到处都是反射</p>
+<p>初学spring时接触下面这个配置, <strong>Spring的控制反转</strong>,IOC,把对象交给Spring创建,依稀记得当初写一大堆xml配置文件,那时候很蒙!其中,把对象的创建权反转给Spring的时候,需要这样:</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/18/JAVA反射机制与动态代理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
   <article class="post post-type-JVM" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -506,8 +656,7 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>作为持久层的ORM框架,目前在国内主流之一就是MyBatis,学会用它,用好它肯定是必备的功课</p>
 </blockquote>
 <p>我会主要从下面几个方面入整理本篇博客</p>
@@ -516,132 +665,13 @@
 <li>常见的注解</li>
 <li>怎么玩?</li>
 </ol>
-<h2 id="一-快速搭建开发环境"><a href="#一-快速搭建开发环境" class="headerlink" title="一. 快速搭建开发环境"></a>一. 快速搭建开发环境</h2><blockquote>
-<p><strong>小插曲</strong>,添加测试模块的时候,引入junit模块和spring-boot-text-starter模块有先顺序,不然ide会报错…</p>
-</blockquote>
-<p>坐标</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;2.0.4.RELEASE&lt;/version&gt;</span><br><span class="line">      &lt;relativePath/&gt;&lt;!-- lookup parent from repository --&gt;</span><br><span class="line">  &lt;/parent&gt;</span><br><span class="line">  &lt;properties&gt;</span><br><span class="line">      &lt;java.version&gt;1.8&lt;/java.version&gt;</span><br><span class="line">  &lt;/properties&gt;</span><br><span class="line">  &lt;dependencies&gt;</span><br><span class="line">      &lt;!--web--&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;!--mybatis--&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;1.3.2&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;!--通用mapper启动器--&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;tk.mybatis&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;mapper-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;2.0.3&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;!--分页助手--&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;com.github.pagehelper&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;pagehelper-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;1.2.5&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;!--mysql--&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;8.0.11&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;!--测试--&gt;</span><br><span class="line">      &lt;!--先添加 junit  再添加下面的text  stater--&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">          &lt;scope&gt;text&lt;/scope&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">          &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">  &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>另外插一嘴—mysql连接的版本适配</strong></li>
-</ul>
-<p>我现在用的云主机docker上的官方版mysql,版本比较新,因此我的调整版本到  <strong>8</strong>以上,不然会报错说什么</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Could</span><br></pre></td></tr></table></figure>
-<hr>
-<p>配置文件:</p>
-<ul>
-<li>主要是配置数据库的连接,如果我们使用的是通用mapper,Mybatis可以做到零配置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8089</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: text-mybatis</span><br><span class="line">  datasource:</span><br><span class="line">    url: jdbc:mysql://211.159.XXX.XXX:8888/changwu?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span><br><span class="line">    username: root</span><br><span class="line">    password: 2424zcw..</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">#输出sql</span><br><span class="line">mybatis:</span><br><span class="line">  configuration:</span><br><span class="line">    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl</span><br></pre></td></tr></table></figure>
-<hr>
-<p>启动类</p>
-<ul>
-<li>在这里告诉通用mapper我们的mapper包路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line">import tk.mybatis.spring.annotation.MapperScan;</span><br><span class="line">@SpringBootApplication</span><br><span class="line">@MapperScan(&quot;com.changwu.mapper&quot;)</span><br><span class="line">public class MybatisApp &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(MybatisApp.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编写Mapper</p>
-<ul>
-<li>让我们自己的Mapper继承通用mapper,泛型是实体类名</li>
-<li>给它实体类名,就相当与告诉它了我们的表里的字段,不让他怎么会知道如何动态生成sql ?</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import tk.mybatis.mapper.common.Mapper;</span><br><span class="line">public interface MyMapper extends Mapper&lt;MyBrand&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>ok,到现在环境就搭建好了</p>
-<hr>
-<h3 id="二-常见的注解"><a href="#二-常见的注解" class="headerlink" title="二. 常见的注解"></a>二. 常见的注解</h3><ul>
-<li>这里的注解主要是作用在实体类上的注解,当我们撸起袖子写代码的时候,被给它难住喽,尴尬</li>
-</ul>
-<p>情景1: 对于实体类</p>
-<blockquote>
-<p>标记他对应那张表</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import javax.persistence.Table;</span><br><span class="line">@Table(name = &quot;tb_brand&quot;)</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">情景2: 对于主键</span><br><span class="line"></span><br><span class="line">&gt; 大多数情况主键一般都叫id,bigint类型,没什么超级特殊的情况我们都希望他可以自己增长,下面两个注解都可以做到这件事,但是前提表id属性必须设置成 autoincreament , 不然报错说,id不能不写</span><br><span class="line"></span><br><span class="line">* 注解1:</span><br><span class="line"></span><br><span class="line">```code</span><br><span class="line">import javax.persistence.GeneratedValue;</span><br><span class="line">import javax.persistence.GenerationType;</span><br><span class="line">import javax.persistence.Id;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">*  使用的是jpa的策略生成器</span><br><span class="line">*JPA提供的四种标准用法为TABLE,SEQUENCE,IDENTITY,AUTO. </span><br><span class="line">* TABLE：使用一个特定的数据库表格来保存主键。 </span><br><span class="line">* SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列</span><br><span class="line">* IDENTITY：主键由数据库自动生成（主要是自动增长型） </span><br><span class="line">* AUTO：主键由程序控制。</span><br><span class="line">*/</span><br><span class="line">@Id</span><br><span class="line">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>注解2:</li>
-</ul>
-<p>直接使用Mybatis的原生注解</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Id</span><br><span class="line">@KeySql(useGeneratedKeys = true)</span><br><span class="line">private Long id;</span><br></pre></td></tr></table></figure>
-<p>情景3:</p>
-<blockquote>
-<p>我们都知道springMVC会把前端发送过来的json转化为我们的javaBean,因此我们的javaBean里面的属性名和前端发送的那个对象的属性名要意义对应的,这是规范! </p>
-</blockquote>
-<p> 设想,加入前端一顿收集数据,把商品的品牌信息和库存信息都发送过来了,只有关于品牌的javabean,数据接受不全怎么办? 没关系,下面的注解可以搞定</p>
-<ul>
-<li>@Transient (意味短暂的)告诉mapper 他不是PO(持久层对象,Persistence Object)的属性,而且,springMvc还会把信息关于库存的信息,封装进去</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Transient</span><br></pre></td></tr></table></figure>
-<p> 情景4:</p>
-<blockquote>
-<p>我们的pojo属性名,和数据库中的关键字重名怎么办?</p>
-</blockquote>
-<p>@Column() 可以解决 数据库中的字段为数据库的关键字的问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Column(name=&quot;`numeric`&quot;)  //</span><br><span class="line">private Boolean numeric;   //是否是数字类型</span><br></pre></td></tr></table></figure>
-<p>情景5 :</p>
-<blockquote>
-<p>数据表中tingint(1) 对应的javaBean的属性咋写?</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tingint(1) // 它是boolean的同义词</span><br></pre></td></tr></table></figure>
-<p>情景5:</p>
-<blockquote>
-<p>关于VO , 如何选择性的返回给前端javaBean的属性?就比如说我们查询有没有这个用户,总不至于把密码,私人信息一块返回给前端吧?</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import com.fasterxml.jackson.annotation.JsonIgnore;</span><br><span class="line">@JsonIgnore</span><br></pre></td></tr></table></figure>
-<p>它是jackson的注解</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;jackson-annotations&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;RELEASE&lt;/version&gt;</span><br><span class="line">      &lt;scope&gt;compile&lt;/scope&gt;</span><br><span class="line">  &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="三-怎么玩"><a href="#三-怎么玩" class="headerlink" title="三. 怎么玩?"></a>三. 怎么玩?</h3><blockquote>
-<p>　下面就是介绍常用的mapper的API</p>
-</blockquote>
-<h4 id="一-CRUD"><a href="#一-CRUD" class="headerlink" title="一. CRUD"></a>一. CRUD</h4><ul>
-<li>两种新增</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//会有选择性的新增, 智能判断 brand里面有没有空的字段,有值,用这个值,没有值而使用数据库的默认值</span><br><span class="line">insertSelective(brand) </span><br><span class="line"></span><br><span class="line">// 假如前端提交过来的 brand里面的数据是全的,用词方法</span><br><span class="line">brandMapper.insert(brand);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>简单查询</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据实体中的属性值进行查询，查询条件使用等号</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@SelectProvider(type = BaseSelectProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">List&lt;T&gt; select(T record);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 根据实体中的属性值进行查询，查询条件使用等号</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@SelectProvider(type = BaseSelectProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">List&lt;T&gt; select(T record);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 查询全部结果</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@SelectProvider(type = BaseSelectProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">List&lt;T&gt; selectAll();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 根据实体中的属性进行查询，只能有一个返回值，有多个结果是抛出异常，查询条件使用等号</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@SelectProvider(type = BaseSelectProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">T selectOne(T record);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 根据实体中的属性查询总数，查询条件使用等号</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@SelectProvider(type = BaseSelectProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">int selectCount(T record);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>简单删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据主键字段进行删除，方法参数必须包含完整的主键属性</span><br><span class="line"> * @param key</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@DeleteProvider(type = BaseDeleteProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">int deleteByPrimaryKey(Object key);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 根据实体属性作为条件进行删除，查询条件使用等号</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@DeleteProvider(type = BaseDeleteProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">int delete(T record);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如何玩修改?</li>
-</ul>
-<blockquote>
-<p>修改主要用到下面这个api</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据主键更新属性不为null的值</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@UpdateProvider(type = BaseUpdateProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">int updateByPrimaryKeySelective(T record);</span><br></pre></td></tr></table></figure>
-<p>看到这个方法有没有觉得很爽?  它根据主键,修改不为null的属性,意思就是说,我们把不需要修改的地方设置为null就好了<br>,这样看,前面需要我们一顿整,整啥呢? 结合实际的业务逻辑,把前端给交过来的数据最新的数据放到我们的bean中直接修改,把不需要修改的属性设置为null,有属性可能需要直接删除,有的属性可能要去别的表中查询(别忘了加上事务 @Transactional )</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据主键更新实体全部字段，null值会被更新</span><br><span class="line"> * @param record</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@UpdateProvider(type = BaseUpdateProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">int updateByPrimaryKey(T record);</span><br></pre></td></tr></table></figure>
-<p>这个方法和上面的神似</p>
-<h4 id="二-分页-过滤-模糊查询-搜索"><a href="#二-分页-过滤-模糊查询-搜索" class="headerlink" title="二 .分页,过滤(模糊查询),搜索"></a>二 .分页,过滤(模糊查询),搜索</h4><p>API</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapper.selectByExample(example)</span><br></pre></td></tr></table></figure>
-<p>参照下面原生的sql.拼接查询条件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from 表名</span><br><span class="line">       where name like &apos;% X %&apos; or  letter== &apos;x&apos;</span><br><span class="line">       order by  id desc</span><br></pre></td></tr></table></figure>
-<p>逻辑</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public VO queryBrandByPage(Integer page, String key, Integer rows, String sortBy, Boolean desc) &#123;</span><br><span class="line">    //分页  -- 使用分页助手,在我们真正查询之前,调用这个下面的方法,开启分页查询,他很智能,会用mybatis的拦截器</span><br><span class="line">    // 对接下来要执行查询的sql进行拦截,自动的在其后面拼接  limit语句</span><br><span class="line">    PageHelper.startPage(page,rows); //当前页码,每页显示的数目</span><br><span class="line"></span><br><span class="line">    //过滤 --key     (StringUtils用的是comment lang3 下面的)</span><br><span class="line">    // 过滤条件,key是前端用户传递进来的,可能仅仅是一个 小米,  也可能是 小 ---  模糊查询</span><br><span class="line">   /*   select * from tb_brand</span><br><span class="line">    where name like &apos;% X %&apos; or  letter== &apos;x&apos;</span><br><span class="line">    order by  id desc</span><br><span class="line">    */</span><br><span class="line">    Example example = new Example(Brand.class);</span><br><span class="line">    if(StringUtils.isNotBlank(key))&#123;  //不为空,过滤</span><br><span class="line">       example.createCriteria().orLike(&quot;name&quot;,&quot;%&quot;+key+&quot;%&quot;).andEqualTo(&quot;letter&quot;,key.toUpperCase());</span><br><span class="line">      //  example.createCriteria().orLike(&quot;name&quot;,&quot;%&quot;+key+&quot;%&quot;).or</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //排序</span><br><span class="line">    if(StringUtils.isNotBlank(sortBy)) &#123; //传递进来的排序不为空,设置我们的排序条件</span><br><span class="line">        // 上面的 order by 可以帮我们生成, 但是后面的 id  desc 需要我们自己写</span><br><span class="line">        // String orderByClause = &quot;id desc&quot; ; 写死了</span><br><span class="line">        String orderByClause = sortBy + (desc ? &quot; DESC &quot; : &quot; ASC &quot;);  //坑坑坑   注意要加上 空格 不然拼接完了 就是 orderBy idASC 而不是orderBy id ASC</span><br><span class="line">        example.setOrderByClause(orderByClause);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //查询 获取到list ,其实是  当前页的数据 page对象</span><br><span class="line">    List&lt;Brand&gt; list = brandMapper.selectByExample(example);</span><br><span class="line">    if (CollectionUtils.isEmpty(list))&#123;</span><br><span class="line">        throw new Exception ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   // 解析List</span><br><span class="line">    PageInfo&lt;Brand&gt; pageInfo = new PageInfo&lt;&gt;(list);</span><br><span class="line"></span><br><span class="line">    return new PageResult&lt;Brand&gt;(pageInfo.getTotal(),list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="三-自定义sql"><a href="#三-自定义sql" class="headerlink" title="三 .自定义sql"></a>三 .自定义sql</h4><blockquote>
-<p>Mybatis只能针对单表为我们生成sql,如果我们的需求是跨表操作,比如说涉及到两张表,我们就得去mapper里面自己写sql</p>
-</blockquote>
-<p>原生sql</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from tb_brand b</span><br><span class="line">inner join tb_category_brand cb on b.id=cb.brand_id  -- 去笛卡尔积</span><br><span class="line">where cb.category_id= ? ;</span><br></pre></td></tr></table></figure>
-<p>mapper</p>
-<p><strong>?用#{id} 取代</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Select(&quot;select * from tb_brand b inner join tb_category_brand cb on b.id=cb.brand_id where cb.category_id=#&#123;cid&#125;&quot;)</span><br><span class="line">  List&lt;Brand&gt;  queryBrandByCid(@Param(&quot;cid&quot;) Long cid);</span><br></pre></td></tr></table></figure>
-<h4 id="四-拓展包–批量操作"><a href="#四-拓展包–批量操作" class="headerlink" title="四 .拓展包–批量操作"></a>四 .拓展包–批量操作</h4><ul>
-<li>批量查询,批量删除</li>
-</ul>
-<blockquote>
-<p>注意他的包啊!  </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import tk.mybatis.mapper.additional.idlist.IdListMapper;</span><br><span class="line">public interface Mapper extends Mapper&lt;Category&gt; , IdListMapper&lt;Category,Long&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据主键字符串进行查询，类中只有存在一个带有@Id注解的字段</span><br><span class="line"> * @param idList</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@SelectProvider(type = IdListProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">List&lt;T&gt; selectByIdList(@Param(&quot;idList&quot;) List&lt;PK&gt; idList);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 根据主键字符串进行删除，类中只有存在一个带有@Id注解的字段</span><br><span class="line"> * @param idList</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@DeleteProvider(type = IdListProvider.class, method = &quot;dynamicSQL&quot;)</span><br><span class="line">int deleteByIdList(@Param(&quot;idList&quot;) List&lt;PK&gt; idList);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>批量插入:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import tk.mybatis.mapper.additional.insert.InsertListMapper;</span><br><span class="line">public interface BaseMapper&lt;T&gt; extends InsertListMapper&lt;T&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@RegisterMapper</span><br><span class="line">public interface InsertListMapper&lt;T&gt; &#123;</span><br><span class="line">@InsertProvider(</span><br><span class="line">    type = InsertListProvider.class,</span><br><span class="line">    method = &quot;dynamicSQL&quot;</span><br><span class="line">)</span><br><span class="line">int insertList(List&lt;? extends T&gt; var1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<p>抽取出一个baseMapper,  添加 @RegisterMapper 它才会被扫描到生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import tk.mybatis.mapper.additional.idlist.IdListMapper;</span><br><span class="line">import tk.mybatis.mapper.additional.insert.InsertListMapper;</span><br><span class="line">import tk.mybatis.mapper.annotation.RegisterMapper;</span><br><span class="line">import tk.mybatis.mapper.common.Mapper;</span><br><span class="line"></span><br><span class="line">@RegisterMapper</span><br><span class="line">public interface BaseMapper&lt;T&gt; extends IdListMapper&lt;T,Long&gt;,Mapper&lt;T&gt;, InsertListMapper&lt;T&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/11/玩转spring-boot-mybatis/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1691,153 +1721,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-categories" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/多线程十一 单例模式/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Changwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Changwu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/16/多线程十一 单例模式/" itemprop="url">多线程十一 单例模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-16T21:52:06+08:00">
-                2019-02-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/多线程/" itemprop="url" rel="index">
-                    <span itemprop="name">多线程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>本篇博文,将整理关于<strong>单例模式</strong>(就是让一个类从始至终,只能产生一个对象,而且spring管理的类也全部是单例模式的)与<strong>多线程</strong>摩擦出的火花<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/02/16/多线程十一 单例模式/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></blockquote></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1890,7 +1773,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1901,7 +1784,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1912,7 +1795,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
