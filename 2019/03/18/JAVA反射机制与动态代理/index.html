@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Changwu">
 <meta property="og:description" content="承接上篇博客里面,类加载器把类加载把类加载进内存,同时创建出了一个唯一的Class对象,其实它本质上就是一个java类,只不过功能挺特殊的—说白了,就像当初,数据多了,用集合装,还多?写个类,用对象装, 类可以对一系列数据的描述,然后谁描述类呢–&amp;gt;Class里面有类的基本信息 1.类的属性:Field 2. 方法:Method 3 .构造器:Constructor(这三个属性都有自己的对应">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-18T04:08:22.936Z">
+<meta property="og:updated_time" content="2019-03-18T07:11:12.180Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA反射机制与动态代理">
 <meta name="twitter:description" content="承接上篇博客里面,类加载器把类加载把类加载进内存,同时创建出了一个唯一的Class对象,其实它本质上就是一个java类,只不过功能挺特殊的—说白了,就像当初,数据多了,用集合装,还多?写个类,用对象装, 类可以对一系列数据的描述,然后谁描述类呢–&amp;gt;Class里面有类的基本信息 1.类的属性:Field 2. 方法:Method 3 .构造器:Constructor(这三个属性都有自己的对应">
@@ -355,9 +355,9 @@
         <blockquote>
 <p>承接上篇博客里面,类加载器把类加载把类加载进内存,同时创建出了一个唯一的Class对象,其实它本质上就是一个java类,只不过功能挺特殊的—说白了,就像当初,数据多了,用集合装,还多?写个类,用对象装, 类可以对一系列数据的描述,然后谁描述类呢–&gt;Class里面有类的基本信息 <strong>1.类的属性:Field 2. 方法:Method 3 .构造器:Constructor</strong>(这三个属性都有自己的对应类)</p>
 </blockquote>
+<a id="more"></a>
 <p>都说java是一门动态语言,怎么着他就动态了呢? reflection反射! 通过反射,我们可以动态的获取类的实例,平时我们自己写东西,用到反射的几率几乎没有,但是像Spring,Hibernate,Mybatis等等等等这些框架的底层到处都是反射</p>
 <p>初学spring时接触下面这个配置, <strong>Spring的控制反转</strong>,IOC,把对象交给Spring创建,依稀记得当初写一大堆xml配置文件,那时候很蒙!其中,把对象的创建权反转给Spring的时候,需要这样:</p>
-<a id="more"></a>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"小写类名"</span>  , <span class="attr">class</span>=<span class="string">"带包名的全类名"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"XXX"</span> <span class="attr">value</span>=<span class="string">"XXX"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p> <strong>她其实就是在通过反射,帮我们创建对象</strong></p>
 <hr>
