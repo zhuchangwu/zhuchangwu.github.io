@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Elasticsearch,">
+  <meta name="keywords" content="Hibernate-Validator,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:  一:安装依赖首先:es依赖Lucene 而Lucene又依赖JVM.所以jdk的安装是免不了的">
-<meta name="keywords" content="Elasticsearch">
+<meta name="description" content="Hibernate Validator是Hibernate对JSR303中的内置约束的一套实现,还加入了自己的约束  使我们可以通过注解完成bean的校验,它的底层是Hibernate通过反射帮我们实现的,肯定会比我们自己写一堆if强!">
+<meta name="keywords" content="Hibernate-Validator">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ES&amp;IK环境搭建">
-<meta property="og:url" content="http://yoursite.com/2019/03/04/ES-IK环境搭建/index.html">
+<meta property="og:title" content="Hibernate-Validator">
+<meta property="og:url" content="http://yoursite.com/2019/03/19/Hibernate-Validator/index.html">
 <meta property="og:site_name" content="Changwu">
-<meta property="og:description" content="本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:  一:安装依赖首先:es依赖Lucene 而Lucene又依赖JVM.所以jdk的安装是免不了的">
+<meta property="og:description" content="Hibernate Validator是Hibernate对JSR303中的内置约束的一套实现,还加入了自己的约束  使我们可以通过注解完成bean的校验,它的底层是Hibernate通过反射帮我们实现的,肯定会比我们自己写一堆if强!">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-04T12:48:43.577Z">
+<meta property="og:updated_time" content="2019-03-19T08:18:38.677Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ES&amp;IK环境搭建">
-<meta name="twitter:description" content="本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:  一:安装依赖首先:es依赖Lucene 而Lucene又依赖JVM.所以jdk的安装是免不了的">
+<meta name="twitter:title" content="Hibernate-Validator">
+<meta name="twitter:description" content="Hibernate Validator是Hibernate对JSR303中的内置约束的一套实现,还加入了自己的约束  使我们可以通过注解完成bean的校验,它的底层是Hibernate通过反射帮我们实现的,肯定会比我们自己写一堆if强!">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/04/ES-IK环境搭建/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/19/Hibernate-Validator/">
 
 
 
 
 
-  <title>ES&IK环境搭建 | Changwu</title>
+  <title>Hibernate-Validator | Changwu</title>
   
 
 
@@ -258,12 +258,12 @@
   
   
 
-  <article class="post post-type-categories" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-Hibernate-Validator" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/04/ES-IK环境搭建/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/19/Hibernate-Validator/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Changwu">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ES&IK环境搭建</h1>
+          <h1 class="post-title" itemprop="name headline">Hibernate-Validator</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T20:46:01+08:00">
-                2019-03-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-19T15:59:17+08:00">
+                2019-03-19
               </time>
             
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">Elasticsearch</span>
+                  <a href="/categories/Hibernate-Validator/" itemprop="url" rel="index">
+                    <span itemprop="name">Hibernate-Validator</span>
                   </a>
                 </span>
 
@@ -352,50 +352,112 @@
       
 
       
-        <blockquote>
-<p>本来打算docker安装es,和腾讯云上的服务器相比,一台赤裸裸的本地机,甚至连很多基础的指令都没有,还花样各种报错,对于我这种新手来说简直了,百度啊cddn啊终于整出来了,记录一下:</p>
-</blockquote>
-<h3 id="一-安装依赖"><a href="#一-安装依赖" class="headerlink" title="一:安装依赖"></a>一:安装依赖</h3><p>首先:es<strong>依赖Lucene</strong> 而Lucene又依赖JVM.所以jdk的安装是免不了的</p>
-<a id="more"></a>
-<h3 id="二-下载ES修改配置"><a href="#二-下载ES修改配置" class="headerlink" title="二:下载ES修改配置"></a>二:下载ES修改配置</h3><p>这个过程中注意点有这几个:</p>
-<ul>
-<li>不推荐把es的启动权给root用户,不然会报错,不信你试试</li>
-<li>修改jvm的参数(限制内存)</li>
-<li>修改端口(支持远程连接)</li>
-</ul>
-<h3 id="1-修改配置"><a href="#1-修改配置" class="headerlink" title="1.修改配置"></a>1.修改配置</h3><ol>
-<li>修改config/jvm.options<br>他默认是两个G,而我的虚拟机一共1G</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-Xms512m</span><br><span class="line">-Xms512m</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>修改elasticsearch.yml</li>
-</ol>
-<p>这里改一个地方就行,未来我们不是直接在虚拟机使用es,而是通过Windows,所以测试阶段我们配置network,允许谁都能访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">里面的 network.host: 0.0.0.0</span><br></pre></td></tr></table></figure>
-<h3 id="2-创建新的用户组"><a href="#2-创建新的用户组" class="headerlink" title="2.创建新的用户组"></a>2.创建新的用户组</h3><p>既然不让放在root下,我们就新建用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupadd esgroup</span><br></pre></td></tr></table></figure>
-<p>添加新的用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd eszhuchangwu -g esgroup -p 2424z</span><br></pre></td></tr></table></figure>
-<h3 id="3-修改es的拥有者"><a href="#3-修改es的拥有者" class="headerlink" title="3. 修改es的拥有者"></a>3. 修改es的拥有者</h3><ol>
-<li>切换到es解压所在的文件夹里面</li>
-<li>执行下面指令,把es放在新建的用户组下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R eszhuchangwu:esgroup elasticsearch-5.6.8</span><br></pre></td></tr></table></figure>
-<h3 id="4-启动"><a href="#4-启动" class="headerlink" title="4. 启动"></a>4. 启动</h3><ol>
-<li>切换用户</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su eszhuchangwu</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>在bin目录里面启动es</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./elasticserch</span><br></pre></td></tr></table></figure>
-<p>可能会报错了: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
-<p>去root用户下, 编辑 /etc/sysctl.conf,(里面是一些系统的信息)，追加以下内容：<br>vm.max_map_count=655360<br>保存后，执行：<br>sysctl -p</p>
-<p>从新启动</p>
+        <p> Hibernate Validator是Hibernate对JSR303中的内置约束的一套实现,还加入了自己的约束</p>
+<p> 使我们可以通过注解完成bean的校验,它的底层是Hibernate通过反射帮我们实现的,肯定会比我们自己写一堆if强!</p>
+ <a id="more"></a>
+<h3 id="常用注解如下："><a href="#常用注解如下：" class="headerlink" title="常用注解如下："></a>常用注解如下：</h3><table>
+<thead>
+<tr>
+<th><strong>Constraint</strong></th>
+<th><strong>详细信息</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>@Valid</strong></td>
+<td>被注释的元素是一个对象，需要检查此对象的所有字段值</td>
+</tr>
+<tr>
+<td><strong>@Null</strong></td>
+<td>被注释的元素必须为 null</td>
+</tr>
+<tr>
+<td><strong>@NotNull</strong></td>
+<td>被注释的元素必须不为 null</td>
+</tr>
+<tr>
+<td><strong>@AssertTrue</strong></td>
+<td>被注释的元素必须为 true</td>
+</tr>
+<tr>
+<td><strong>@AssertFalse</strong></td>
+<td>被注释的元素必须为 false</td>
+</tr>
+<tr>
+<td><strong>@Min(value)</strong></td>
+<td>被注释的元素必须是一个数字，其值必须大于等于指定的最小值</td>
+</tr>
+<tr>
+<td><strong>@Max(value)</strong></td>
+<td>被注释的元素必须是一个数字，其值必须小于等于指定的最大值</td>
+</tr>
+<tr>
+<td><strong>@DecimalMin(value)</strong></td>
+<td>被注释的元素必须是一个数字，其值必须大于等于指定的最小值</td>
+</tr>
+<tr>
+<td><strong>@DecimalMax(value)</strong></td>
+<td>被注释的元素必须是一个数字，其值必须小于等于指定的最大值</td>
+</tr>
+<tr>
+<td><strong>@Size(max,   min)</strong></td>
+<td>被注释的元素的大小必须在指定的范围内</td>
+</tr>
+<tr>
+<td><strong>@Digits   (integer, fraction)</strong></td>
+<td>被注释的元素必须是一个数字，其值必须在可接受的范围内</td>
+</tr>
+<tr>
+<td><strong>@Past</strong></td>
+<td>被注释的元素必须是一个过去的日期</td>
+</tr>
+<tr>
+<td><strong>@Future</strong></td>
+<td>被注释的元素必须是一个将来的日期</td>
+</tr>
+<tr>
+<td><strong>@Pattern(value)</strong></td>
+<td>被注释的元素必须符合指定的正则表达式</td>
+</tr>
+<tr>
+<td><strong>@Email</strong></td>
+<td>被注释的元素必须是电子邮箱地址</td>
+</tr>
+<tr>
+<td><strong>@Length</strong></td>
+<td>被注释的字符串的大小必须在指定的范围内</td>
+</tr>
+<tr>
+<td><strong>@NotEmpty</strong></td>
+<td>被注释的字符串的必须非空</td>
+</tr>
+<tr>
+<td><strong>@Range</strong></td>
+<td>被注释的元素必须在合适的范围内</td>
+</tr>
+<tr>
+<td><strong>@NotBlank</strong></td>
+<td>被注释的字符串的必须非空</td>
+</tr>
+<tr>
+<td><strong>@URL(protocol=,host=,   port=,regexp=, flags=)</strong></td>
+<td>被注释的字符串必须是一个有效的url</td>
+</tr>
+<tr>
+<td><strong>@CreditCardNumber</strong></td>
+<td>被注释的字符串必须通过Luhn校验算法，银行卡，信用卡等号码一般都用Luhn计算合法性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="坐标"><a href="#坐标" class="headerlink" title="坐标"></a>坐标</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate.validator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-validator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们在User对象的部分属性上添加注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">user</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@KeySql</span>(useGeneratedKeys = <span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">private</span> Long id;   <span class="comment">//bigint类型</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@NotEmpty</span>(message = <span class="string">"用户名不能为空"</span>)</span><br><span class="line">    <span class="meta">@Length</span>( min=<span class="number">4</span>,max=<span class="number">32</span>,message = <span class="string">"用户名长度为4-32位"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将来前端查询用户的信息,加上jsonIgnore 就不会暴露给前端,尽管他是被加密过</span></span><br><span class="line">    <span class="meta">@JsonIgnore</span></span><br><span class="line">    <span class="meta">@Length</span>(min = <span class="number">4</span>,max = <span class="number">32</span>,message = <span class="string">"密码长度为4-32位"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JsonIgnore</span></span><br><span class="line">    <span class="keyword">private</span> String salt;  <span class="comment">//密码的密盐</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pattern</span>(regexp = <span class="string">"/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\\d&#123;8&#125;$"</span>,message = <span class="string">"手机号不正确"</span>)</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> Date created;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="开启注解"><a href="#开启注解" class="headerlink" title="开启注解"></a>开启注解</h3><p>在controller中只需要在入参的位置上给User添加 @Valid注解即可。</p>
 <blockquote>
-<p>好了,现在es属于eszhuchangwu了,以后想使用es,用eszhuchangwu去对应的目录启动就好了!!!</p>
+<p>一旦用户提交过来的数据不符合我们添加的注解,默认是springMvc自己处理错误,返回错误信息</p>
 </blockquote>
-<h3 id="5-添加IK酷分词器"><a href="#5-添加IK酷分词器" class="headerlink" title="5 .添加IK酷分词器"></a>5 .添加IK酷分词器</h3><p>把ik分词器解压放入es/plugind/下面<br>重启es可以看到日志  <strong>loaded plugin [analysis-ik]</strong></p>
+<h3 id="如何自己处理异常"><a href="#如何自己处理异常" class="headerlink" title="如何自己处理异常?"></a>如何自己处理异常?</h3><p>在User后,紧跟着 Bindingresult result  可以开启自动处理错误的机制</p>
+<p>其中这个result就储存了所有的异常信息</p>
 
       
     </div>
@@ -413,7 +475,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Elasticsearch/" rel="tag"><i class="fa fa-tag"></i> Elasticsearch</a>
+            <a href="/tags/Hibernate-Validator/" rel="tag"><i class="fa fa-tag"></i> Hibernate-Validator</a>
           
         </div>
       
@@ -426,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/23/Mysql-两个CURRENT-TIMESTAMP/" rel="next" title="解决Mysql5.5不能同时设置两个CURRENT_TIMESTAMP">
-                <i class="fa fa-chevron-left"></i> 解决Mysql5.5不能同时设置两个CURRENT_TIMESTAMP
+              <a href="/2019/03/18/Thyleaf实现页面静态化/" rel="next" title="Thymeleaf实现页面静态化">
+                <i class="fa fa-chevron-left"></i> Thymeleaf实现页面静态化
               </a>
             
           </div>
@@ -435,10 +497,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/06/Elasticsearch笔记/" rel="prev" title="Elasticsearch笔记">
-                Elasticsearch笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -572,7 +630,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-安装依赖"><span class="nav-number">1.</span> <span class="nav-text">一:安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-下载ES修改配置"><span class="nav-number">2.</span> <span class="nav-text">二:下载ES修改配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-修改配置"><span class="nav-number">3.</span> <span class="nav-text">1.修改配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建新的用户组"><span class="nav-number">4.</span> <span class="nav-text">2.创建新的用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-修改es的拥有者"><span class="nav-number">5.</span> <span class="nav-text">3. 修改es的拥有者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-启动"><span class="nav-number">6.</span> <span class="nav-text">4. 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-添加IK酷分词器"><span class="nav-number">7.</span> <span class="nav-text">5 .添加IK酷分词器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用注解如下："><span class="nav-number">1.</span> <span class="nav-text">常用注解如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坐标"><span class="nav-number">2.</span> <span class="nav-text">坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启注解"><span class="nav-number">3.</span> <span class="nav-text">开启注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何自己处理异常"><span class="nav-number">4.</span> <span class="nav-text">如何自己处理异常?</span></a></li></ol></div>
             
 
           </div>
