@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化">
+<meta name="description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thymeleaf如何完成页面静态化">
 <meta name="keywords" content="Thymeleaf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thymeleaf实现页面静态化">
 <meta property="og:url" content="http://yoursite.com/2019/03/18/Thyleaf实现页面静态化/index.html">
 <meta property="og:site_name" content="Changwu">
-<meta property="og:description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化">
+<meta property="og:description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thymeleaf如何完成页面静态化">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-18T13:15:45.143Z">
+<meta property="og:updated_time" content="2019-03-19T07:34:21.207Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thymeleaf实现页面静态化">
-<meta name="twitter:description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化">
+<meta name="twitter:description" content="如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thymeleaf如何完成页面静态化">
 
 
 
@@ -353,10 +353,10 @@
 
       
         <blockquote>
-<p>如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thyleaf如何完成页面静态化</p>
+<p>如果用户所有的请求,都需要Thyleaf渲染后直接返回给用户,后台就存在大量的查询操作,数据库的压力就会骤然上升,请求的时间就会延长,带来极不好用户体验,现在市面上流行的就是页面的静态化处理,下面就来看看,Thymeleaf如何完成页面静态化</p>
 </blockquote>
 <a id="more"></a>
-<h3 id="一-什么是静态化"><a href="#一-什么是静态化" class="headerlink" title="一. 什么是静态化?"></a>一. 什么是静态化?</h3><p>静态化就是我们把Thyleaf渲染后的页面转变成静态页面,并且保存起来,用户每次访问的都是已经存在的静态页,数据库的查询压力也就小了,就比如商品详情页,只要商品的信息没有改变,无论是哪个用户查询的结果都是一样的,所以商品的详情页,完全可以静态化,事实上电商网站也是这样做的</p>
+<h3 id="一-什么是静态化"><a href="#一-什么是静态化" class="headerlink" title="一. 什么是静态化?"></a>一. 什么是静态化?</h3><p>静态化就是我们把Thymeleaf渲染后的页面转变成静态页面,并且保存起来,用户每次访问的都是已经存在的静态页,数据库的查询压力也就小了,就比如商品详情页,只要商品的信息没有改变,无论是哪个用户查询的结果都是一样的,所以商品的详情页,完全可以静态化,事实上电商网站也是这样做的</p>
 <p>静态化的页面可以保存在nginx,这样做可以提升几个数量级的速度</p>
 <h3 id="二-如何实现静态化"><a href="#二-如何实现静态化" class="headerlink" title="二 . 如何实现静态化?"></a>二 . 如何实现静态化?</h3><ul>
 <li>回顾一下前后端的交互顺序</li>
@@ -364,28 +364,28 @@
 <ol>
 <li>前端提交请求</li>
 <li>请求被springMVC收到了,调用持久层查库,把数据放入model</li>
-<li>Thyleaf把model里面的数据渲染到模板视图里面XXX.html</li>
+<li>Thymeleaf把model里面的数据渲染到模板视图里面XXX.html</li>
 <li>把渲染后的全部信息,全部写入到response里面</li>
 </ol>
 <p>其实既然能写到response里面,就能写入到其他路径下,事实上,真的是这样做</p>
 <ul>
-<li>Thyleaf如何把信息写入到response里?</li>
+<li>Thymeleaf如何把信息写入到response里?</li>
 </ul>
 <p>做这件事的是ThymeleafAutoConfiguration里面的TemplateEngine模板引擎使用下面的方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">process（String template, IContext context, Writer writer）方法</span><br></pre></td></tr></table></figure>
 <p>他是如何做的呢？新认识几个概念</p>
 <p>1 .Context 上下文</p>
 <blockquote>
-<p>这是块共享的空间,处理用户的请求时,各个servlet可以共享,事实上当我们把数据放入Model ,springMvc就会把model放入Contex</p>
+<p>这是块共享的空间,处理用户的请求时,各个servlet可以共享,事实上当我们把数据放入Model ,springMvc就会把model放入Context</p>
 </blockquote>
 <ol start="2">
 <li>TemplateResolver 模板解析器</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public SpringResourceTemplateResolver defaultTemplateResolver() &#123;</span><br><span class="line">SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();</span><br><span class="line">resolver.setApplicationContext(this.applicationContext);</span><br><span class="line">resolver.setPrefix(this.properties.getPrefix());</span><br><span class="line">resolver.setSuffix(this.properties.getSuffix());</span><br><span class="line">resolver.setTemplateMode(this.properties.getMode());</span><br><span class="line">if (this.properties.getEncoding() != null) &#123;</span><br><span class="line">    resolver.setCharacterEncoding(this.properties.getEncoding().name());</span><br><span class="line">&#125;</span><br><span class="line">resolver.setCacheable(this.properties.isCache());</span><br><span class="line">Integer order = this.properties.getTemplateResolverOrder();</span><br><span class="line">if (order != null) &#123;</span><br><span class="line">    resolver.setOrder(order);</span><br><span class="line">&#125;</span><br><span class="line">resolver.setCheckExistence(this.properties.isCheckTemplate());</span><br><span class="line">return resolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>用来解析和读取配置文件,里面有我们的模拟的后缀以及路径,Thyleaf的视图解析器依然是依赖它知道的配置信息</p>
+<p>用来解析和读取配置文件,里面有我们的模拟的后缀以及路径,Thymeleaf的视图解析器依然是依赖它知道的配置信息</p>
 </blockquote>
-<p>有了Context和TemplateResolver完事具备,只差渲染了</p>
+<p>有了Context和TemplateResolver万事具备,只差渲染了</p>
 <p>TemplateEngine调用process方法,模板引擎依靠context拿到数据,依靠templateResolver拿到配置信息,第三个参数是输出流,也就是我们的目标文件</p>
 <p>具体怎么撸?</p>
 <p>spring给我们准备好了!</p>
