@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/03/16/JVM内存模型与类加载机制/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/16/JVM内存模型与类加载机制/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/16/JVM内存模型与类加载机制/3.png">
-<meta property="og:updated_time" content="2019-03-16T14:35:08.632Z">
+<meta property="og:updated_time" content="2019-03-28T03:04:30.520Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型与类加载机制">
 <meta name="twitter:description" content="一. java虚拟机的内存模型如图: 补习一下jvm内存模型中的各个组成部分  堆: 我们new出来的对象全部放在堆中,他是jvm所能够动态分配的最大的一块空间 优点: 内存动态分配,生命周期不必事先告诉编译器,由JAVA的垃圾回收线程动态回收">
@@ -407,7 +407,7 @@
 <h3 id="二-类加载机制"><a href="#二-类加载机制" class="headerlink" title="二. 类加载机制"></a>二. 类加载机制</h3><blockquote>
 <p> <strong>这个错误号称是所有程序员都犯过,我也错了,原因就是类加载的过程不清楚,通过这次学习,搞懂了咋个过程,自然可以搞懂结果</strong></p>
 </blockquote>
-<h3 id="代码引入"><a href="#代码引入" class="headerlink" title="代码引入"></a>代码引入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *</span><br><span class="line">@Data</span><br><span class="line">public class text &#123;</span><br><span class="line">    private static text text = new text();</span><br><span class="line">    public  static int count1;</span><br><span class="line">    public  static int count2 = 0;</span><br><span class="line"> /*</span><br><span class="line">    3  类被加载内存,把静态的变量全部附默认值, 这就是 18-20 分别为 null 0 0 </span><br><span class="line">    4  再然后 初始化 首先, 调用构造方法18行, 得到 text 顺道 count1 = 1 count2 = 1 ,</span><br><span class="line">    5  往下执行19 20  分别为 1  0</span><br><span class="line"> */ </span><br><span class="line">    public text()&#123;</span><br><span class="line">        count1++;</span><br><span class="line">        count2++;</span><br><span class="line">    &#125;</span><br><span class="line">    public static text getSingleton()&#123;</span><br><span class="line">        return text;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class mytext&#123; //1 启动类</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        text singleton = text.getSingleton();  //2 主动使用</span><br><span class="line">        System.out.println(singleton.count1);</span><br><span class="line">        System.out.println(singleton.count2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码引入"><a href="#代码引入" class="headerlink" title="代码引入"></a>代码引入</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"><span class="doctag">@Data</span></span></span><br><span class="line"><span class="comment">public class text &#123;</span></span><br><span class="line"><span class="comment">    private static text text = new text();</span></span><br><span class="line"><span class="comment">    public  static int count1;</span></span><br><span class="line"><span class="comment">    public  static int count2 = 0;</span></span><br><span class="line"><span class="comment"> /*</span></span><br><span class="line"><span class="comment">    3  类被加载内存,把静态的变量全部附默认值, 这就是 18-20 分别为 null 0 0 </span></span><br><span class="line"><span class="comment">    4  再然后 初始化 首先, 调用构造方法18行, 得到 text 顺道 count1 = 1 count2 = 1 ,</span></span><br><span class="line"><span class="comment">    5  往下执行19 20  分别为 1  0</span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">text</span><span class="params">()</span></span>&#123;</span><br><span class="line">        count1++;</span><br><span class="line">        count2++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> text <span class="title">getSingleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> text;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mytext</span></span>&#123; <span class="comment">//1 启动类</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        text singleton = text.getSingleton();  <span class="comment">//2 主动使用</span></span><br><span class="line">        System.out.println(singleton.count1);</span><br><span class="line">        System.out.println(singleton.count2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="类的加载连接-连接和初始化"><a href="#类的加载连接-连接和初始化" class="headerlink" title="类的加载连接,连接和初始化"></a>类的加载连接,连接和初始化</h3><img src="/2019/03/16/JVM内存模型与类加载机制/2.png" title="image">
 <h4 id="1-加载"><a href="#1-加载" class="headerlink" title="1.加载:"></a>1.加载:</h4><p>类的加载是将类的.class文件中的二进制数据,(由硬盘)加载到内存中,<strong>并将其放在运行时的数据区的方法区</strong>,然后<strong>在堆中创建一个java.lang.Class对象</strong>,用来<strong>封装整个类在方法区中的数据结构</strong> </p>
 <img src="/2019/03/16/JVM内存模型与类加载机制/4.png" title="image">
@@ -709,7 +709,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -720,7 +720,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -731,7 +731,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
