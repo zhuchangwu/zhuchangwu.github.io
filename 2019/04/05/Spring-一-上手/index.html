@@ -82,16 +82,16 @@
 <meta name="description" content="几个月之前,我接触了SpringBoot,不知不觉就沉浸在他的自动配置所带来的便利中,基本上已经做到的零配置就集成了web的所有主流框架,但是 前几天在头看Spring,怕了怕了,忘记了… 所以就很有必要重新温习spring,spring博大精深,短时间内,想在源码的层面上把它">
 <meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring&lt;一&gt; 上手">
+<meta property="og:title" content="Spring -- 上手">
 <meta property="og:url" content="http://yoursite.com/2019/04/05/Spring-一-上手/index.html">
 <meta property="og:site_name" content="Changwu">
 <meta property="og:description" content="几个月之前,我接触了SpringBoot,不知不觉就沉浸在他的自动配置所带来的便利中,基本上已经做到的零配置就集成了web的所有主流框架,但是 前几天在头看Spring,怕了怕了,忘记了… 所以就很有必要重新温习spring,spring博大精深,短时间内,想在源码的层面上把它">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/05/Spring-一-上手/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/04/05/Spring-一-上手/2.png">
-<meta property="og:updated_time" content="2019-04-07T01:24:26.542Z">
+<meta property="og:updated_time" content="2019-04-08T14:11:19.655Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring&lt;一&gt; 上手">
+<meta name="twitter:title" content="Spring -- 上手">
 <meta name="twitter:description" content="几个月之前,我接触了SpringBoot,不知不觉就沉浸在他的自动配置所带来的便利中,基本上已经做到的零配置就集成了web的所有主流框架,但是 前几天在头看Spring,怕了怕了,忘记了… 所以就很有必要重新温习spring,spring博大精深,短时间内,想在源码的层面上把它">
 <meta name="twitter:image" content="http://yoursite.com/2019/04/05/Spring-一-上手/1.png">
 
@@ -129,7 +129,7 @@
 
 
 
-  <title>Spring<一> 上手 | Changwu</一></title>
+  <title>Spring -- 上手 | Changwu</title>
   
 
 
@@ -283,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring<一> 上手</一></h1>
+          <h1 class="post-title" itemprop="name headline">Spring -- 上手</h1>
         
 
         <div class="post-meta">
@@ -453,6 +453,13 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(<span class="comment">// 这个注解替换了原来配置文件中的包扫描</span></span><br><span class="line">    value=<span class="string">"com.changwu.tryspring"</span>,</span><br><span class="line">    useDefaultFilters=<span class="keyword">false</span>,</span><br><span class="line">    includeFilters = &#123;</span><br><span class="line">           <span class="comment">// 只要是给定的类型的类,就可以加载进IOC,包括它的子类</span></span><br><span class="line">            <span class="meta">@Filter</span>(type = FilterType.CUSTOM,classes = MyTypeFilter.class)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <h3 id="注解版本中-配置类替换了原来的配置文件"><a href="#注解版本中-配置类替换了原来的配置文件" class="headerlink" title="注解版本中,配置类替换了原来的配置文件"></a>注解版本中,配置类替换了原来的配置文件</h3><p><code>@Configuration</code> 注解标记本类为配置类</p>
+<blockquote>
+<p>那么我不加<code>@Configuration</code>注解,这个类就不能成为配置类吗? 里面通过<code>@Bean</code>注解就添加不进bean来了? 不是的, <code>@Configuration</code>标记会被Spring使用Cglib技术拦截下来,换言之我们得到的bean,不再是我们自己new 的那种小白bean,而是被代理过的Bean</p>
+</blockquote>
+<blockquote>
+<p>那么什么才是百分百的配置类呢? 配置类是我们调用如下代码所需要的那个类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;   AnnotationConfigApplicationContext applicationContext = <span class="keyword">new</span> AnnotationConfigApplicationContext();</span><br><span class="line">&gt;         applicationContext.register(配置类.class);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
 <p>如下代码! 原来的包扫描被<code>@ComponentScan</code> 取代!!! 里面可以配置多个信息</p>
 <ul>
 <li>基础包信息<code>value=&quot;com.XXX&quot;</code></li>
@@ -794,6 +801,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/04/08/代理设计模式/" rel="prev" title="代理设计模式">
+                代理设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -871,7 +882,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
