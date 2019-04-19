@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/3.png">
-<meta property="og:updated_time" content="2019-04-15T14:30:15.250Z">
+<meta property="og:updated_time" content="2019-04-19T09:07:42.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Elasticsearch笔记">
 <meta name="twitter:description" content="拉呱,无论是当作全文检索工具,还是仅仅当作NOSQL,Elasticsearch的性能,牛的没法说!!!奈何和它相见恨晚  点击进入官网 中文文档 一. 使用场景">
@@ -430,7 +430,7 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUT /xiaowu1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1</span><br><span class="line">    , &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>成功的相应:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;xiaowu1&quot;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">#### 3.1.2 查看数据库</span><br><span class="line"></span><br><span class="line">* 请求方式:　GET</span><br><span class="line">* 格式:　GET /索引库名</span><br><span class="line">* </span><br><span class="line">```code</span><br><span class="line">GET /xiaowu1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;xiaowu1&quot;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">#### 3.1.2 查看数据库</span><br><span class="line"></span><br><span class="line">* 请求方式:　GET</span><br><span class="line">* 格式:　GET /索引库名</span><br><span class="line"></span><br><span class="line">```code</span><br><span class="line">GET /xiaowu1</span><br></pre></td></tr></table></figure>
 <p>响应：相关的源信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;xiaowu1&quot;: &#123;</span><br><span class="line">    &quot;aliases&quot;: &#123;&#125;,</span><br><span class="line">    &quot;mappings&quot;: &#123;&#125;,</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">      &quot;index&quot;: &#123;</span><br><span class="line">        &quot;creation_date&quot;: &quot;1552653562807&quot;,</span><br><span class="line">        &quot;number_of_shards&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;number_of_replicas&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;uuid&quot;: &quot;u0tMDD-pQXaHb77cTPorZA&quot;,</span><br><span class="line">        &quot;version&quot;: &#123;</span><br><span class="line">          &quot;created&quot;: &quot;6020499&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;provided_name&quot;: &quot;xiaowu1&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="3-1-3-删除索引库"><a href="#3-1-3-删除索引库" class="headerlink" title="3.1.3 删除索引库"></a>3.1.3 删除索引库</h4><ul>
@@ -455,7 +455,7 @@
 <ul>
 <li>基本数值类型: long ,float,byte,double…</li>
 <li>浮点数高精度类型: scaled_float <ul>
-<li>它需要我们指定一个精度因子,比如10,100,es把把真实值乘以这个精度因子存储,取出后还原,(商品价格) </li>
+<li>它需要我们指定一个精度因子,比如10,100,es把真实值乘以这个精度因子存储,取出后还原,(商品价格) </li>
 </ul>
 </li>
 </ul>
@@ -467,9 +467,8 @@
 </ul>
 <ol start="4">
 <li>存储对象</li>
-<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;girl:&#123;name:&quot;张三&quot;,age:23&#125;</span><br></pre></td></tr></table></figure>
-</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;girl:&#123;name:&quot;张三&quot;,age:23&#125;</span><br></pre></td></tr></table></figure>
 <p>而是会把它处理成  <strong>girl.name</strong>和<strong>girl.age</strong></p>
 <p>5 .<strong>store</strong>  </p>
 <ul>
@@ -539,7 +538,7 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">     &quot;term&quot;: &#123;</span><br><span class="line">       &quot;price&quot;: &#123;</span><br><span class="line">         &quot;value&quot;: &quot;1888&quot;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="3-2-7-多词条精确匹配"><a href="#3-2-7-多词条精确匹配" class="headerlink" title="3.2.7 多词条精确匹配"></a>3.2.7 多词条精确匹配</h4><ul>
-<li>和term一样的精确匹配,但是不同的是它支持同时使用多个词条进行精确匹配,**如果只要索引库中的文档包含指定值中的任意一个,都算作满足条件</li>
+<li>和term一样的精确匹配,但是不同的是它支持同时使用多个词条进行精确匹配,<strong>如果只要索引库中的文档包含指定值中的任意一个,都算作满足条件</strong></li>
 </ul>
 <h4 id="3-3-1-结果过滤"><a href="#3-3-1-结果过滤" class="headerlink" title="3.3.1 结果过滤"></a>3.3.1 结果过滤</h4><blockquote>
 <p>　默认情况下，elasicsearch在搜索的结果在,会把文档保存在_source里面的所有字段都返回,如果我们想获取里面的部分结果,<strong>添加_soure过滤</strong></p>
