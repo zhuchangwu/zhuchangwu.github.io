@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Elasticsearch笔记 | blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="拉呱,无论是当作全文检索工具,还是仅仅当作NOSQL,Elasticsearch的性能,牛的没法说!!!奈何和它相见恨晚  点击进入官网 中文文档 一. 使用场景">
+<meta name="keywords" content="Elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch笔记">
+<meta property="og:url" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="拉呱,无论是当作全文检索工具,还是仅仅当作NOSQL,Elasticsearch的性能,牛的没法说!!!奈何和它相见恨晚  点击进入官网 中文文档 一. 使用场景">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/3.png">
+<meta property="og:updated_time" content="2019-04-21T08:06:15.391Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch笔记">
+<meta name="twitter:description" content="拉呱,无论是当作全文检索工具,还是仅仅当作NOSQL,Elasticsearch的性能,牛的没法说!!!奈何和它相见恨晚  点击进入官网 中文文档 一. 使用场景">
+<meta name="twitter:image" content="http://yoursite.com/2019/03/06/Elasticsearch笔记/1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">赐我白日梦</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/archives">归档</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.voidking.com">VoidKing</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/u/9f179465dd2b">简书</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://segmentfault.com/blog/voidking">SegmentFault</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/voidking">博客园</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/c0416">CSDN</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.iots.vip">Alliot&#39;s Blog</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">虽然还没想好怎么夸自己，但总觉得这里放点东西比较和谐。。。</div>
+				</section>
+				
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">赐我白日梦</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">赐我白日梦</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Elasticsearch笔记" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/03/06/Elasticsearch笔记/" class="article-date">
+  	<time datetime="2019-03-06T11:22:58.000Z" itemprop="datePublished">2019-03-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Elasticsearch笔记
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Elasticsearch/">Elasticsearch</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">	
+      
+	  
+		
+		
+        <blockquote>
+<p>拉呱,无论是当作全文检索工具,还是仅仅当作NOSQL,Elasticsearch的性能,牛的没法说!!!奈何和它相见恨晚</p>
+</blockquote>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/client/index.html#" target="_blank" rel="noopener">点击进入官网</a></p>
+<p><a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html" target="_blank" rel="noopener">中文文档</a></p>
+<h3 id="一-使用场景"><a href="#一-使用场景" class="headerlink" title="一. 使用场景"></a>一. 使用场景</h3><a id="more"></a>
+<ul>
+<li><p><strong>全文检索</strong>-像淘宝京东类似的网上商城,当我们在在搜索框搜索某个商品名称时,网络没有问题的话,获取响应的速度,几乎和我们键盘起落的速度是一致的,这足以ES的魅力,亿万级别的搜索,秒秒钟完事</p>
+</li>
+<li><p>一个正规的项目运行过程中,日志的产出是源源不断的,把日志的文本信息导入到ES,使用它的聚合功能轻松获取我们关系的内容,结合Kibana做图表分析,可视化日志记录,动态分析</p>
+</li>
+</ul>
+<h3 id="二-基本概念"><a href="#二-基本概念" class="headerlink" title="二. 基本概念"></a>二. 基本概念</h3><ul>
+<li><strong>2.1 什么是是全文检索</strong><br>全文检索就是计算机程序通过扫描文章中的每一个词,对<strong>必要的词</strong>建立一个<strong>索引</strong>(上篇博客我们使用ik分词器,帮助es分词),记录下这个词在文章中出现的位置和次数,这样当用户去查询的时候,他可以根据索引极快的查找出相应的内容</li>
+</ul>
+<blockquote>
+<p>稍微解释下, 全文检索可以片面的理解成是从敲代码的人的角度上说的,假如你是用户,你会关心什么全文检索? 用户关系的是搜索结果!那好,对我们敲代码的来说,就是1.拿到用户搜索框输入的关键字送进ES (数据在存进es的时候,es对他们进行了索引)2.ES的程序会对关键字进行分词,拿着这些碎片去ES中的索引库里面的type中的field中匹配比对,那,那么多field,它和谁比对呢? 和标记上text属性的字段比对) </p>
+</blockquote>
+<blockquote>
+<p>另外要了解的内容1.全文检索只处理文本不处理语义,2.全文检索忽略英文的大小写 3.结果可能不止一个,并且有相关得分</p>
+</blockquote>
+<ul>
+<li><strong>2.2 与关系型数据库名称上的对比</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>mysql</th>
+<th>Elasticsearch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database 数据库</td>
+<td>indices 索引</td>
+</tr>
+<tr>
+<td>Table 数据表</td>
+<td>type 类型</td>
+</tr>
+<tr>
+<td>Row 行</td>
+<td>document 文档</td>
+</tr>
+<tr>
+<td>Columns 列</td>
+<td>Field 字段</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>其实大多数人都是先接触的关系型数据库,我也是,可能一开始感觉着好别扭,但是再回头来看,好像他的名字比传统的关系型数据库名什么行啊列啊,更合理一些</p>
+</blockquote>
+<ul>
+<li><strong>2.3 分片(shard)和副本(replica)</strong>  </li>
+</ul>
+<img src="/2019/03/06/Elasticsearch笔记/1.png" title="图片">
+<p>通过图片可以看到: 数据分成三部分,分别存放在三个分片里面,而且每个分片都有自己的副本,这样就算是一台es,它同样是分布式</p>
+<h3 id="二-怎么玩"><a href="#二-怎么玩" class="headerlink" title="二. 怎么玩?"></a>二. 怎么玩?</h3><blockquote>
+<p>这部分纯属扯皮了,不说语法,说一下我对它的感觉,首先呢,  为什么学它? 图方便快速呗,大部分情况下,是需要使用它的全文检索功能,但是总得有个下手点吧,不用说一开始都是环境配置一顿整,访问个9200看到版本号,也算是开个头了,然后呢? 先不用想他怎么检索,怎么花里胡哨的检索,我们得知道自己想检索什么!先把数据给它,思路就来了,先去搞数据,下一步自然就是创建新的索引(数据库),循环把我们的数据送进es的索引里面.到这里,也算是完成一半的任务了,下面就是使用人家提供好的api去索引库,检索就好了. 先有个大概的思路.想干什么,怎么干,往下学</p>
+</blockquote>
+<h3 id="三-原生语法"><a href="#三-原生语法" class="headerlink" title="三. 原生语法"></a>三. 原生语法</h3><ul>
+<li>elasticsearch采用的REST风格的api,也就是说,其实他就是一次http的请求</li>
+</ul>
+<blockquote>
+<p>下面会有一些关键字 也就是json的 key部分,对我们来说,一般可以见名知意</p>
+</blockquote>
+<h4 id="3-1-1-创建索引库"><a href="#3-1-1-创建索引库" class="headerlink" title="3.1.1 创建索引库"></a>3.1.1 创建索引库</h4><ul>
+<li>请求方式: PUT</li>
+<li>请求路径: /索引库名</li>
+<li>请求参数: json</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUT /xiaowu1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 1</span><br><span class="line">    , &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成功的相应:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;xiaowu1&quot;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">#### 3.1.2 查看数据库</span><br><span class="line"></span><br><span class="line">* 请求方式:　GET</span><br><span class="line">* 格式:　GET /索引库名</span><br><span class="line"></span><br><span class="line">```code</span><br><span class="line">GET /xiaowu1</span><br></pre></td></tr></table></figure>
+<p>响应：相关的源信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;xiaowu1&quot;: &#123;</span><br><span class="line">    &quot;aliases&quot;: &#123;&#125;,</span><br><span class="line">    &quot;mappings&quot;: &#123;&#125;,</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">      &quot;index&quot;: &#123;</span><br><span class="line">        &quot;creation_date&quot;: &quot;1552653562807&quot;,</span><br><span class="line">        &quot;number_of_shards&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;number_of_replicas&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;uuid&quot;: &quot;u0tMDD-pQXaHb77cTPorZA&quot;,</span><br><span class="line">        &quot;version&quot;: &#123;</span><br><span class="line">          &quot;created&quot;: &quot;6020499&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;provided_name&quot;: &quot;xiaowu1&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-1-3-删除索引库"><a href="#3-1-3-删除索引库" class="headerlink" title="3.1.3 删除索引库"></a>3.1.3 删除索引库</h4><ul>
+<li>请求方式： DELETE</li>
+<li>格式： DELETE /索引库名</li>
+</ul>
+<h4 id="3-2-1-配置映射"><a href="#3-2-1-配置映射" class="headerlink" title="3.2.1 配置映射"></a>3.2.1 配置映射</h4><p><strong>在玩搜索之前我们要思考如何定义文档的,如文档包括哪些字段,这些字段是否保存,是否索引,是否分词等等</strong>, 实际上就像是在描述我们数据库中的一张表,有哪些列,列是什么类型的,是主键不?自增长不?</p>
+<blockquote>
+<p>以后看到”mappings”:{} 就像查看关系型数据库中对整张表的定义一样</p>
+</blockquote>
+<ul>
+<li>请求方式: PUT </li>
+<li>格式: PUT /索引库名/_mapping/类型名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">PUT /xiaowu/_mapping/goods</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;      ---属性关键字</span><br><span class="line">    &quot;name&quot;:&#123;           ---name为字段名,可以不止一个,就像数据库中的列,你开心,多少个都行</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,  ---类型常用:integer,long,text,object,date,short,string,float </span><br><span class="line">      &quot;index&quot;: true,   ---是否索引  默认true</span><br><span class="line">      &quot;store&quot;: false,   ---是否存储  默认false</span><br><span class="line">      &quot;analyzer&quot;: &quot;ik_max_word&quot; ---是否分词</span><br><span class="line">    &#125;,</span><br><span class="line">     &quot;images&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;,  </span><br><span class="line">      &quot;index&quot;: &quot;false&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;age&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;float&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1 .字符串类型有两种</p>
+<ul>
+<li><strong>text</strong> : 可检索</li>
+<li><strong>keyword</strong> : 不可检索  </li>
+</ul>
+<p>2 .数值类型</p>
+<ul>
+<li>基本数值类型: long ,float,byte,double…</li>
+<li>浮点数高精度类型: scaled_float <ul>
+<li>它需要我们指定一个精度因子,比如10,100,es把真实值乘以这个精度因子存储,取出后还原,(商品价格) </li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>日期类型:</li>
+</ol>
+<ul>
+<li>Date</li>
+</ul>
+<ol start="4">
+<li>存储对象</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;girl:&#123;name:&quot;张三&quot;,age:23&#125;</span><br></pre></td></tr></table></figure>
+<p>而是会把它处理成  <strong>girl.name</strong>和<strong>girl.age</strong></p>
+<p>5 .<strong>store</strong>  </p>
+<ul>
+<li>表示,是否将数据额外存储,意思是,如果不存储,用户就搜索不出来</li>
+<li>在solr中如果为store设为false,那么用户就搜索不出来这个字段</li>
+<li>但是elasticsearch中,并不用store的值控制是否可以被搜索出来,即便他是false,用户仍然可以搜索出结果,原因是elasticsearch的底层,在创建文档时,会将文档的原始数据备份保存到一个叫 <strong>_source</strong>的属性中,而我们可以通过<strong>过滤_source</strong>选择那些需要显示,那些不需要显示,这样如我们把store的值设置为ture它就会多储存一份,得不偿失(store相当于作废了)</li>
+</ul>
+<h4 id="3-2-2-向已经存在的索引库中添加数据-不一定要指定ID"><a href="#3-2-2-向已经存在的索引库中添加数据-不一定要指定ID" class="headerlink" title="3.2.2 向已经存在的索引库中添加数据(不一定要指定ID)"></a>3.2.2 向已经存在的索引库中添加数据(不一定要指定ID)</h4><ul>
+<li>请求方式: POST</li>
+<li>格式: POST /索引库名/类型名{}</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /changwu/item/</span><br><span class="line">&#123;</span><br><span class="line">    &quot;title&quot;:&quot;小米手机&quot;,</span><br><span class="line">    &quot;price&quot;:2699.00</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>响应:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;changwu&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;item&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;Pj6bgWkB3eQnUSvRfoa2&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 5,</span><br><span class="line">  &quot;_primary_term&quot;: 6</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>id,是自动生成的当前数据的标识,我们还可以指定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /changwu/item/2</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-3-基本查询"><a href="#3-2-3-基本查询" class="headerlink" title="3.2.3 基本查询"></a>3.2.3 <strong>基本查询</strong></h4><ul>
+<li>请求方式: GET  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /索引库名/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;查询类型&quot;:&#123;</span><br><span class="line">      &quot;查询条件&quot;: &quot;条件值&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>query是Elasticsearch内置的一个对象,里面有不同的查询属性</li>
+</ul>
+<blockquote>
+<p><strong>使用,SpringDataElasticsearch玩复杂查询的时候,免不了会BuildQueryXXX</strong></p>
+</blockquote>
+<ul>
+<li>查询类型: <ul>
+<li>match_all 查询所有</li>
+<li>match  </li>
+<li><strong>term</strong></li>
+<li><strong>range</strong></li>
+</ul>
+</li>
+<li>查询条件根据类型的不同而不同,(就像关系型数据库中表的字段不同…)</li>
+</ul>
+<h4 id="3-2-4-匹配查询-match"><a href="#3-2-4-匹配查询-match" class="headerlink" title="3.2.4 匹配查询 match"></a>3.2.4 匹配查询 match</h4><p><strong>or</strong> 关系</p>
+<blockquote>
+<p>match类型查询,会<strong>把查询条件进行分词</strong>,然后再查询,<strong>词条之间是or关系</strong>,按照相关性得分排序</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /goods/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;:&#123;</span><br><span class="line">      &quot;price&quot;: 269900</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>and</strong>关系</p>
+<blockquote>
+<p>很多情况下我们希望更精确的查找,于是我们使用  and关系</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">     &quot;query&quot;:&#123;</span><br><span class="line">       &quot;match&quot;:&#123;</span><br><span class="line">         &quot;title&quot;:&#123;</span><br><span class="line">            &quot;query&quot;:&quot;米手机&quot;,</span><br><span class="line">            &quot;operator&quot;:&quot;and&quot;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样他在分词的时候,米–手机同时都匹配上才会显示出结果!</p>
+<blockquote>
+<p><strong>假设有这样一种情况,用户给定的条件分词后,有五个词,但是其中的四个是在描述他想要搜索的内容,如果使用or,毫无疑问,一大堆杂七杂八的东西被查询出来,如果使用and,es很可能把那个目标文档排除,那该怎么办呢?看下面!</strong></p>
+</blockquote>
+<ul>
+<li>match支持使用<strong>minimum_should_match</strong> 最小匹配参数,通常设置为一个百分数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">     &quot;query&quot;:&#123;</span><br><span class="line">       &quot;match&quot;:&#123;</span><br><span class="line">         &quot;title&quot;:&#123;</span><br><span class="line">            &quot;query&quot;:&quot;米手机&quot;,</span><br><span class="line">            &quot;minimum_should_match&quot;:&quot;75%&quot;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>意思是,用户输入的词条满足75%的匹配程,我就认为是匹配上了, —用户输入的检索条件,被分解为三个词,3*0.75=2.25 也就是说,这三个词,至少有两个是匹配上的,es就认为匹配成功</p>
+</blockquote>
+<h4 id="3-2-5多字段查询-muti-match"><a href="#3-2-5多字段查询-muti-match" class="headerlink" title="3.2.5多字段查询 muti_match"></a>3.2.5多字段查询 <strong>muti_match</strong></h4><ul>
+<li>muti_match和match一样,但是不同的是它可以同时在多个字段中检索</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">     &quot;query&quot;:&#123;</span><br><span class="line">       &quot;multi_match&quot;:&#123;</span><br><span class="line">            &quot;query&quot;:&quot;米&quot;,</span><br><span class="line">            &quot;fields&quot;:[&quot;title&quot;]</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>他的fields接受一个字段数组</p>
+</blockquote>
+<h4 id="3-2-6-词条查询-term"><a href="#3-2-6-词条查询-term" class="headerlink" title="3.2.6 词条查询(term)"></a>3.2.6 词条查询(term)</h4><ul>
+<li>和前面的查询条件不同的是<strong>term</strong>,它被用作<strong>精确查询</strong>,比如<strong>数字,时间,布尔</strong>,和字段属性为<strong>keyword</strong>类型的关键字 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">     &quot;term&quot;: &#123;</span><br><span class="line">       &quot;price&quot;: &#123;</span><br><span class="line">         &quot;value&quot;: &quot;1888&quot;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-7-多词条精确匹配"><a href="#3-2-7-多词条精确匹配" class="headerlink" title="3.2.7 多词条精确匹配"></a>3.2.7 多词条精确匹配</h4><ul>
+<li>和term一样的精确匹配,但是不同的是它支持同时使用多个词条进行精确匹配,<strong>如果只要索引库中的文档包含指定值中的任意一个,都算作满足条件</strong></li>
+</ul>
+<h4 id="3-3-1-结果过滤"><a href="#3-3-1-结果过滤" class="headerlink" title="3.3.1 结果过滤"></a>3.3.1 结果过滤</h4><blockquote>
+<p>　默认情况下，elasicsearch在搜索的结果在,会把文档保存在_source里面的所有字段都返回,如果我们想获取里面的部分结果,<strong>添加_soure过滤</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;_source&quot;: [&quot;过滤字段&quot;], </span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">     &quot;term&quot;: &#123;</span><br><span class="line">       &quot;price&quot;: &#123;</span><br><span class="line">         &quot;value&quot;: &quot;1888&quot;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>另外,_source里面还有两个属性<ul>
+<li>“includes”:[想显示的字段]</li>
+<li>“excludes”:[不想显示的字段]</li>
+</ul>
+</li>
+</ul>
+<p>解读查询结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 1,    ----花费时长,单位毫秒</span><br><span class="line">  &quot;timed_out&quot;: false,  ----是否超时</span><br><span class="line">  &quot;_shards&quot;: &#123;      --- 分片信息</span><br><span class="line">    &quot;total&quot;: 1,    </span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;     --- 命中的结果</span><br><span class="line">    &quot;total&quot;: 1, --- 结果总数</span><br><span class="line">    &quot;max_score&quot;: 4.765019, ---相关性的最高得分</span><br><span class="line">    &quot;hits&quot;: [      --- 搜索结果的对象数组</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;goods&quot;,   ---  索引</span><br><span class="line">        &quot;_type&quot;: &quot;docs&quot;,     --- 类型</span><br><span class="line">        &quot;_id&quot;: &quot;180&quot;,        ---  唯一id</span><br><span class="line">        &quot;_score&quot;: 4.765019,  ---文档得分</span><br><span class="line">        &quot;_source&quot;: &#123;            --- 文档的数据源,(前面说过,结果都在_source里面)</span><br><span class="line">          &quot;id&quot;: 180,</span><br><span class="line">          ...</span><br><span class="line">          &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在所有的index里面查询指定的字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET _search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">   &quot;match&quot;: &#123;</span><br><span class="line">     &quot;title&quot;: &quot;小米2手机&quot;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-4-1-智能判断"><a href="#3-4-1-智能判断" class="headerlink" title="3.4.1 智能判断"></a>3.4.1 智能判断</h4><ul>
+<li>新增属性的时候,可以添加新的字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">POST /xiaowu/goods/</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;:&quot;es666&quot;,</span><br><span class="line">  &quot;hehe&quot;:true</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        &quot;_index&quot;: &quot;xiaowu&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;goods&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;Qz69gWkB3eQnUSvRC4ah&quot;,</span><br><span class="line">        &quot;_score&quot;: 1,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: &quot;es666&quot;,</span><br><span class="line">          &quot;hehe&quot;: true</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>查看映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;xiaowu&quot;: &#123;</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">      &quot;goods&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;float&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;hehe&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;boolean&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;images&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">            &quot;index&quot;: false</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;name&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">            &quot;store&quot;: true,</span><br><span class="line">            &quot;analyzer&quot;: &quot;ik_max_word&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;price&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;float&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;title&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">            &quot;fields&quot;: &#123;</span><br><span class="line">              &quot;keyword&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;ignore_above&quot;: 256</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样看,其实我们在上面配置的映射关系就没有必要了,Elasticsearch会智能化的推断出字段的type,比如true它推断为boolean, 但是有问题的是title  它推断为 text  ,<strong>title.keyword是 keyword类型</strong></p>
+</blockquote>
+<h4 id="3-5-1-修改数据-指明ID"><a href="#3-5-1-修改数据-指明ID" class="headerlink" title="3.5.1 修改数据(指明ID)"></a>3.5.1 修改数据(指明ID)</h4><p>把上面的POST转变成PUT就是修改</p>
+<ul>
+<li>id对应的文档存在则修改</li>
+<li>id对应的文档不存在则新增</li>
+</ul>
+<h4 id="3-6-1-删除数据"><a href="#3-6-1-删除数据" class="headerlink" title="3.6.1 删除数据"></a>3.6.1 删除数据</h4><p>语法: DELETE /索引库名/类型名/id</p>
+<h4 id="3-7-1-高级玩法-布尔组合"><a href="#3-7-1-高级玩法-布尔组合" class="headerlink" title="3.7.1 高级玩法-布尔组合"></a>3.7.1 高级玩法-布尔组合</h4><blockquote>
+<p>看得懂,会使用Elasticsearch的高级玩法很重要,这关系着,能不能理解如何使用它的原生api进行高级查询</p>
+</blockquote>
+<ul>
+<li>布尔组合,结合了其他的查询,实现了这样的功能, – 我的搜索结果中,一定含有谁(must),一定不含有谁(must_not),可能含有谁(should)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;title&quot;: &quot;米&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;must_not&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;title&quot;: &quot;大&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">     &quot;should&quot;: [</span><br><span class="line">       &#123;</span><br><span class="line">         &quot;match&quot;: &#123;</span><br><span class="line">           &quot;price&quot;: &quot;999&quot;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line">     ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-7-2-高级玩法–范围查询range"><a href="#3-7-2-高级玩法–范围查询range" class="headerlink" title="3.7.2 高级玩法–范围查询range"></a>3.7.2 高级玩法–范围查询range</h4><ul>
+<li>range实现的是查询出满足某个区间的结果</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;range&quot;: &#123;</span><br><span class="line">      &quot;FIELD&quot;: &#123;</span><br><span class="line">        &quot;gte&quot;: 10,</span><br><span class="line">        &quot;lte&quot;: 20</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gte</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>lte</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>gt</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>lt</td>
+<td>小于</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-7-3-模糊查询—fuzzy"><a href="#3-7-3-模糊查询—fuzzy" class="headerlink" title="3.7.3 模糊查询—fuzzy"></a>3.7.3 模糊查询—fuzzy</h4><blockquote>
+<p>模糊查询很人性化,它允许用户在编辑的条件有拼写错误,但是出现偏差的编辑差距不得超过2</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /xiaowu/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;fuzzy&quot;: &#123;</span><br><span class="line">      &quot;title&quot;: &#123;</span><br><span class="line">       &quot;value&quot;: &quot;appla&quot;,</span><br><span class="line">       &quot;fuzziness&quot;: 1</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这样查询是可以查询出apple的</li>
+<li>“fuzziness”: 限定编辑距离</li>
+</ul>
+<h4 id="3-7-4-过滤—filter"><a href="#3-7-4-过滤—filter" class="headerlink" title="3.7.4 过滤—filter"></a>3.7.4 过滤—filter</h4><ul>
+<li>1.有条件查询进行过滤<blockquote>
+<p>查询就会影响文档的相关性得分,假如我们只是想在现有的查询基础上,根据需求过滤下一些结果,却不想影响文档的相关性得分的话filter就派上用场了</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /changwu/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot;:&#123;</span><br><span class="line">        &quot;bool&quot;:&#123;</span><br><span class="line">        	&quot;must&quot;:&#123; &quot;match&quot;: &#123; &quot;title&quot;: &quot;小米手机&quot; &#125;&#125;,</span><br><span class="line">        	&quot;filter&quot;:&#123;</span><br><span class="line">                &quot;range&quot;:&#123;&quot;price&quot;:&#123;&quot;gt&quot;:2000.00,&quot;lt&quot;:3800.00&#125;&#125;</span><br><span class="line">        	&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>filter中还可以在bool组合过滤</p>
+</blockquote>
+<ul>
+<li>2.无条件查询进行过滤</li>
+</ul>
+<blockquote>
+<p> 如果一次查询只有过滤，没有查询条件，不希望进行评分，我们可以使用constant_score</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /changwu/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot;:&#123;</span><br><span class="line">        &quot;constant_score&quot;:   &#123;</span><br><span class="line">            &quot;filter&quot;: &#123;</span><br><span class="line">            	 &quot;range&quot;:&#123;&quot;price&quot;:&#123;&quot;gt&quot;:2000.00,&quot;lt&quot;:3000.00&#125;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-7-5-—-排序-sort"><a href="#3-7-5-—-排序-sort" class="headerlink" title="3.7.5 — 排序 sort"></a>3.7.5 — 排序 sort</h4><blockquote>
+<p>排序sort和query是有先后顺序的,先query,再排序</p>
+</blockquote>
+<ul>
+<li>单字段排序</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GET /changwu/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;title&quot;: &quot;手机&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;price&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;asc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多字段排序</li>
+</ul>
+<blockquote>
+<p>看上面的sort后面的条件,是个数字,因此我们可以写条件,按多个字段惊醒排序</p>
+</blockquote>
+<hr>
+<h3 id="聚合-aggregations"><a href="#聚合-aggregations" class="headerlink" title="聚合:aggregations"></a>聚合:aggregations</h3><ul>
+<li>基本概念,两个新概念,在Elasticsearch中的聚合分为两个部分,聚合为 <strong>桶bucket</strong>和<strong>度量</strong><ul>
+<li>桶就像mysql中的分组查询,比如说学号相同,姓名相同的肯定是同一个人,我们就把它当成一组,在这里就是一个桶</li>
+<li>度量–以每个桶为基础,做运算</li>
+</ul>
+</li>
+</ul>
+<p>当然Elasticsearah里面分桶的方式很多</p>
+<ul>
+<li>Terms Aggregation：根据词条内容分组，词条内容完全匹配的为一组</li>
+<li>Range Aggregation：数值和日期的范围分组，指定开始和结束，然后按段分组,这个范围要手动告诉他,0-10 10-15 15-30等</li>
+<li>Histogram Aggregation：根据数值阶梯(柱状图)分组，与日期类似, 告诉他一个段就行了,她会自动的分组</li>
+<li>Date Histogram Aggregation：根据日期阶梯分组，例如给定阶梯为周，会自动每周分为一组</li>
+</ul>
+<p>常用的度量方法:</p>
+<ul>
+<li>Avg Aggregation：求平均值</li>
+<li>Max Aggregation：求最大值</li>
+<li>Min Aggregation：求最小值</li>
+<li>Percentiles Aggregation：求百分比</li>
+<li>Stats Aggregation：同时返回avg、max、min、sum、count等</li>
+<li>Sum Aggregation：求和</li>
+<li>Top hits Aggregation：求前几</li>
+<li>Value Count Aggregation：求总数</li>
+</ul>
+<blockquote>
+<p><strong>es中进行过滤,排序,聚合的字段,不能被分词!!!!*</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /cars/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 0,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;popular_brand&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;color&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;aggs&quot;: &#123;</span><br><span class="line">        &quot;priceAvg&quot;: &#123;</span><br><span class="line">          &quot;avg&quot;: &#123;</span><br><span class="line">              &quot;field&quot;: &quot;price&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一般都是先聚为桶,然后在桶的基础上进行度量</p>
+</blockquote>
+<h3 id="四．SpringDataElsticsearch"><a href="#四．SpringDataElsticsearch" class="headerlink" title="四．SpringDataElsticsearch"></a>四．SpringDataElsticsearch</h3><p><a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.1.3.RELEASE/reference/html/#elasticsearch.query-methods" target="_blank" rel="noopener">SpringDataElasticsearch官方文档地址</a></p>
+<img src="/2019/03/06/Elasticsearch笔记/2.png" title="图片">
+<p> 这是原来画的图,JEST直接放弃了,让我们自己拼接json串,简直只有难受</p>
+<blockquote>
+<p>终于到编码阶段,这部分相比前面的原生api看起来就好受多了,Spring一整合,啥东西都简单的只剩下两件事,1,写个配置文件,2.用它的方法,玩他的注解–, 当然我现在回顾学习的整个过程,最重要的是还是那句话,不要忘记了自己的需求,不然学着学着容易迷失,不知道自己想干啥,对于Elasticsearch吧先觉的它啥都能干,又觉得它啥也干不了,这是个很尴尬的事情!  那,我用它做全文检索,我就得去搞明白 知道下面那几件事</p>
+</blockquote>
+<ol>
+<li>怎么搭建起开发环境,使我的java代码和ES交互</li>
+<li>spring整合它嘛,提供了哪些注解,表示我的javaBean是个document对象</li>
+<li>如何建立索引库</li>
+<li>基本的CRUD</li>
+<li>花里胡哨的查询方法</li>
+</ol>
+<p>下面挨个做这几件事!</p>
+<h4 id="4-1-搭建开发环境"><a href="#4-1-搭建开发环境" class="headerlink" title="4.1 搭建开发环境"></a>4.1 搭建开发环境</h4><p>坐标</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> &lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-elasticsearch&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">    &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>配置文件(java和它的交互走的是tcp协议)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: search-service</span><br><span class="line">  data:</span><br><span class="line">    elasticsearch:</span><br><span class="line">      cluster-nodes: <span class="number">192.168</span>.43.150:<span class="number">9300</span></span><br><span class="line">      cluster-name: elasticsearch</span><br></pre></td></tr></table></figure>
+<p>启动类</p>
+<h4 id="4-1-实体类及注解"><a href="#4-1-实体类及注解" class="headerlink" title="4.1 实体类及注解"></a>4.1 实体类及注解</h4><blockquote>
+<p>实体类在java中就像是接盘侠,啥样的东东,它都有能给接下来,看完了下面的注解,就知道了如何把数据存进es认识的实体类,准备把他们存在索引库</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.data.annotation.Id;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.elasticsearch.annotations.Document;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.elasticsearch.annotations.Field;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.elasticsearch.annotations.FieldType;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"changwu"</span>,type = <span class="string">"item"</span>,shards = <span class="number">1</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@Field</span>(type=FieldType.Long)</span><br><span class="line">    Long id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Text,analyzer = <span class="string">"ik_smart"</span>)</span><br><span class="line">    String title; <span class="comment">//标题</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type=FieldType.Keyword,index = <span class="keyword">true</span>)</span><br><span class="line">    String category;<span class="comment">// 分类</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type=FieldType.Keyword)</span><br><span class="line">    String brand; <span class="comment">// 品牌</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type=FieldType.Double)</span><br><span class="line">    Double price; <span class="comment">// 价格</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type=FieldType.Keyword,index = <span class="keyword">false</span>)</span><br><span class="line">    String images; <span class="comment">// 图片地址</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>@Document</strong> </li>
+</ul>
+<ol>
+<li>作用在类，标记实体类为文档对象<ul>
+<li>indexName：对应索引库名称—- 数据库名</li>
+<li>type：对应在索引库中的类型—- 表名</li>
+<li>shards：分片数量，默认5<br>-replicas：副本数量，默认1</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><strong>@Id</strong></li>
+</ul>
+<ol>
+<li>作用在成员变量id上<ul>
+<li>标记一个字段作为id主键(这个id别写错了,不然程序都启动不起来)</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><strong>@Field</strong></li>
+</ul>
+<ol>
+<li>作用在成员变量，标记为文档的字段，并指定字段映射属性：<ul>
+<li>type：字段类型，取值是枚举：FieldType</li>
+<li>index：是否索引，布尔类型，默认是true</li>
+<li>store：是否存储，布尔类型，默认是false</li>
+<li>analyzer：分词器名称</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>另外不要忘记了它的智能推断,如果我们不在字段上添加@Field,他根据值的类型进行推断</p>
+</blockquote>
+<p>比如: 下面三个都会被推断为long类型,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private Long cid3;//  </span><br><span class="line">private Date createTime;//  </span><br><span class="line">private List&lt;Long&gt; price;//</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-创建索引库"><a href="#4-2-创建索引库" class="headerlink" title="4.2 创建索引库"></a>4.2 创建索引库</h4><blockquote>
+<p>索引库的创建放到text里面就ok了</p>
+</blockquote>
+<ul>
+<li>使用的是ElasticsearchTemplate,Spring一直都是这样,整合完了,给你个模板</li>
+</ul>
+<p>创建索引,添加映射,删除索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">template.createIndex(Goods.class);</span><br><span class="line"> </span><br><span class="line">template.putMapping(Goods.class);</span><br><span class="line"></span><br><span class="line">template.deleteIndex()</span><br></pre></td></tr></table></figure>
+<h4 id="4-3-基本的CRUD"><a href="#4-3-基本的CRUD" class="headerlink" title="4.3 基本的CRUD"></a>4.3 基本的CRUD</h4><blockquote>
+<p>SpringData的强大之后就是,我们不再去写dao层了,她会通过反射给我们写好,有点Mybatis里面的通用mapper的意思,但是它更强大,—你给方法名它自动的生成方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public interface GoodsRepository extends ElasticsearchRepository&lt;Goods,Long&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 repository点一下,findXX saveXXX, deleteXXX全出来了,不再细说</p>
+<p>另外:<br><a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.1.3.RELEASE/reference/html/#elasticsearch.query-methods" target="_blank" rel="noopener">点击进入如何自定义方法,Spring给实现</a></p>
+<p>如果可以看懂原生的语法,那么对他的使用就不多说了…就是无脑使用</p>
+<blockquote>
+<p>到了这,就知道了如何把通过java代码,对索引库里面的数据进行简单的增删改查</p>
+</blockquote>
+<h4 id="4-4-着重看一下如何进行繁杂查询"><a href="#4-4-着重看一下如何进行繁杂查询" class="headerlink" title="4.4 着重看一下如何进行繁杂查询"></a>4.4 着重看一下如何进行繁杂查询</h4><blockquote>
+<p>真正使用es的时候,Repository里面的方法可以满足大部分的功能,但是聚合,过滤的话,只能使用原生的API</p>
+</blockquote>
+<blockquote>
+<p>假设我们有下面的需求: 前端把用户需要搜索的信息收集起来了–全文检索</p>
+</blockquote>
+<ul>
+<li><strong>全文检索</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 全文检索</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">textQuery</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建查询构建器</span></span><br><span class="line">    NativeSearchQueryBuilder QueryBuilder = <span class="keyword">new</span> NativeSearchQueryBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 给查询构造器添加条件</span></span><br><span class="line"><span class="comment">     *   1. 它仍然需要的是一个  QueryBuilder ,通过QueryBuilders里面的静态方法创建,间接继承了QueryBuild</span></span><br><span class="line"><span class="comment">     *   2. 可也看到,基本上所有常用的条件查询都有了, bool , 词条term , match , 模糊查询 fuzzy</span></span><br><span class="line"><span class="comment">     *   3. 我们也可以抽出来一个方法, 方法里使用bool查询, 他支持先添加查询,紧接着过滤,  还记不记得那个  match&#123;&#125;,filter:&#123;&#125;</span></span><br><span class="line"><span class="comment">     *    3.1 注意区分开结果过滤_source 和 filter</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *         matchQuery     <span class="doctag">@Param</span> field</span></span><br><span class="line"><span class="comment">     *         matchQuery     <span class="doctag">@Param</span> field的值</span></span><br><span class="line"><span class="comment">     *   */</span></span><br><span class="line">    QueryBuilder.withQuery(QueryBuilders.matchQuery(<span class="string">"title"</span>,<span class="string">"小米"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 结果过滤</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Param</span> : SourceFilter  ,但是它是和接口,于是我用它唯一的实现类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    QueryBuilder.withSourceFilter(<span class="keyword">new</span> FetchSourceFilter(<span class="keyword">new</span> String[]&#123;<span class="string">"title"</span>,<span class="string">"price"</span>&#125;,<span class="keyword">null</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 排序</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    QueryBuilder.withSort(SortBuilders.fieldSort(<span class="string">"price"</span>).order(SortOrder.ASC));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 分页</span></span><br><span class="line"><span class="comment">     *  原生的api使用下面两个字段控制</span></span><br><span class="line"><span class="comment">     *  "from": 0,</span></span><br><span class="line"><span class="comment">     *  "size":10</span></span><br><span class="line"><span class="comment">     *  但是注意,他是的第一页是0</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Param</span> : Pageable 他是个接口,我们使用它的实现类  PageRequest(静态方法of)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    QueryBuilder.withPageable(PageRequest.of(<span class="number">1</span>,<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line">    Page&lt;Goods&gt; result = repository.search(QueryBuilder.build());  <span class="comment">//它仍然需要的是一个QueryBuilder , 通过构造器.build()构建出来</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//解析结果</span></span><br><span class="line">    <span class="keyword">long</span> elements = result.getTotalElements();</span><br><span class="line">    <span class="keyword">int</span> totalPages = result.getTotalPages();</span><br><span class="line">    List&lt;Goods&gt; content = result.getContent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建基本的查询条件</span></span><br><span class="line"><span class="comment"> * 创建布尔查询,</span></span><br><span class="line"><span class="comment"> *  一部分当作查询条件(must)</span></span><br><span class="line"><span class="comment"> *  一部分当作过滤条件(filter)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> searchRequest</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> QueryBuilder 给QueryBuild.withQuery()使用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> QueryBuilder <span class="title">buildBasicQuery</span><span class="params">(SearchRequest searchRequest)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//创建布尔查询</span></span><br><span class="line">    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();</span><br><span class="line">    <span class="comment">//查询条件</span></span><br><span class="line">    queryBuilder.must(QueryBuilders.matchQuery(<span class="string">"字段名"</span>,字段值));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(过滤条件)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    *把处理好的字段,传给过滤器 过滤</span></span><br><span class="line"><span class="comment">    *@param name  The name of the field</span></span><br><span class="line"><span class="comment">    *@param value The value of the term</span></span><br><span class="line"><span class="comment">    */</span> </span><br><span class="line">    queryBuilder.filter(QueryBuilders.termQuery(字段名,字段值));</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">return</span>  queryBuilder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>聚合查询</li>
+</ul>
+<img src="/2019/03/06/Elasticsearch笔记/3.png" title="图片">
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 聚合查询</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">textAgg</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//同样少不了 查询构造器</span></span><br><span class="line">    NativeSearchQueryBuilder QueryBuilder = <span class="keyword">new</span> NativeSearchQueryBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加聚合add, 可以聚合多次</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Param</span> AbstractAggregationBuilder 它间接继承与 AggregationBuilder 我们下面的工具类</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * AggregationBuilders下面基本上涵盖了我们所有的聚合方式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    QueryBuilder.addAggregation(AggregationBuilders.terms(<span class="string">"popular_brand"</span>).field(<span class="string">"brand"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 推荐使用和这个,支持聚合查询,并返回带聚合的结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Param</span> :SearchQuery</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Param</span> :Class&lt;T&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Return</span>:</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    AggregatedPage&lt;Goods&gt; result = template.queryForPage(QueryBuilder.build(), Goods.class);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析聚合</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Aggregations aggregations = result.getAggregations();</span><br><span class="line">    <span class="comment">// 获取指定名称 聚合</span></span><br><span class="line">    <span class="comment">//Aggregations agg = aggregations.get("popular_brand");</span></span><br><span class="line">    StringTerms agg = aggregations.get(<span class="string">"popular_brand"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 问题来了,  不存在 agg.getBuckets()</span></span><br><span class="line"><span class="comment">     * 原因看上面的图,是 Aggregations是个顶级接口,</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    List&lt;StringTerms.Bucket&gt; buckets = agg.getBuckets();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//遍历buckets</span></span><br><span class="line">    <span class="keyword">for</span> (StringTerms.Bucket bucket : buckets) &#123;</span><br><span class="line">        System.out.println(bucket.getKeyAsString());</span><br><span class="line">        System.out.println(bucket.getDocCount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/08/RabbitMQ/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RabbitMQ
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/04/ES-IK环境搭建/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ES&amp;IK环境搭建</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<div class="social-share"></div>
+
+	<!--  css & js -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+</div>
+
+
+
+
+
+<div class="livere">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zODU3Mi8xNTEwMA==">
+        <script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+
+           if (typeof LivereTower === 'function') { return; }
+
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+        </script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2019 赐我白日梦
+    	</div>
+      	<div class="footer-right">
+      		<p>
+            <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten    
+            </p>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+<!--百度统计的代码-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b759ac2a7fa45129e3ef060bf68259f0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>JS 实现动态轮播图 | blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JavaScript实现轮播图思路 + html/css + js源码  整个轮播图的效果是通过js代码,操作dom, 拿到html我们需要的元素,控制整个ul的距离浏览器左边的位置,让排好的图片依次出现在相框中,不在相框中的元素会被css中的 overflow : hidden 隐藏掉, 其次,图片是经过处理的 ,正好和我们的相关等宽等高! 动态的创建元素,下面我们会动态创建li,并通过css把">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS 实现动态轮播图">
+<meta property="og:url" content="http://yoursite.com/2019/04/23/JS-实现动态轮播图/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="JavaScript实现轮播图思路 + html/css + js源码  整个轮播图的效果是通过js代码,操作dom, 拿到html我们需要的元素,控制整个ul的距离浏览器左边的位置,让排好的图片依次出现在相框中,不在相框中的元素会被css中的 overflow : hidden 隐藏掉, 其次,图片是经过处理的 ,正好和我们的相关等宽等高! 动态的创建元素,下面我们会动态创建li,并通过css把">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-23T12:58:47.278Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS 实现动态轮播图">
+<meta name="twitter:description" content="JavaScript实现轮播图思路 + html/css + js源码  整个轮播图的效果是通过js代码,操作dom, 拿到html我们需要的元素,控制整个ul的距离浏览器左边的位置,让排好的图片依次出现在相框中,不在相框中的元素会被css中的 overflow : hidden 隐藏掉, 其次,图片是经过处理的 ,正好和我们的相关等宽等高! 动态的创建元素,下面我们会动态创建li,并通过css把">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">赐我白日梦</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/archives">归档</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.voidking.com">VoidKing</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/u/9f179465dd2b">简书</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://segmentfault.com/blog/voidking">SegmentFault</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/voidking">博客园</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/c0416">CSDN</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.iots.vip">Alliot&#39;s Blog</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">虽然还没想好怎么夸自己，但总觉得这里放点东西比较和谐。。。</div>
+				</section>
+				
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">赐我白日梦</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">赐我白日梦</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-JS-实现动态轮播图" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/23/JS-实现动态轮播图/" class="article-date">
+  	<time datetime="2019-04-23T12:51:39.000Z" itemprop="datePublished">2019-04-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JS 实现动态轮播图
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">	
+      
+	  
+		
+		
+        <p>JavaScript实现轮播图思路 + html/css + js源码</p>
+<ol>
+<li>整个轮播图的效果是通过js代码,操作dom, 拿到html我们需要的元素,控制整个ul的距离浏览器左边的位置,让排好的图片依次出现在相框中,不在相框中的元素会被css中的 overflow : hidden 隐藏掉, 其次,图片是经过处理的 ,正好和我们的相关等宽等高!</li>
+<li>动态的创建元素,下面我们会动态创建li,并通过css把它修饰成小按钮格式,其次给小按钮添加点击事件,鼠标经过,离开事件,动态的实现图片的移动, 其实就是根据不同的参数,移动 ul的left值</li>
+<li>最后添加定时器,在回调函数的位置让他每隔一定的时间就调用一次点击左边按钮的事件</li>
+</ol>
+<a id="more"></a>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">        * &#123;</span></span><br><span class="line"><span class="undefined">            padding: 0;</span></span><br><span class="line"><span class="undefined">            margin: 0;</span></span><br><span class="line"><span class="undefined">            list-style: none;</span></span><br><span class="line"><span class="undefined">            border: 0;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .all &#123;</span></span><br><span class="line"><span class="undefined">            width: 500px;</span></span><br><span class="line"><span class="undefined">            height: 200px;</span></span><br><span class="line"><span class="undefined">            padding: 7px;</span></span><br><span class="line"><span class="undefined">            border: 1px solid #ccc;</span></span><br><span class="line"><span class="undefined">            margin: 100px auto;</span></span><br><span class="line"><span class="undefined">            position: relative;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .screen &#123;</span></span><br><span class="line"><span class="undefined">            width: 500px;</span></span><br><span class="line"><span class="undefined">            height: 200px;</span></span><br><span class="line"><span class="undefined">            /*     overflow: hidden;*/</span></span><br><span class="line"><span class="undefined">            position: relative;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .screen li &#123;</span></span><br><span class="line"><span class="undefined">            width: 500px;</span></span><br><span class="line"><span class="undefined">            height: 200px;</span></span><br><span class="line"><span class="undefined">            overflow: hidden;</span></span><br><span class="line"><span class="undefined">            float: left;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .screen ul &#123;</span></span><br><span class="line"><span class="undefined">            position: absolute;</span></span><br><span class="line"><span class="undefined">            left: 0;</span></span><br><span class="line"><span class="undefined">            top: 0px;</span></span><br><span class="line"><span class="undefined">            width: 3000px;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .all ol &#123;</span></span><br><span class="line"><span class="undefined">            position: absolute;</span></span><br><span class="line"><span class="undefined">            right: 10px;</span></span><br><span class="line"><span class="undefined">            bottom: 10px;</span></span><br><span class="line"><span class="undefined">            line-height: 20px;</span></span><br><span class="line"><span class="undefined">            text-align: center;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .all ol li &#123;</span></span><br><span class="line"><span class="undefined">            float: left;</span></span><br><span class="line"><span class="undefined">            width: 20px;</span></span><br><span class="line"><span class="undefined">            height: 20px;</span></span><br><span class="line"><span class="undefined">            background: #fff;</span></span><br><span class="line"><span class="undefined">            border: 1px solid #ccc;</span></span><br><span class="line"><span class="undefined">            margin-left: 10px;</span></span><br><span class="line"><span class="undefined">            cursor: pointer;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .all ol li.current &#123;</span></span><br><span class="line"><span class="undefined">            background: #DB192A;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        #arr &#123;</span></span><br><span class="line"><span class="undefined">            display: none;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        #arr span &#123;</span></span><br><span class="line"><span class="undefined">            width: 40px;</span></span><br><span class="line"><span class="undefined">            height: 40px;</span></span><br><span class="line"><span class="undefined">            position: absolute;</span></span><br><span class="line"><span class="undefined">            left: 5px;</span></span><br><span class="line"><span class="undefined">            top: 50%;</span></span><br><span class="line"><span class="undefined">            margin-top: -20px;</span></span><br><span class="line"><span class="undefined">            background: #000;</span></span><br><span class="line"><span class="undefined">            cursor: pointer;</span></span><br><span class="line"><span class="undefined">            line-height: 40px;</span></span><br><span class="line"><span class="undefined">            text-align: center;</span></span><br><span class="line"><span class="undefined">            font-weight: bold;</span></span><br><span class="line"><span class="undefined">            font-family: '黑体';</span></span><br><span class="line"><span class="undefined">            font-size: 30px;</span></span><br><span class="line"><span class="undefined">            color: #fff;           opacity: 0.3;</span></span><br><span class="line"><span class="undefined">            border: 1px solid #fff;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        #arr #right &#123;</span></span><br><span class="line"><span class="undefined">            right: 5px;</span></span><br><span class="line"><span class="undefined">            left: auto;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"all"</span> <span class="attr">id</span>=<span class="string">'box'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"screen"</span>&gt;</span><span class="comment">&lt;!--相框--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/1.jpg"</span> <span class="attr">width</span>=<span class="string">"500"</span> <span class="attr">height</span>=<span class="string">"200"</span>/&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/2.jpg"</span> <span class="attr">width</span>=<span class="string">"500"</span> <span class="attr">height</span>=<span class="string">"200"</span>/&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/3.jpg"</span> <span class="attr">width</span>=<span class="string">"500"</span> <span class="attr">height</span>=<span class="string">"200"</span>/&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/4.jpg"</span> <span class="attr">width</span>=<span class="string">"500"</span> <span class="attr">height</span>=<span class="string">"200"</span>/&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/5.jpg"</span> <span class="attr">width</span>=<span class="string">"500"</span> <span class="attr">height</span>=<span class="string">"200"</span>/&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">ol</span>&gt;</span><span class="comment">&lt;!--  ol 里面存放的是按钮, 按钮的个数,就是上面ul子元素的个数--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ol</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"arr"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"left"</span>&gt;</span>&amp;lt;<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"right"</span>&gt;</span>&amp;gt;<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面是html/css搭起来架子,简单说一下</p>
+<ol>
+<li>body里面有一个直接子div,我们叫他box,它是整个轮播图的父盒子</li>
+</ol>
+<blockquote>
+<p><strong>1</strong> 对box的css相关css样式调整, 给定了宽高,让他把轮播图需要的空间撑起来, <strong>2</strong>. 设置了内边距,让他在原有宽高不变的情况下,四周扩展一些,美观 ;  <strong>3</strong>. 初始情况下,这个盒子贴着浏览器的左上角对齐,我们给他设置外边距, 上下100px ,左右自动, 意思是居中对齐  <strong>4</strong>. 添加相对定位, 因为box里面的小按钮要脱离文档流,用定位移动到相框指定的位置, 如果不加相对定位, box就限制不住它里面的子元素,</p>
+</blockquote>
+<ol start="2">
+<li>box又有两个直接元素div</li>
+</ol>
+<blockquote>
+<p>box 的第一个直接子元素class=screen , screen的宽高和box一样,里面放着个无序列表,无序列表里面是轮播图的图片, 每一个li,都给定和图片一样大小的宽高,添加浮动,让它们排成一排,给li添加overflow , 属性,防止图片太大了,把多出去的部分切掉,</p>
+</blockquote>
+<blockquote>
+<p>screen的第二个直接子元素是个ol列表,一会我们要通过js动态的生成和 ul里面的li相同数目的li标签,把他们的样式改成按钮, 需要绝对定位,因此我们设置screen为相对对位</p>
+</blockquote>
+<blockquote>
+<p>box的第二个直接子元素是一个div叫arr，默认它dispaly:none 隐藏 ,arr里面是轮播图的左右两个箭头，让他相对于box 进行绝对定位</p>
+</blockquote>
+<h3 id="js代码"><a href="#js代码" class="headerlink" title="js代码:"></a>js代码:</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="comment">// 获取全部需要的元素</span></span><br><span class="line">    <span class="keyword">var</span> box = <span class="built_in">document</span>.getElementById(<span class="string">"box"</span>);</span><br><span class="line">    <span class="keyword">var</span> screen = box.children[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">var</span> ulObj = screen.children[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">var</span> liList = ulObj.children;</span><br><span class="line">    <span class="keyword">var</span> olObj = screen.children[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> arr = <span class="built_in">document</span>.getElementById(<span class="string">"arr"</span>);</span><br><span class="line">    <span class="keyword">var</span> width = screen.offsetWidth;  <span class="comment">// 相框的宽</span></span><br><span class="line">    <span class="keyword">var</span> index = <span class="number">0</span>;  <span class="comment">// 默认小按钮的索引从零开始</span></span><br><span class="line">    <span class="keyword">var</span> timeId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//  动态的生成和li数量相等的 小按钮</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; liList.length; i++) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i);</span><br><span class="line">        <span class="keyword">var</span> liObj = <span class="built_in">document</span>.createElement(<span class="string">"li"</span>);</span><br><span class="line">        <span class="comment">// 添加下标</span></span><br><span class="line">        liObj.innerHTML = (i + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 添加到ol里面</span></span><br><span class="line">        olObj.appendChild(liObj);</span><br><span class="line">        <span class="comment">// 给liObj添加属性,存储下标</span></span><br><span class="line">        liObj.setAttribute(<span class="string">"index"</span>, i);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"index==="</span> + liObj.getAttribute(<span class="string">"index"</span>));</span><br><span class="line">        <span class="comment">// 给小按钮添加鼠标经过事件</span></span><br><span class="line">        liObj.onmouseover = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; olObj.children.length; i++) &#123; <span class="comment">// 排他去除所有按钮的 点亮状态</span></span><br><span class="line">                olObj.children[i].className = <span class="string">""</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.className = <span class="string">"current"</span>; <span class="comment">// 设置当前的小按钮点亮</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 移动, 将图片移动到当前小按钮下标的位置</span></span><br><span class="line">            <span class="comment">// 设置 index 的值,为当前小按钮的下标值</span></span><br><span class="line">            <span class="comment">//  index= liObj.getAttribute("index");  不能这样写,因为一打开浏览器,js其实就执行完了, 这个属性,事件都已经存在下来了,</span></span><br><span class="line">            <span class="comment">//  于是我们在这里面只有 通过this,才能定位到当前的 小按钮</span></span><br><span class="line">            index = <span class="keyword">this</span>.getAttribute(<span class="string">"index"</span>);</span><br><span class="line">            <span class="built_in">console</span>.log(index);</span><br><span class="line">            animate(ulObj, -width * index);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        liObj.onmouseout = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.className = <span class="string">""</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 默认选中第一按钮</span></span><br><span class="line">    olObj.children[<span class="number">0</span>].className = <span class="string">"current"</span>;</span><br><span class="line">    <span class="comment">// 鼠标移动到 box上面 显示那两个按钮</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"box"</span>).onmouseover = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        clearInterval(timeId);</span><br><span class="line">        <span class="built_in">document</span>.getElementById(<span class="string">"arr"</span>).style.display = <span class="string">"block"</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 鼠标离开box,干掉 arr 的显示</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"box"</span>).onmouseout = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        timeId = setInterval(rightHandler, <span class="number">1000</span>);</span><br><span class="line">        <span class="built_in">document</span>.getElementById(<span class="string">"arr"</span>).style.display = <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 无缝连接需要我们第一个轮播图和最后一份完全相同,于是我们 克隆</span></span><br><span class="line">    <span class="comment">//  var liNode = liList.children[0].cloneNode(true);</span></span><br><span class="line">    <span class="keyword">var</span> liNode = ulObj.children[<span class="number">0</span>].cloneNode(<span class="literal">true</span>);</span><br><span class="line">    <span class="comment">// 添加到 ul 尾部</span></span><br><span class="line">    ulObj.appendChild(liNode);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 给做左边的小按钮绑定点击事件</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"right"</span>).onclick = rightHandler;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">rightHandler</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"index==="</span> + index);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"width==="</span> + width);</span><br><span class="line">        index++;  <span class="comment">// 因为第一个index==0 , 所以想移动就得 ++</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"olObj.children.length-1== "</span> + olObj.children.length);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (index === olObj.children.length) &#123;  <span class="comment">// 这是最后一个</span></span><br><span class="line">            <span class="comment">// index==5 我们要重置</span></span><br><span class="line">            index = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">// 到第六张图片的时候,我们应该把第五个小按钮的点亮状态给第一个小按钮</span></span><br><span class="line">            olObj.children[olObj.children.length - <span class="number">1</span>].className = <span class="string">""</span>;</span><br><span class="line">            olObj.children[<span class="number">0</span>].className = <span class="string">"current"</span>;</span><br><span class="line">            <span class="comment">// 整排图片一次性全部归位,准备重来</span></span><br><span class="line">            ulObj.style.left = <span class="number">0</span> + <span class="string">"px"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 1-4 正常移动图片</span></span><br><span class="line">            animate(ulObj, -width * index);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; olObj.children.length; i++) &#123;  <span class="comment">// 排他干掉所有的 点亮的小按钮</span></span><br><span class="line">                <span class="comment">// console.log("执行了!!!  i== "+i);</span></span><br><span class="line">                olObj.children[i].className = <span class="string">""</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 设置 当前图片对应的小按钮点亮</span></span><br><span class="line">            olObj.children[index].className = <span class="string">"current"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 点击右边的按钮</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"left"</span>).onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 点击右边的小按钮,整个图片往左动,</span></span><br><span class="line">        <span class="comment">// 点击左边的按钮,整个图片往右动--正数</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"left"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"index=="</span> + index);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果是第一个,那么一次性移动到第六张图片,在往右移动</span></span><br><span class="line">        <span class="keyword">if</span> (index === <span class="number">0</span>) &#123;</span><br><span class="line">            index = olObj.children.length;</span><br><span class="line">            ulObj.style.left = -width * index + <span class="string">"px"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        index--;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"index=="</span> + index);</span><br><span class="line">        animate(ulObj, -width * index);</span><br><span class="line">        <span class="comment">// 思考: 为什么我的图片无论往左还是往右移动在 nimate里面都是负数呢?  看上面的最近的if判断,当判断为0</span></span><br><span class="line">        <span class="comment">// 这时我们将图片一次性的移动到了第六张的位置,往右动,远离浏览器 -index*width</span></span><br><span class="line">        <span class="comment">// 我们再次点击 往右移动,就是希望,整个div 离浏览器的左边远一些,是往右动  就是让left  =  -index*width 大一点 ,正好index--了  那么他们的绝对值就会变大</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加自动播放的效果-- 就是隔一段时间调用一次向左移动的函数</span></span><br><span class="line">    timeId = setInterval(rightHandler, <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 鼠标进入暂停--- 给 box 添加鼠标进入事件, 清除定时器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 鼠标离开继续动,就是给box 添加鼠标离开事件</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">animate</span>(<span class="params">element, target</span>) </span>&#123;</span><br><span class="line">        clearInterval(element.timeId);</span><br><span class="line">        <span class="comment">// element 点 timeId  是给 element 添加了一个属性, 用来存 id , 以后触发定时器,得到的id复写上一个id, 这样 定时器的时间就不会被改变</span></span><br><span class="line">        element.timeId = <span class="built_in">window</span>.setInterval(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// 获取div的位置</span></span><br><span class="line">            <span class="keyword">var</span> current = element.offsetLeft;</span><br><span class="line">            <span class="comment">// div每次移动的 像素</span></span><br><span class="line">            <span class="keyword">var</span> step = <span class="number">10</span>;</span><br><span class="line">            step = current &lt; target ? step : -step;  <span class="comment">// 指明从左向右,还是反向</span></span><br><span class="line">            <span class="comment">// 每次移动后的距离</span></span><br><span class="line">            current += step;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="built_in">Math</span>.abs(target - current)) &gt; <span class="built_in">Math</span>.abs(step)) &#123;</span><br><span class="line">                <span class="comment">// 设置目标位置</span></span><br><span class="line">                element.style.left = current + <span class="string">"px"</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">window</span>.clearInterval(element.timeId);</span><br><span class="line">                <span class="comment">// if条件不成立.直接到达目标</span></span><br><span class="line">                element.style.left = target + <span class="string">"px"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="number">20</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/22/PLSQL/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">PLSQL</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<div class="social-share"></div>
+
+	<!--  css & js -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+</div>
+
+
+
+
+
+<div class="livere">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zODU3Mi8xNTEwMA==">
+        <script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+
+           if (typeof LivereTower === 'function') { return; }
+
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+        </script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2019 赐我白日梦
+    	</div>
+      	<div class="footer-right">
+      		<p>
+            <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten    
+            </p>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+<!--百度统计的代码-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b759ac2a7fa45129e3ef060bf68259f0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+  </div>
+</body>
+</html>

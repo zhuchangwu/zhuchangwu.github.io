@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>多线程九 原子类 | blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JDK5提供原子类,及其操作 AtomicXXX是通过CAS , Unsafe.compareAndSwapInt实现的   简单分析一下原子类是如果使用cas,无锁却保证线程安全的">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程九 原子类">
+<meta property="og:url" content="http://yoursite.com/2019/02/06/多线程九 原子类/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="JDK5提供原子类,及其操作 AtomicXXX是通过CAS , Unsafe.compareAndSwapInt实现的   简单分析一下原子类是如果使用cas,无锁却保证线程安全的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-16T05:27:36.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程九 原子类">
+<meta name="twitter:description" content="JDK5提供原子类,及其操作 AtomicXXX是通过CAS , Unsafe.compareAndSwapInt实现的   简单分析一下原子类是如果使用cas,无锁却保证线程安全的">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">赐我白日梦</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/archives">归档</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.voidking.com">VoidKing</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/u/9f179465dd2b">简书</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://segmentfault.com/blog/voidking">SegmentFault</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/voidking">博客园</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/c0416">CSDN</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.iots.vip">Alliot&#39;s Blog</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">虽然还没想好怎么夸自己，但总觉得这里放点东西比较和谐。。。</div>
+				</section>
+				
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">赐我白日梦</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">赐我白日梦</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-多线程九 原子类" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/02/06/多线程九 原子类/" class="article-date">
+  	<time datetime="2019-02-06T13:52:06.000Z" itemprop="datePublished">2019-02-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多线程九 原子类
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/多线程/">多线程</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">	
+      
+	  
+		
+		
+        <h3 id="JDK5提供原子类-及其操作"><a href="#JDK5提供原子类-及其操作" class="headerlink" title="JDK5提供原子类,及其操作"></a>JDK5提供原子类,及其操作</h3><blockquote>
+<p>AtomicXXX是通过CAS , Unsafe.compareAndSwapInt实现的</p>
+</blockquote>
+<blockquote>
+<p>简单分析一下原子类是如果使用cas,无锁却保证线程安全的</p>
+</blockquote>
+<a id="more"></a>
+<p>每条线程都有自己的本地缓存,他们要想操作变量,首先是把变量复制到自己的缓存中,然后处理数据,数据处理结束后,将自己缓存的数据刷新会主存,<strong>而CAS则就是利用这一点实现的</strong><br>下面是看Unsafe.class源码,可以看到,<strong>下面几个cas方法,全部是native,也就是本地方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapObject</span><span class="params">(Object var1, <span class="keyword">long</span> var2, Object var4, Object var5)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4, <span class="keyword">int</span> var5)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapLong</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">long</span> var4, <span class="keyword">long</span> var6)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>随便找一个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//var1 就是方法的调用者  var2:当前的值  var4需要加的值   </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var5; </span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">//此方法(同样也是本地方法),返回当前 内存中var1对象里面的 var2的值</span></span><br><span class="line">        var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">        <span class="comment">//判断var1里面的值var2是否就是var5,如果相等我们更新为 var5+var4 ,否则继续循环尝试修改</span></span><br><span class="line">    &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> var5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如何使用呢?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AtomicLong atomicLong = <span class="keyword">new</span> AtomicLong();</span><br><span class="line">atomicLong.getAndIncrement();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解释一下,为了保证数据的安全性,根据JMM内存模型设计出了cas算法,compareAndSwap先比较,再更换值,现在看我们上面随便找的方法, 里面有一个do-while循环,其实基本上所有设及cas算法的方法,都采用了这个循环,它保证我们可以做出足够多次数的判断</p>
+</blockquote>
+<hr>
+<ul>
+<li>原子更新boolean<blockquote>
+<p>下面使用它完成<strong>确保某段代码只执行一次</strong></p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原子更新boolean  初始化为false</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> AtomicBoolean atomicBoolean = <span class="keyword">new</span> AtomicBoolean(<span class="keyword">false</span>);</span><br><span class="line"><span class="comment">//请求总数</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> clientTotal = <span class="number">5000</span>;</span><br><span class="line"><span class="comment">//同时并发执行的线程数</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> threadPool = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    ExecutorService executor = Executors.newCachedThreadPool();</span><br><span class="line">    <span class="comment">//每次两百次并发</span></span><br><span class="line">    Semaphore semaphore = <span class="keyword">new</span> Semaphore(threadPool);</span><br><span class="line">    <span class="comment">//计数器 执行五千次</span></span><br><span class="line">    CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(clientTotal);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;clientTotal;i++)&#123;</span><br><span class="line">        executor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    semaphore.acquire();</span><br><span class="line">                    text();  <span class="comment">// 我们只想执行一次的方法</span></span><br><span class="line">                    semaphore.release();</span><br><span class="line">                    countDownLatch.countDown(); <span class="comment">//执行一次,计数减少一次</span></span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    countDownLatch.await(); <span class="comment">//只要计数不为零,就等待...</span></span><br><span class="line">    executor.shutdown(); <span class="comment">//关闭线程池</span></span><br><span class="line">    System.out.println(<span class="string">"atomicBoolean=="</span>+atomicBoolean.get());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">text</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (atomicBoolean.compareAndSet(<span class="keyword">false</span>,<span class="keyword">true</span>))&#123;</span><br><span class="line">        System.out.println(<span class="string">"值更新了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查看结果,哪怕执行5000次,每次200的并发,if()里面的代码还是只执行了一次<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">值更新了</span><br><span class="line">atomicBoolean==true</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AtomicInteger</td>
+<td>用原子方式更新的 int 值  </td>
+</tr>
+<tr>
+<td>AtomicLong</td>
+<td>用原子方式更新的 long 值</td>
+</tr>
+<tr>
+<td>AtomicBoolean</td>
+<td>原子方式更新的 boolean 值</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>原子更新基本类型  </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AtomicInteger</td>
+<td>用原子方式更新的 int 值  </td>
+</tr>
+<tr>
+<td>AtomicLong</td>
+<td>用原子方式更新的 long 值</td>
+</tr>
+<tr>
+<td>AtomicBoolean</td>
+<td>原子方式更新的 boolean 值</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>原子更新数组</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AtomicIntegerArray</td>
+<td>用原子方式更新其元素的 int 数组 </td>
+</tr>
+<tr>
+<td>AtomicLongArray</td>
+<td>用原子方式更新其元素的 long 数组</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>原子更新抽象类型</p>
+<p>类名 | 描述 |<br>—|—|—<br>AtomicReference<v> | 用原子方式更新的对象引用<br>AtomicStamptedReference | 增加了版本号机制,解决了CAS里面的ABA问题<br>…<br><strong>注意:</strong> 针对的是V型的对象,而不是对象里面的字段</v></p>
+</li>
+</ul>
+<ul>
+<li>原子更新字段<br>类名 | 描述 |<br>  —|—<br>AtomicIntegerFieldUpdater<t>   |<strong>基于反射</strong>的实用工具，可以<strong>对指定类</strong>的指定 <strong>volatile int 字段</strong>进行原子更新<br>|AtomicLongFieldUpdater<t>   |<strong>基于反射</strong>的实用工具，可以<strong>对指定类</strong>的指定 <strong>volatile long 字段</strong>进行原子更新</t></t></li>
+</ul>
+<p><strong>注意:</strong> 针对的是V型的对象,而不是对象里面的字段</p>
+<h3 id="JDK8-新增原子类"><a href="#JDK8-新增原子类" class="headerlink" title="JDK8 新增原子类:"></a>JDK8 新增原子类:</h3><ul>
+<li>DoubleAdder</li>
+<li>LongAdder  弥补AtomicLong在高并发情况下的性能低问题<blockquote>
+<p><strong>AtomicLong</strong>里面仅仅有一个Long类型的值,多个线程并发访问,当一个线程获取到锁修改Long值时,很容易成功,但是当很多个线程并发修改它的值,很可能陷入do-while死循环,消耗性能</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p><strong>LongAdder</strong>里面有一组值,每个值都是一个<strong>cell</strong>,所有的cell加起来是一个<strong>base</strong>,例如Base如果是5,那么cell可能被分解成2 3,将原来修改一点的高压力分散在不同点上,多线程并发访问去抢占修改cell.在sum()方法中汇总,但线程的话,直接得出结果,从而提高性能</p>
+</blockquote>
+<p>…</p>
+<h3 id="原子类并不完全安全"><a href="#原子类并不完全安全" class="headerlink" title="原子类并不完全安全!"></a>原子类并不完全安全!</h3><blockquote>
+<p>**虽然addAndGet()方法是原子的,多线程中,方法的调用是无序的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TextAtomicService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AtomicLong atomicLong = <span class="keyword">new</span> AtomicLong();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">"加了100之后的值为:"</span>+atomicLong.addAndGet(<span class="number">100</span>));</span><br><span class="line">        atomicLong.addAndGet(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicText</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line"><span class="keyword">private</span>  TextAtomicService textAtomicService;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AtomicText</span><span class="params">(TextAtomicService t1)</span></span>&#123;</span><br><span class="line">    textAtomicService=t1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    textAtomicService.add();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    TextAtomicService textAtomicService = <span class="keyword">new</span> TextAtomicService();</span><br><span class="line">    AtomicText[] atomicTexts = <span class="keyword">new</span> AtomicText[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">        atomicTexts[i]=<span class="keyword">new</span> AtomicText(textAtomicService);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">        atomicTexts[i].start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>可能出现这种情况,就是当前线程执行完addAndGet(100)之后,cpu的执行权被另一条线程抢走,又执行addAndGet(100),这样的结果就是200,而不是我们预想的202</p>
+<p>解决方法就是添加Synchronized关键字,同步化!</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/15/多线程十 Timer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          多线程十 Timer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/02/01/多线程八 Lock/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">多线程八 Lock</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<div class="social-share"></div>
+
+	<!--  css & js -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+</div>
+
+
+
+
+
+<div class="livere">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zODU3Mi8xNTEwMA==">
+        <script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+
+           if (typeof LivereTower === 'function') { return; }
+
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+        </script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2019 赐我白日梦
+    	</div>
+      	<div class="footer-right">
+      		<p>
+            <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten    
+            </p>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+<!--百度统计的代码-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b759ac2a7fa45129e3ef060bf68259f0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+  </div>
+</body>
+</html>

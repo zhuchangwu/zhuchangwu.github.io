@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>SpringMvc -- 开发手册 | blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本片博客记录SpringMvc带给了我们什么?,图解运行流程,以及开发中,常用的注解 SpringMvc基于servlet设计,用于处理用户的请求,基于方法级别拦截,参数通过入参传递,处理器设计为单例模式,和Spring无缝整合, 分离了 控制器,模型对象,让它们更容易被定制">
+<meta name="keywords" content="SpringMvc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMvc -- 开发手册">
+<meta property="og:url" content="http://yoursite.com/2019/04/15/SpringMvc-开发手册/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="本片博客记录SpringMvc带给了我们什么?,图解运行流程,以及开发中,常用的注解 SpringMvc基于servlet设计,用于处理用户的请求,基于方法级别拦截,参数通过入参传递,处理器设计为单例模式,和Spring无缝整合, 分离了 控制器,模型对象,让它们更容易被定制">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/SpringMvc-开发手册/999.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/SpringMvc-开发手册/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/SpringMvc-开发手册/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/SpringMvc-开发手册/5.png">
+<meta property="og:updated_time" content="2019-04-15T10:37:30.572Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringMvc -- 开发手册">
+<meta name="twitter:description" content="本片博客记录SpringMvc带给了我们什么?,图解运行流程,以及开发中,常用的注解 SpringMvc基于servlet设计,用于处理用户的请求,基于方法级别拦截,参数通过入参传递,处理器设计为单例模式,和Spring无缝整合, 分离了 控制器,模型对象,让它们更容易被定制">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/15/SpringMvc-开发手册/999.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">赐我白日梦</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/archives">归档</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.voidking.com">VoidKing</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/u/9f179465dd2b">简书</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://segmentfault.com/blog/voidking">SegmentFault</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/voidking">博客园</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/c0416">CSDN</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.iots.vip">Alliot&#39;s Blog</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">虽然还没想好怎么夸自己，但总觉得这里放点东西比较和谐。。。</div>
+				</section>
+				
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">赐我白日梦</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">赐我白日梦</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/voidking" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/378920304" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-SpringMvc-开发手册" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/15/SpringMvc-开发手册/" class="article-date">
+  	<time datetime="2019-04-15T14:14:22.000Z" itemprop="datePublished">2019-04-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SpringMvc -- 开发手册
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringMvc/">SpringMvc</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/SpringMvc/">SpringMvc</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">	
+      
+	  
+		
+		
+        <p>本片博客记录SpringMvc带给了我们什么?,图解运行流程,以及开发中,常用的注解</p>
+<p>SpringMvc基于servlet设计,用于处理用户的请求,基于方法级别拦截,参数通过入参传递,处理器设计为单例模式,和Spring无缝整合, 分离了 控制器,模型对象,让它们更容易被定制</p>
+<img src="/2019/04/15/SpringMvc-开发手册/999.jpg" title="流程图">
+<a id="more"></a>
+<p>主要组成部分:</p>
+<ul>
+<li><strong>DispatcherServlet</strong>:</li>
+</ul>
+<p>前端控制器:所有的请求,都会首先被他拦截到,统一给请求分发处理的Handler</p>
+<ul>
+<li><strong>HandlerMapping</strong></li>
+</ul>
+<p>处理器映射器: <strong>识别</strong>控制器中的注解,目的是找到具体的和Url对应的处理方法</p>
+<ul>
+<li><strong>HanderAdapter</strong></li>
+</ul>
+<p>处理器适配器,实例化控制器Controller,调用具体的方法,处理用户发来的请求</p>
+<ul>
+<li><strong>Controller</strong></li>
+</ul>
+<p>控制器, 用来处理用户的请求,返回ModelAndView给前端控制器</p>
+<ul>
+<li><strong>ViewResolver</strong></li>
+</ul>
+<p>视图解析器: 解析视图(ModeAndView), 把ModelAndView里面的逻辑视图编程一个正真的View对象,并把Model从ModelAndView中取出来</p>
+<blockquote>
+<p>宏观上看,DispatcherServilet是整个web应用的控制器, 微观上,controller是单个http请求处理的控制器</p>
+</blockquote>
+<h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping()"></a>@RequestMapping()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(&#123;ElementType.METHOD, ElementType.TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Mapping</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> RequestMapping &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@AliasFor</span>(<span class="string">"path"</span>)</span><br><span class="line">	String[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@AliasFor</span>(<span class="string">"value"</span>)</span><br><span class="line">	String[] path() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">	</span><br><span class="line">   <span class="comment">// 映射请求方式(get post put delete)</span></span><br><span class="line">	RequestMethod[] method() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">   <span class="comment">// </span></span><br><span class="line">	String[] params() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">   <span class="comment">// 映射请求参数</span></span><br><span class="line">	String[] headers() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	String[] consumes() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">	</span><br><span class="line">	String[] produces() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>支持标注在类上和方法上<ul>
+<li>最常用标注在方法上,用于映射处理前端发送过来的URL </li>
+<li>如果我们同时把它俩加载类和方法上, 那么请求路径就是两者的路径使用  /   分隔开</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//         映射url                   映射方法为POST                     指定必须包含username  并且age!=10</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"sayHello"</span>, method = RequestMethod.POST, params = &#123;<span class="string">"username"</span>, <span class="string">"age!=10"</span>&#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"来到了sayHello"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>@RequestMapping 路径支持通配符</p>
+<ul>
+<li>?  一个字符</li>
+<li>*任意字符</li>
+<li>**  多层路径</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试 ant风格的占位符</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/textAntPath/*/text"</span>) </span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textAntPath</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"v"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="PathVariable-与-RequestParam"><a href="#PathVariable-与-RequestParam" class="headerlink" title="@PathVariable 与 @RequestParam()"></a>@PathVariable 与 @RequestParam()</h3><ul>
+<li>@PathVariable 映射URL绑定的占位符(一般在我们添加在方法上的注解上通过{XXX} 占位 )</li>
+</ul>
+<img src="/2019/04/15/SpringMvc-开发手册/1.png">
+<ul>
+<li>@RequestParam取出来的是请求参数,发出的url格式如下:</li>
+</ul>
+<img src="/2019/04/15/SpringMvc-开发手册/2.png">
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  1. 假如:<span class="doctag">@RequestParam</span>("password") url中并不存在的话,  报错400</span></span><br><span class="line"><span class="comment"> *      1.1, 设置<span class="doctag">@RequestParam</span>的required=false</span></span><br><span class="line"><span class="comment"> *  2. 假如只有第一个:<span class="doctag">@RequestParam</span>("username")String username,String password ( password同样会被装配进去值)</span></span><br><span class="line"><span class="comment"> *</span></span><br></pre></td></tr></table></figure>
+<h3 id="SpringMvc的REST风格"><a href="#SpringMvc的REST风格" class="headerlink" title="SpringMvc的REST风格"></a>SpringMvc的REST风格</h3><p>浏览器的form表单,只是支持GET POST请求,而Delete put的方法,是不支持的,  我们使用rest风格的提交表单时, 会被SpringMvc的 HiddenHttpMethodFilter拦截下来,过滤处理成标准的http方法,从而支持了 delete put</p>
+<p>修改配置文件 web.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置  HiddenHttpMethodFilter   开启RestFul风格  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>jsp</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;</span><br><span class="line">&lt;a href="text01/1"&gt;测试get请求&lt;/a&gt;</span><br><span class="line">&lt;br&gt;</span><br><span class="line">&lt;form action=<span class="string">"text02"</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">"text"</span> name=<span class="string">"id"</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">"submit"</span> value=<span class="string">"点击发送post请求"</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;br&gt;</span><br><span class="line">&lt;form action=<span class="string">"text03/8"</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">"hidden"</span> name=<span class="string">"_method"</span> value=<span class="string">"PUT"</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">"submit"</span> value=<span class="string">"点击发送put请求"</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;br&gt;</span><br><span class="line">&lt;form action=<span class="string">"text04/7"</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;%-- 我们需要添加隐藏域, name=<span class="string">"_method"</span>  不能不写,Spring会拿到它的信息,从而将post转换成 delete --%&gt;</span><br><span class="line">    &lt;input type=<span class="string">"hidden"</span> name=<span class="string">"_method"</span> value=<span class="string">"delete"</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">"submit"</span> value=<span class="string">"点击发送delete请求"</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>控制器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"text01/&#123;id&#125;"</span>,method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String  <span class="title">text01</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span>Integer id)</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"获取id=="</span>+id+<span class="string">"的信息"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"text02"</span>,method = RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String  <span class="title">text02</span><span class="params">(@RequestParam Integer id)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"新增id=="</span>+id+<span class="string">"的信息"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"text03/&#123;id&#125;"</span>,method = RequestMethod.PUT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String  <span class="title">text03</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Integer id)</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"修改id=="</span>+id+<span class="string">"的信息"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"text04/&#123;id&#125;"</span>,method = RequestMethod.DELETE)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String  <span class="title">text04</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Integer id)</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"删除id=="</span>+id+<span class="string">"的信息"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="@RequestHeader()"></a>@RequestHeader()</h3><p>映射请求头的信息到入参位置,不同浏览器的请求头的细节可能是不同的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/text"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">text</span><span class="params">(@RequestHeader(value=<span class="string">"Accept-Langnage"</span>)</span> String s1)</span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CookieValue"><a href="#CookieValue" class="headerlink" title="@CookieValue()"></a>@CookieValue()</h3><blockquote>
+<p>很常用,在微服务的安全验证模块,安全中心会给满足条件的用户办法token, 存放到浏览器的cookie里面, 用户再次访问就会携带cookie,我们通过这个注解取出cookie的值,进行安全验证</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textCookieValue"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textCookieValue</span><span class="params">(@CookieValue(<span class="string">"JSESSIONID"</span>)</span>String jessionId)</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"cookieValue=="</span>+jessionId);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="POJO绑定请求参数"><a href="#POJO绑定请求参数" class="headerlink" title="POJO绑定请求参数"></a>POJO绑定请求参数</h3><p>很多时候前端提交的表单对应着我们将要持久化对象,那么使用pojo绑定参数无疑是一件超赞的事</p>
+<p>springMvc支持 按照请求参数名和pojo属性进行自定匹配,自动为该对象填充属性,支持级联属性</p>
+<p>JSP</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;form action=<span class="string">"textPojo"</span>&gt;</span><br><span class="line">    用户名: &lt;input type=<span class="string">"text"</span> name=<span class="string">"username"</span>&gt;</span><br><span class="line">    密码: &lt;input type=<span class="string">"text"</span> name=<span class="string">"password"</span>&gt;</span><br><span class="line">    邮箱: &lt;input type=<span class="string">"text"</span> name=<span class="string">"email"</span>&gt;</span><br><span class="line">    &lt;%-- 级联属性 --%&gt;</span><br><span class="line">    省: &lt;input type=<span class="string">"text"</span> name=<span class="string">"adress.province"</span>&gt;</span><br><span class="line">    市: &lt;input type=<span class="string">"text"</span> name=<span class="string">"adress.city"</span>&gt;</span><br><span class="line">     &lt;input type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>pojo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    String username;</span><br><span class="line">    String password;</span><br><span class="line">    String email;</span><br><span class="line">    Adress adress;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adress</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    String province;</span><br><span class="line">    String city;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制器</p>
+<blockquote>
+<p>springmvc 会自定为我们的入参绑定上前端表单上的数据</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textPojo"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textPojo</span><span class="params">(Person person)</span></span>&#123;</span><br><span class="line">  System.out.println(person);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="支持Servlet原生API"><a href="#支持Servlet原生API" class="headerlink" title="支持Servlet原生API"></a>支持Servlet原生API</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textServletAPi"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textServletApi</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="处理模型数据"><a href="#处理模型数据" class="headerlink" title="处理模型数据"></a>处理模型数据</h3><p>ModelAndView</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * springMvc会把ModelAndView的Model放入request域对象中</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textModelAndView"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">textModelAndView</span><span class="params">()</span></span>&#123;</span><br><span class="line">    String viewName=<span class="string">"success"</span>;</span><br><span class="line">    ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView();</span><br><span class="line">    <span class="comment">// 设置视图名</span></span><br><span class="line">    modelAndView.setViewName(viewName);</span><br><span class="line">    <span class="comment">// 添加模型数据</span></span><br><span class="line">    modelAndView.addObject(<span class="string">"日期"</span>,<span class="keyword">new</span> Date());</span><br><span class="line">    <span class="keyword">return</span> modelAndView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Map</p>
+<blockquote>
+<p>说白了，就是方法的入参位置可以添加一个　Ｍａｐ或者Ｍｏｄｅｌ类型的参数，ｍｖｃ会把隐藏的模型引用传递给这个入参，　从而是开发者可以通过这个入参访问模型中的所有数据，同是可以添加新数据</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textMap"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textMap</span><span class="params">(Map&lt;String, Object&gt; map)</span> </span>&#123;</span><br><span class="line">    map.put(<span class="string">"names"</span>, Arrays.asList(<span class="string">"zhangsan"</span>, <span class="string">"lisi"</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="@SessionAttributes"></a>@SessionAttributes</h3><blockquote>
+<p>如果我们希望多个请求之间共享某个模型属性数据,那么我们使用<code>@SeesionAttribute</code>,她会把我们存放到作用域中的信息备份到Session中</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 她会把我们存放到 作用域中的数据,备份到Session</span></span><br><span class="line"><span class="meta">@SessionAttributes</span>(<span class="string">"user"</span>,types = String.class)  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textSessionAttribute"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textSeesionAttribute</span><span class="params">(Map&lt;String,Object&gt; map)</span></span>&#123;</span><br><span class="line">    Adress adress = <span class="keyword">new</span> Adress(<span class="string">"山东"</span>,<span class="string">"XXX"</span>);</span><br><span class="line">    Person zhangsan = <span class="keyword">new</span> Person(<span class="string">"zhangsan"</span>, <span class="string">"234234"</span>, <span class="string">"4646@qq.com"</span>, adress);</span><br><span class="line">    map.put(<span class="string">"user"</span>,zhangsan);  <span class="comment">// 放入请求域</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在前几个低版本的SpringMvc中版本中,如果本类标记上了<code>@SessionAttribute</code>但是却没有标记<code>@ModelAttribute</code>的方法,服务器报错500;</p>
+</blockquote>
+<h3 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="@ModelAttribute"></a>@ModelAttribute</h3><blockquote>
+<p>这个注解可以帮我解决这样一种情况, 更新操作,很多时候,我们只是针对表中的其中几个字段进行更新, 另外一些字段不需要更新(比如插入时间),那怎么做? 如果自己new对象的话,前端的数据绑定到我们new的对象上,插入时间就会空着,这时已更新,原来的插入时间就会被覆盖,于是我们不new ,通常使用<code>@ModelAttribute</code>注解标注方法上,先查询数据库,得到有插入时间字段的对象</p>
+</blockquote>
+<p>控制器(标注在方法上):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加上这个注解的方法,会被SpringMvc拦截, 所有的方法在调用前都会先执行这个方法,把查询出来的信息放到作用域</span></span><br><span class="line">  <span class="comment">//  这样SpringMvc把前端传递过来的信息,赋值给 作用域里面user   --  狸猫换太子,</span></span><br><span class="line">  <span class="comment">//  用户得到的就是被 狸猫</span></span><br><span class="line"><span class="meta">@ModelAttribute</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">textModelAttribute</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        @RequestParam(value = <span class="string">"id"</span>,required = <span class="keyword">false</span>)</span> Integer id,</span></span><br><span class="line"><span class="function">        Map&lt;String,Object&gt; map)</span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 判断,如果id不为空, 就表示用户想修改信息</span></span><br><span class="line">      <span class="comment">// 于是,我们的任务就是 把查数据库,把用户的信息查出来,通过Map放到作用域里面, 谁用,谁取</span></span><br><span class="line">     <span class="keyword">if</span>(<span class="keyword">null</span>!=id)&#123;</span><br><span class="line">         <span class="comment">//模拟查库</span></span><br><span class="line">         System.out.println(<span class="string">"查询数据库,获取user信息"</span>);</span><br><span class="line">         Person person = <span class="keyword">new</span> Person(<span class="string">"1"</span>, <span class="string">"lisi"</span>, <span class="string">"999"</span>, <span class="string">"8989@qq.com"</span>, <span class="keyword">new</span> Adress(<span class="string">"山西"</span>, <span class="string">"北京"</span>));</span><br><span class="line"></span><br><span class="line">         <span class="comment">// 注意点: 在ModelAttribute修饰的方法中,放入作用域的 key  为  类名首字母小写</span></span><br><span class="line">         map.put(<span class="string">"person"</span>,person);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@RequestMapping</span>(<span class="string">"textModelAttribute2"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">textModelAttribute2</span><span class="params">(Person  person)</span>  <span class="comment">// 这里的名字也要和作用域里面的名字相同</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">"修改=="</span>+person);</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>控制器: (标注在参数上)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">**</span><br><span class="line"> *  <span class="number">1</span>. 这里的名字随便, 但是上面那个方法的的key 尽量就是类名首字母小写</span><br><span class="line"> *</span><br><span class="line"> *  <span class="number">2</span>. 使用 添加在入参上 <span class="meta">@ModelAttribute</span>(value=<span class="string">"XXX"</span>) , 则名字随便</span><br><span class="line"> *</span><br><span class="line"> *<span class="meta">@ModelAttribute</span></span><br><span class="line"> * <span class="meta">@param</span> user</span><br><span class="line"> * <span class="meta">@return</span></span><br><span class="line"> */</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textModelAttribute2"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textModelAttribute2</span><span class="params">(@ModelAttribute(value = <span class="string">"abc"</span>)</span>Person  user)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br></pre></td></tr></table></figure>
+<h3 id="自定义视图"><a href="#自定义视图" class="headerlink" title="自定义视图:"></a>自定义视图:</h3><p>第一步: 实现<code>View</code>接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloView</span> <span class="keyword">implements</span> <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回内容类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContentType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"text/html"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 渲染视图</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> map</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> httpServletRequest</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> httpServletResponse</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">render</span><span class="params">(Map&lt;String, ?&gt; map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        httpServletResponse.getWriter().print(<span class="string">"helloViewTime"</span>+<span class="keyword">new</span> Date());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二步: 配置视图解析器</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置视图解析器 BeanNameViewResolver 解析器: 使用视图的名字解析视图 (所以我们需要把我们的视图添加进IOC)--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.view.BeanNameViewResolver"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 到现在为止,我们就有了两个视图解析器,需要指定优先顺序--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--  常用的放在后边,我们的放前边  order越小,优先级越高--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"order"</span> <span class="attr">value</span>=<span class="string">"200"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">@RequestMapping</span>(<span class="string">"textView"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textView</span><span class="params">()</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"textView"</span>);</span><br><span class="line">    <span class="comment">// 自定义的视图类名小写</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"helloView"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><blockquote>
+<p>控制器返回的字符串被当作逻辑视图名称处理</p>
+</blockquote>
+<p>如果返回的字符串中带有<code>forward:</code>或者<code>redirect:</code> 会被SpringMvc当作指示符特殊处理,后面的字符串当作url路径</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textRedirect"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textRedirect</span><span class="params">()</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"测试重定向!!!"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/index.jsp"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数据校验"><a href="#数据校验" class="headerlink" title="数据校验:"></a>数据校验:</h3><p>当我们添加<code>&lt;mvc:annotation-driven/&gt;</code>配置,SpringMvc会自动为我们做如下处理</p>
+<ul>
+<li>RequestMappingHandlerMapping</li>
+<li>RequestMappingHanderAdapter</li>
+<li>ExceptionHandlerExceptionResolver 这三个bean</li>
+<li>支持使用ConversionService对表单参数进行类型转换</li>
+<li>支持使用@NumberFormatannptation @DateTimeFormat 注解完成数据类型格式化</li>
+<li>支持使用@Valid 注解对JavaBean 实例惊醒jsr303 验证</li>
+<li>支持使用@RequestBody和@ResponseBady  // 处理ajax</li>
+</ul>
+<p>常使用如下连个注解对bean进行校验</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@DateTimeFormat</span>(pattern=<span class="string">"yyyy-MM-dd"</span>)</span><br><span class="line">Date birth;</span><br><span class="line"><span class="meta">@NumberFormat</span>(pattern = <span class="string">"#,###,###.#"</span>)  <span class="comment">// #表示数数字</span></span><br><span class="line">Float salary;</span><br></pre></td></tr></table></figure>
+<h3 id="返回Json"><a href="#返回Json" class="headerlink" title="返回Json"></a>返回Json</h3><p>@ResponseBody</p>
+<h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><ul>
+<li>实现自己的拦截器实现<code>HandlerInterceptor接口</code></li>
+</ul>
+<p>重写他的三个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">preHandle()</span><br><span class="line">作用: 对用户请求request进行处理</span><br><span class="line">调用时机:  在处理器处理请求之前被调用</span><br><span class="line">返回: </span><br><span class="line">    <span class="keyword">true</span>: 如果还需要调用其他拦截器或者是业务处理器</span><br><span class="line">    f 何组件处理请求</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">postHandle()</span><br><span class="line">作用: 对用户请求request进行处理</span><br><span class="line">调用时机: 业务处理器处理完请求之后,DispatcherServlet向客户端相应之前</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aferCompletion()</span><br><span class="line"></span><br><span class="line">作用: 进行资源清理工作</span><br><span class="line">调用时机: 在DispatcherServlet向客户端响应数据之后调用</span><br></pre></td></tr></table></figure>
+<p>配置文件:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置拦截器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.changwu.interceptor.FirstInterceptor"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置拦截指定请求路径的拦截器</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置拦截器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.changwu.interceptor.FirstInterceptor"</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line">    // 配置 专门针对某个求情的拦截器</span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">"/textView"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.changwu.interceptor.SecondInterceptor"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>多个拦截器的执行顺序</li>
+</ul>
+<ol>
+<li>第一个拦截器的<code>firstInterceptor</code>返回flase,其他拦截器不执行,目标方法不执行</li>
+<li>第一个拦截器的<code>firstInterceptor</code>返回true,第二个拦截器的<code>firstInterceptor</code>返回false,目标方法不执行,但是第一个拦截器的<code>afterCompletion</code>方法会执行,回收资源</li>
+</ol>
+<h3 id="异常处理–ExceptionHandlerExceptionResolver"><a href="#异常处理–ExceptionHandlerExceptionResolver" class="headerlink" title="异常处理–ExceptionHandlerExceptionResolver"></a>异常处理–ExceptionHandlerExceptionResolver</h3><p>SpringMvc 使用HandlerExceptionResolver处理异常</p>
+<img src="/2019/04/15/SpringMvc-开发手册/5.png">
+<p>ExceptionHandlerExceptionResolver<br>主要处理Handler中使用 @ExceptionHandler注解定义的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 控制器: 出现异常</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textExceptionHandlerExceptionResolver"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textExceptionHandlerExceptionResolver</span><span class="params">(@RequestParam(<span class="string">"i"</span>)</span><span class="keyword">int</span> i)</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"result=="</span>+<span class="number">10</span>/i);</span><br><span class="line">    <span class="keyword">return</span>   <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>. 标注有<span class="meta">@ExceptionHandler</span>注解的方法 会处理异常</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *   捕获数学异常</span></span><br><span class="line"><span class="comment"> *   把异常带到页面"ModelAndView</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="meta">@ExceptionHandler</span>(value=ArithmeticException.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">handleArithmeticException</span><span class="params">(Exception e)</span></span>&#123;</span><br><span class="line">     <span class="comment">// 通过ModelAndView 把错误信息带到页面</span></span><br><span class="line">     ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView();</span><br><span class="line">     modelAndView.setViewName(<span class="string">"error"</span>);</span><br><span class="line">     modelAndView.addObject(<span class="string">"errorMsg"</span>,e);</span><br><span class="line">     System.out.println(<span class="string">"异常信息:"</span>+e);</span><br><span class="line">     <span class="keyword">return</span> modelAndView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@ExceptionHandler定义的方法优先级问题,例如发生的是 空指针异常,但是声明异常是 运行时异常和异常, 这时就会报 离空指针异常比较近的 运行时异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 假如出现了数学异常, 它会优先使用下面的第一个异常</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"textExceptionHandlerExceptionResolver"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">textExceptionHandlerExceptionResolver</span><span class="params">(@RequestParam(<span class="string">"i"</span>)</span><span class="keyword">int</span> i)</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"result=="</span>+<span class="number">10</span>/i);</span><br><span class="line">    <span class="keyword">return</span>   <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">    *   捕获数学异常</span></span><br><span class="line"><span class="comment">    *   把异常带到页面"ModelAndView</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"></span><br><span class="line">   <span class="meta">@ExceptionHandler</span>(value=ArithmeticException.class)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">handleArithmeticException</span><span class="params">(Exception e)</span></span>&#123;</span><br><span class="line">       <span class="comment">// 通过ModelAndView 把错误信息带到页面</span></span><br><span class="line">       ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView();</span><br><span class="line">       modelAndView.setViewName(<span class="string">"error"</span>);</span><br><span class="line">       modelAndView.addObject(<span class="string">"errorMsg"</span>,e);</span><br><span class="line">       System.out.println(<span class="string">"异常信息:"</span>+e);</span><br><span class="line">       <span class="keyword">return</span> modelAndView;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ExceptionHandler</span>(value=RuntimeException.class)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">handleRuntimeException</span><span class="params">(Exception e)</span></span>&#123;</span><br><span class="line">       <span class="comment">// 通过ModelAndView 把错误信息带到页面</span></span><br><span class="line">       ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView(<span class="string">"error"</span>);</span><br><span class="line">       modelAndView.addObject(<span class="string">"errorMsg"</span>,e);</span><br><span class="line">       System.out.println(<span class="string">"&#123;异常信息&#125;:"</span>+e);</span><br><span class="line">       <span class="keyword">return</span> modelAndView;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>ExceptionHandlerExceptionResolver 内部找不到@ExceptionHandler 注解的话,就会找  @ControllerAdvice 中的 @ExceptionHandler注解方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Changwu</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/4/14 19:04</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandException</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(value=ArithmeticException.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">handleArithmeticException</span><span class="params">(Exception e)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 通过ModelAndView 把错误信息带到页面</span></span><br><span class="line">        ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView();</span><br><span class="line">        modelAndView.setViewName(<span class="string">"error"</span>);</span><br><span class="line">        modelAndView.addObject(<span class="string">"errorMsg"</span>,e);</span><br><span class="line">        System.out.println(<span class="string">"异常信息:"</span>+e);</span><br><span class="line">        <span class="keyword">return</span> modelAndView;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="异常处理–-ResponseStatusExceptionResolver"><a href="#异常处理–-ResponseStatusExceptionResolver" class="headerlink" title="异常处理– ResponseStatusExceptionResolver"></a>异常处理– ResponseStatusExceptionResolver</h3><blockquote>
+<p>通过<code>@ResponseStatus(value=&quot;异常信息&quot;,code=&quot;错误状态码&quot;)</code>注解,定制返回给前端的异常信息以及状态码</p>
+</blockquote>
+<h3 id="异常处理-–-SimpleMappingExceptionResolver"><a href="#异常处理-–-SimpleMappingExceptionResolver" class="headerlink" title="异常处理 – SimpleMappingExceptionResolver"></a>异常处理 – SimpleMappingExceptionResolver</h3><blockquote>
+<p>xml文件中进行配置, 指定出现什么异常,跳往哪个页面</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置SimpleMappingExceptionResolver 来映射异常 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"exceptionMappings"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">props</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 统一匹配的异常的全类名                             跳往的异常页面   --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">"java.lang.ArrayIndexOutOfBoundsException"</span>&gt;</span>error<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">props</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>异常信息会自动存储在 作用域 通过<code>${requestScope.exception}</code> 可以取出来</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/20/Oracle-干货/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Oracle--干货
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/14/SpringMvc-环境搭建/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringMvc -- 环境搭建</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<div class="social-share"></div>
+
+	<!--  css & js -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+</div>
+
+
+
+
+
+<div class="livere">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zODU3Mi8xNTEwMA==">
+        <script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+
+           if (typeof LivereTower === 'function') { return; }
+
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+        </script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2019 赐我白日梦
+    	</div>
+      	<div class="footer-right">
+      		<p>
+            <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten    
+            </p>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+<!--百度统计的代码-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b759ac2a7fa45129e3ef060bf68259f0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+  </div>
+</body>
+</html>
