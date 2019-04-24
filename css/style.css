@@ -1485,6 +1485,7 @@ a {
   padding: 10px 10px;
   overflow: auto;
   color: #4c4c4c;
+  border-radius: 5px;
   line-height: 22.400000000000002px;
 }
 .article-entry .highlight .gutter pre,
