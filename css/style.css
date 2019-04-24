@@ -1498,7 +1498,7 @@ a {
 }
 .article-entry code {
   background: #eee;
-  text-shadow: 0 1px #fff;
+  text-shadow: 0 0 #fff;
   padding: 0 0;
   border: none;
 }
