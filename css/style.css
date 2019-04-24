@@ -1478,6 +1478,19 @@ a {
   padding-left: 8px;
   font-size: 12px;
 }
+https:,
+highlight-background = #1d1f21,
+highlight-current-line = #282a2e,
+highlight-selection = #373b41,
+highlight-foreground = #c5c8c6,
+highlight-comment = #969896,
+highlight-red = #cc6666,
+highlight-orange = #de935f,
+highlight-yellow = #f0c674,
+highlight-green = #b5bd68,
+highlight-aqua = #8abeb7,
+highlight-blue = #81a2be,
+highlight-purple = #b294bb,
 .article-entry pre,
 .article-entry .highlight {
   background: #4d4d4d;
@@ -1526,7 +1539,7 @@ a {
 }
 .article-entry .highlight figcaption {
   font-size: 0.85em;
-  color: #969896;
+  color: highlight-comment;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -1557,7 +1570,7 @@ a {
   border-style: solid;
   border-color: #ddd;
   border-width: 1px 0;
-  background: #1d1f21;
+  background: highlight-background;
   padding: 15px 20px 15px 0;
 }
 .article-entry .gist .gist-file {
@@ -1583,8 +1596,8 @@ a {
   border: none;
 }
 .article-entry .gist .gist-file .gist-meta {
-  background: #1d1f21;
-  color: #969896;
+  background: highlight-background;
+  color: highlight-comment;
   font: 0.85em "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-shadow: 0 0;
   padding: 0;
@@ -1602,7 +1615,7 @@ pre .comment {
   color: #666;
 }
 pre .title {
-  color: #969896;
+  color: highlight-comment;
 }
 pre .variable,
 pre .attribute,
@@ -1616,7 +1629,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #c66;
+  color: highlight-red;
 }
 pre .number,
 pre .preprocessor,
@@ -1624,12 +1637,12 @@ pre .built_in,
 pre .literal,
 pre .params,
 pre .constant {
-  color: #de935f;
+  color: highlight-orange;
 }
 pre .class,
 pre .ruby .class .title,
 pre .css .rules .attribute {
-  color: #b5bd68;
+  color: highlight-green;
 }
 pre .string,
 pre .value,
@@ -1637,10 +1650,10 @@ pre .inheritance,
 pre .header,
 pre .ruby .symbol,
 pre .xml .cdata {
-  color: #b5bd68;
+  color: highlight-green;
 }
 pre .css .hexcolor {
-  color: #8abeb7;
+  color: highlight-aqua;
 }
 pre .function,
 pre .python .decorator,
@@ -1650,11 +1663,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #81a2be;
+  color: highlight-blue;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #b294bb;
+  color: highlight-purple;
 }
 #footer {
   font-size: 12px;
