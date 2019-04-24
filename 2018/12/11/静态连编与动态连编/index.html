@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C++,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C++中的动态连编和静态连编1. 什么是连编? 将一个调用函数连接上正确的被调用函数，这个过程就叫做函数的联编，简称联编。">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="静态连编与动态连编">
+<meta property="og:url" content="http://yoursite.com/2018/12/11/静态连编与动态连编/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="C++中的动态连编和静态连编1. 什么是连编? 将一个调用函数连接上正确的被调用函数，这个过程就叫做函数的联编，简称联编。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-11T12:20:41.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="静态连编与动态连编">
+<meta name="twitter:description" content="C++中的动态连编和静态连编1. 什么是连编? 将一个调用函数连接上正确的被调用函数，这个过程就叫做函数的联编，简称联编。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/11/静态连编与动态连编/">
+
+
+
+
+
+  <title>静态连编与动态连编 | blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/静态连编与动态连编/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">静态连编与动态连编</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-11T19:56:30+08:00">
+                2018-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="C-中的动态连编和静态连编"><a href="#C-中的动态连编和静态连编" class="headerlink" title="C++中的动态连编和静态连编"></a>C++中的动态连编和静态连编</h2><h3 id="1-什么是连编"><a href="#1-什么是连编" class="headerlink" title="1. 什么是连编?"></a>1. 什么是连编?</h3><ul>
+<li>将一个<strong>调用函数</strong>连接上正确的<strong>被调用函数</strong>，这个过程就叫做函数的联编，简称联编。</li>
+</ul>
+<a id="more"></a>
+<h3 id="2-在C-中存在如下两种联编的方式："><a href="#2-在C-中存在如下两种联编的方式：" class="headerlink" title="2. 在C++中存在如下两种联编的方式："></a>2. 在C++中存在如下两种联编的方式：</h3><ul>
+<li><strong>静态联编</strong><ul>
+<li>定义：静态联编是指联编工作出现在<strong>编译连接阶段</strong>。</li>
+<li>特点：① 静态联编就是指被调用函数和执行调用函数之间的关系以及它们在内存中的地址在编译的时候已经确定好了，运行时不会发生变化。②由于对象不用对自身进行跟踪，因此速度浪费比较小，但是灵活性较差。</li>
+</ul>
+</li>
+<li><strong>动态联编</strong><ul>
+<li>定义：动态联编是指在<strong>程序运行的时候</strong>才进行的联编工作。</li>
+<li>特点：① 由于编译程序在编译阶段并不能确切知道将要调用的函数，只有在程序执行时才能确定将要调用的函数。要确切之道该调用的函数，就必须要求联编工作在程序运行时才能进行。 ② 虽然可以追踪对象，灵活性较强，但是速度浪费严重。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-在C-中-出现多态有三个条件"><a href="#3-在C-中-出现多态有三个条件" class="headerlink" title="3. 在C++中,出现多态有三个条件:"></a>3. 在C++中,出现多态有三个条件:</h3><ul>
+<li>继承</li>
+<li>virtual关键字修饰</li>
+<li>父类指针或者引用指向子类对象</li>
+</ul>
+<blockquote>
+<p>virtual关键字的作用是,告诉编译器,我这个函数是用来支持多态的虚函数,你不要在编译期间就确定怎么来调用我,而是要在运行的时候,根据对象的实际类型,去判断如何调用.</p>
+</blockquote>
+<h3 id="4-重载与重写"><a href="#4-重载与重写" class="headerlink" title="4. 重载与重写"></a>4. 重载与重写</h3><ul>
+<li><strong>重载</strong>:<ul>
+<li>函数在同一作用域里 </li>
+<li>函数名相同/参数不同</li>
+<li>返回值可以不同</li>
+</ul>
+</li>
+<li><strong>重写</strong>（覆盖）<ul>
+<li>函数不在同一作用域里（两个函数分别在父类和子类里）</li>
+<li>函数名相同/参数列表相同/返回值相同（协变除外） </li>
+<li>基类函数必须是虚函数（有关键字virtual）</li>
+<li>访问修饰符可以不同</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-子类新增加方法和父类有啥关系"><a href="#5-子类新增加方法和父类有啥关系" class="headerlink" title="5. 子类新增加方法和父类有啥关系?"></a>5. 子类新增加方法和父类有啥关系?</h3><ul>
+<li>子类新增的方法,子类自己可以访问,但是通过父类的引用,指向子类的对象,或者父类的指针,指向子类的对象,都不可以访问….</li>
+</ul>
+<h3 id="6-怎么解释-编译看父类-运行看子类"><a href="#6-怎么解释-编译看父类-运行看子类" class="headerlink" title="6. 怎么解释,编译看父类,运行看子类?"></a>6. 怎么解释,编译看父类,运行看子类?</h3><ul>
+<li><p>个人的理解就是,我们用父类的引用接收他的子类的对象的时候,我们当前的这个引用的功能是比较强大的,n多个子类对象重写这个方法,这个方法就有n多个功能</p>
+</li>
+<li><p><strong>过程</strong>:</p>
+<ol>
+<li>编译一开始看看自己有没有这个方法.如果是普通的函数,而不是虚函数,编译的时候就知道了要调用 方法,就是这个方法,(静态连编)…</li>
+<li>如果是虚函数,查看子类有没有重写他的方法,没有的话,调用自己的方法,如果子类重写了,调用的是子类的方法;(动态连编)…</li>
+<li>他可能不止有一个子类,假设有很多个子类,都重写的他的方法,那么具体调用的是这个引用指向的那个子类的方法…</li>
+</ol>
+</li>
+</ul>
+<h3 id="7-C-的示例代码如下…如下代码-可以增强对多态的理解"><a href="#7-C-的示例代码如下…如下代码-可以增强对多态的理解" class="headerlink" title="7. C++的示例代码如下…如下代码,可以增强对多态的理解"></a>7. C++的示例代码如下…如下代码,可以增强对多态的理解</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"iostream"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"A::func1()"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> x)</span><span class="comment">//在B里被隐藏（在B里），指定作用域调用</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"A::func1(int x)"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span><span class="comment">//在B里被隐藏（在B里），指定作用域调用</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"A::func222()"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span><span class="comment">//在B里被隐藏（在B里），指定作用域调用</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"A::func333()"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func4</span><span class="params">()</span><span class="comment">//在B里被隐藏（在B里），指定作用域调用</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"A::func444()"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span><span class="keyword">public</span> A</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"B::func1  重写的父类虚函数"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"B::func2222  重写的普通函数"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">func4</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"B::func444    重写的父类的虚函数"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">func5</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"B::func555     子类新增的,父类中没有..."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    B b;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"子类对象直接调用自己的方法"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    b.func1();<span class="comment">//静态链编</span></span><br><span class="line">    <span class="comment">// b.func1(10);//编译不过</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"子类方法通过域作用符(没有域作用符,无法直接访问),访问父类的 虚函数"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    b.A::func1(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"子类方法通过域作用符(没有域作用符,无法直接访问),访问父类的普通函数(自己重写了)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    b.A::func2();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"子类方法通过域作用符(没有域作用符,无法直接访问),访问父类的普通函数(自己未重写)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    b.A::func3();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"-----"</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"父类指针指向父类对象(正常调用他自己的方法)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    A* p1 = &amp;a;</span><br><span class="line">    p1-&gt;func1();</span><br><span class="line">    p1-&gt;func1(<span class="number">10</span>);</span><br><span class="line">    p1-&gt;func2();</span><br><span class="line">    p1-&gt;func3();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"子类指针指向子类对象(既可以调用自己方法,也可以直接调用父类的方法)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    B* p2 = &amp;b;</span><br><span class="line">    p2-&gt;func1();<span class="comment">//动态链编，到虚表里找，找到自己的func1（）</span></span><br><span class="line">    <span class="comment">//p2-&gt;func1(10);</span></span><br><span class="line">    p2-&gt;func2();</span><br><span class="line">    p2-&gt;A::func1(<span class="number">10</span>);</span><br><span class="line">    p2-&gt;A::func2();</span><br><span class="line">    p2-&gt;A::func3();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"--父类指针指向子类对象-  如果父类的这个方法是虚函数,并且子类重写了它,那么执行的是子类的方法,--动态连编--"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"这种写法,不可以访问,子类新增的,但是父类中却没有的方法..."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    A* p3 = &amp;b;</span><br><span class="line">    p3-&gt;func1();</span><br><span class="line">    p3-&gt;func1(<span class="number">10</span>);</span><br><span class="line">    p3-&gt;func2();</span><br><span class="line">    p3-&gt;func3();</span><br><span class="line">    p3-&gt;func4();</span><br><span class="line"><span class="comment">//     p3-&gt;func5();</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"--父类引用指向子类对象  (效果,原理同上)--"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    A&amp;p4 =b;</span><br><span class="line">    p4.func1();</span><br><span class="line">    p4.func1(<span class="number">10</span>);</span><br><span class="line">    p4.func2();</span><br><span class="line">    p4.func3();</span><br><span class="line">    p4.func4();</span><br><span class="line">   <span class="comment">// p4.func5();  /*/</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"子类引用,指向父类对象(编译不通过)"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="comment">//B&amp; m = a;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Test();</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/10/初步知识/" rel="next" title="初步知识">
+                <i class="fa fa-chevron-left"></i> 初步知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/12/两个Demo/" rel="prev" title="两个Demo">
+                两个Demo <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-中的动态连编和静态连编"><span class="nav-number">1.</span> <span class="nav-text">C++中的动态连编和静态连编</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是连编"><span class="nav-number">1.1.</span> <span class="nav-text">1. 什么是连编?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在C-中存在如下两种联编的方式："><span class="nav-number">1.2.</span> <span class="nav-text">2. 在C++中存在如下两种联编的方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-在C-中-出现多态有三个条件"><span class="nav-number">1.3.</span> <span class="nav-text">3. 在C++中,出现多态有三个条件:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重载与重写"><span class="nav-number">1.4.</span> <span class="nav-text">4. 重载与重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-子类新增加方法和父类有啥关系"><span class="nav-number">1.5.</span> <span class="nav-text">5. 子类新增加方法和父类有啥关系?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-怎么解释-编译看父类-运行看子类"><span class="nav-number">1.6.</span> <span class="nav-text">6. 怎么解释,编译看父类,运行看子类?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-C-的示例代码如下…如下代码-可以增强对多态的理解"><span class="nav-number">1.7.</span> <span class="nav-text">7. C++的示例代码如下…如下代码,可以增强对多态的理解</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

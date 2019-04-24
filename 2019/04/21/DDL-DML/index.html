@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Oracle,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="DDL 数据定义语言DDL是基于数据表级别的操作的统称,对数据表的 创建 删 改  删除 drop – 删除表,记录日志 truncate  – 删除表中的全部数据,不删除表,不记录日志   修改 alter – 针对表中的字段.及字段的属性 add 添加列 modify 修改列的属性 drop 删除列     rename – 给表重命名 create – 创建新表">
+<meta name="keywords" content="Oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDL--DML">
+<meta property="og:url" content="http://yoursite.com/2019/04/21/DDL-DML/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="DDL 数据定义语言DDL是基于数据表级别的操作的统称,对数据表的 创建 删 改  删除 drop – 删除表,记录日志 truncate  – 删除表中的全部数据,不删除表,不记录日志   修改 alter – 针对表中的字段.及字段的属性 add 添加列 modify 修改列的属性 drop 删除列     rename – 给表重命名 create – 创建新表">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-21T13:52:09.478Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DDL--DML">
+<meta name="twitter:description" content="DDL 数据定义语言DDL是基于数据表级别的操作的统称,对数据表的 创建 删 改  删除 drop – 删除表,记录日志 truncate  – 删除表中的全部数据,不删除表,不记录日志   修改 alter – 针对表中的字段.及字段的属性 add 添加列 modify 修改列的属性 drop 删除列     rename – 给表重命名 create – 创建新表">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/21/DDL-DML/">
+
+
+
+
+
+  <title>DDL--DML | blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-Oracle" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/21/DDL-DML/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DDL--DML</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-21T20:35:51+08:00">
+                2019-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index">
+                    <span itemprop="name">Oracle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="DDL-数据定义语言"><a href="#DDL-数据定义语言" class="headerlink" title="DDL 数据定义语言"></a>DDL 数据定义语言</h2><p>DDL是基于数据表级别的操作的统称,<strong>对数据表的 创建 删 改</strong></p>
+<ul>
+<li>删除<ul>
+<li>drop – 删除表,记录日志</li>
+<li>truncate  – 删除表中的全部数据,不删除表,不记录日志</li>
+</ul>
+</li>
+<li>修改<ul>
+<li>alter – 针对表中的字段.及字段的属性<ul>
+<li>add 添加列</li>
+<li>modify 修改列的属性</li>
+<li>drop 删除列</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>rename – 给表重命名</li>
+<li>create – 创建新表</li>
+</ul>
+<a id="more"></a>
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><ul>
+<li>create table</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名(</span><br><span class="line">    <span class="keyword">name</span> 列的属性</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子查询创建表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名 <span class="keyword">as</span> 查询语句</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>列的类型</strong></li>
+<li>varchar ,目前支持,但是不保证以后还 支持</li>
+<li>varchar2 (长度) 可变长度字符串<ul>
+<li>hello  varchar2(10)   占五个字符串</li>
+</ul>
+</li>
+<li>char(长度) 固定长度的字符串<ul>
+<li>char(10) 占十个字符,不足用空格补全</li>
+</ul>
+</li>
+<li>number (总长度,小数长度) 数字类型— 小数长度不能大于总长度</li>
+<li>date 年月日时分秒</li>
+<li>timestamp   时间戳, 比date类型更精确</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">current_date</span> <span class="keyword">from</span> dual;</span><br></pre></td></tr></table></figure>
+<p>结果格式:</p>
+<p>2019-04-17 11:59:41</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">current_timestamp</span>  <span class="keyword">from</span> dual;</span><br></pre></td></tr></table></figure>
+<p>结果格式:</p>
+<p>2019-04-17 12:01:06.832000</p>
+<blockquote>
+<p>更加详细, 精确到了秒的下一级</p>
+</blockquote>
+<h3 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h3><ul>
+<li>修改表名</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> 旧表名 <span class="keyword">to</span> 新表名;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>添加列</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> 列名 列类型</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加多列</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">add</span>(</span><br><span class="line">    列名<span class="number">1</span> 属性<span class="number">1</span>,</span><br><span class="line">    列名<span class="number">2</span> 属性<span class="number">2</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改列的属性</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">modify</span> 列名 新属性</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改列名</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">rename</span> <span class="keyword">column</span> 旧列名 <span class="keyword">to</span> 新列名</span><br></pre></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
+<li>删除表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> 表名;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除列</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> <span class="keyword">column</span> 列名;</span><br></pre></td></tr></table></figure>
+<h3 id="表的五大约束"><a href="#表的五大约束" class="headerlink" title="表的五大约束"></a>表的五大约束</h3><ul>
+<li>单表 有四个约束</li>
+<li>多表有 一个约束</li>
+</ul>
+<h3 id="单表约束"><a href="#单表约束" class="headerlink" title="单表约束"></a>单表约束</h3><ol>
+<li>主键约束  – primary key<ol start="2">
+<li>主键约束默认不能为空,主键必须唯一</li>
+</ol>
+</li>
+<li>非空约束  – not null</li>
+<li>唯一约束  – unnique</li>
+<li>检查约束  – check</li>
+</ol>
+<blockquote>
+<p>其中候选码可以为空,但是不能重复</p>
+</blockquote>
+<p>例: </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student (</span><br><span class="line">  <span class="keyword">id</span>   <span class="built_in">number</span> primary <span class="keyword">key</span>,</span><br><span class="line">  <span class="keyword">name</span> varchar2(<span class="number">20</span>) <span class="keyword">unique</span>,   <span class="comment">-- 唯一</span></span><br><span class="line">  age  varchar2(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span> ,</span><br><span class="line">  gender varchar2(<span class="number">10</span>) <span class="keyword">check</span> (gender <span class="keyword">in</span>( <span class="string">'男'</span>,<span class="string">'女'</span>))</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>插数据:</p>
+<p>验证主键约束– 不能为空,必须唯一</p>
+<ul>
+<li>如果主键出现重复,报错,违反了唯一约束</li>
+<li>唯一约束: 违反,sql失败</li>
+<li>非空约束: 违反非空约束,sql失败</li>
+<li>检查约束 必须满足检查条件,否则sql失败</li>
+</ul>
+<p><strong>在mysql中,检查约束是可以使用的,但是mysql直接忽略了,写不写结果一样</strong></p>
+<h3 id="多表约束"><a href="#多表约束" class="headerlink" title="多表约束"></a>多表约束</h3><blockquote>
+<p>多表约束-即-主外键约束,很多时候数据库中的两张表是关系的,比如 商品分类表和商品表,就可以设计成多表约束</p>
+</blockquote>
+<blockquote>
+<p>我们希望,商品表中的商品一一对应着商品分类表中的 商品分类,于是我们让 商品分类的主键 和 商品表中 所属分类的cid建立起主外键约束</p>
+</blockquote>
+<blockquote>
+<p><strong>这样就得到了一条特性,往辅表中插入数据的前提是 插入的外键值,必须存在于主表中, 不然我们理解成, 一个没有所属分类的商品是没有意义的 </strong></p>
+</blockquote>
+<p>实验:</p>
+<p>–  第一步,创建两张表(没有外键关联)<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">category</span>(</span><br><span class="line">    cid <span class="built_in">number</span> primary <span class="keyword">key</span> ,</span><br><span class="line">    cname varchar2(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> product(</span><br><span class="line">   pid <span class="built_in">number</span> primary <span class="keyword">key</span> ,</span><br><span class="line">   pname varchar2(<span class="number">20</span>),</span><br><span class="line">   cno <span class="built_in">number</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>– 第二步:　添加数据,即便是 1!=11 也不出错</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 假设我们的商品分类表中 cid ==1 为 手机</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span>  <span class="keyword">category</span> <span class="keyword">values</span> (<span class="number">1</span>,<span class="string">'手机'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 但是我们错误的把 锤子插入到了 cid==11目录下</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> product <span class="keyword">values</span> (<span class="number">1</span>,<span class="string">'锤子'</span>,<span class="number">11</span>);</span><br></pre></td></tr></table></figure>
+<p>– 先把不满足的数据删除<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span>  product  <span class="keyword">where</span> pid =<span class="number">1</span>;</span><br><span class="line"><span class="keyword">delete</span>  <span class="keyword">from</span> product  <span class="keyword">where</span> pid =<span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<p>— 第三步, 添加外键约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">-- 当我们直接执行,会报错,那是因为,我们前面的操作让两个表里面的数据已经不满足 外键约束; 因此先去删除不满足的数据</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> product <span class="keyword">add</span> <span class="keyword">foreign</span> <span class="keyword">key</span> (cno) <span class="keyword">references</span> <span class="keyword">category</span> (cid);</span><br></pre></td></tr></table></figure>
+<p>– 关联成功后, 表中的数据被外键关联,无法被删除</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 不能删除主表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">category</span>;</span><br><span class="line"><span class="comment">-- drop table product;</span></span><br><span class="line"><span class="comment">-- 不能删除主表中的有外键关联的行</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> <span class="keyword">category</span> <span class="keyword">where</span> cid = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 强制删除表 -- 不建议使用</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">category</span> <span class="keyword">cascade</span> <span class="keyword">constraints</span>;</span><br><span class="line">  <span class="comment">-- 第一步,删除外键约束</span></span><br><span class="line">  <span class="comment">-- 第二步,删除自己</span></span><br></pre></td></tr></table></figure>
+<h3 id="级联删除"><a href="#级联删除" class="headerlink" title="级联删除"></a>级联删除</h3><p>在商品分类表和商品表的建立外键关联后,我们提出需求,想在删除商品分类后,该分类下的商品一同被删除,于是我们建立级联删除的关系</p>
+<p>修改商品表,添加新的属性<br>on delete cascade(瀑布级联)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 商品表 <span class="keyword">add</span> <span class="keyword">foreign</span> <span class="keyword">key</span>(商品表的cno) <span class="keyword">reference</span> 商品分类表(主键) <span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">cascade</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在删除 主表中的数据,就可以级联删除</p>
+</blockquote>
+<hr>
+<p><strong>总结</strong></p>
+<blockquote>
+<p>级联操作,大部分是针对主表进行约束,而针对从表只有一条约束,只要是存在级联关系,从表中想添加数据,必须满足 外键值存在于主表当中</p>
+</blockquote>
+<p>在不添加级联操作之前,一旦建立主表和从表一旦建立起主/外键约束,主表会受到如下约束:</p>
+<ol>
+<li>不能直接删除主表</li>
+<li>不能删除某行</li>
+<li>可以强制删除主表 – cascade constraints</li>
+</ol>
+<blockquote>
+<p>强制删除主表,做两件事,1. 删除约束 2. 删除主表</p>
+</blockquote>
+<p>添加级联操作之前,一旦建立主表和从表一旦建立起主/外键约束,主表会受到如下约束:</p>
+<ol>
+<li>不能删除主表</li>
+<li>能删除某行,并且从表从的拥有相应外键的行被级联删除</li>
+</ol>
+<h3 id="两种添加主键约束的方式"><a href="#两种添加主键约束的方式" class="headerlink" title="两种添加主键约束的方式:"></a>两种添加主键约束的方式:</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">第一种,定义时直接添加:并添加级联操作</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">category</span>(</span><br><span class="line">    cid <span class="built_in">number</span> primary <span class="keyword">key</span> ,</span><br><span class="line">    cname varchar2(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> product(</span><br><span class="line">   pid <span class="built_in">number</span>  ,</span><br><span class="line">   pname varchar2(<span class="number">20</span>),</span><br><span class="line">   cno <span class="built_in">number</span> <span class="keyword">references</span> <span class="keyword">category</span> (cid) <span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">cascade</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">第二种:</span><br><span class="line"></span><br><span class="line">修改表,添加外键约束,并添加级联操作</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> product <span class="keyword">add</span> <span class="keyword">foreign</span> <span class="keyword">key</span> (cno) <span class="keyword">references</span> <span class="keyword">category</span> (cid) <span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">cascade</span> ;</span><br></pre></td></tr></table></figure>
+<h3 id="添加主键约束-或者候选码约束"><a href="#添加主键约束-或者候选码约束" class="headerlink" title="添加主键约束(或者候选码约束)"></a>添加主键约束(或者候选码约束)</h3><p>三种添加主键约束的表达式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">直接写:</span><br><span class="line">create table product(</span><br><span class="line">   pid number  ,</span><br><span class="line">   pname varchar2(20),</span><br><span class="line">   cno number</span><br><span class="line">);</span><br><span class="line">修改方法1:</span><br><span class="line">  alter table product add primary key (pid) ;</span><br><span class="line">修改方法2: (取别名)</span><br><span class="line">  alter table product add constraint pp primary key (pid)  ;</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p><strong>多扯一嘴 关于constraint(约束)关键字的单复数, 在添加约束(主键约束,候选码约束)取别名时,使用的是单数情况,因为就一个, 但是在强制删除表时 cascade constraints 使用的是复数</strong></p>
+</blockquote>
+<hr>
+<h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><blockquote>
+<p>针对表中数据的操作</p>
+</blockquote>
+<ul>
+<li>insert</li>
+<li>uptate</li>
+<li>select</li>
+<li>delete</li>
+</ul>
+<p>关于<strong>insert</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用法1:</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 <span class="keyword">values</span>(值和所有的列名对应上);</span><br><span class="line"></span><br><span class="line">用法2:</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 (列<span class="number">1</span>,列<span class="number">2</span>) <span class="keyword">values</span> (值<span class="number">1</span>,值<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">用法3:  使用子查询,插入数据</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 查询语句</span><br></pre></td></tr></table></figure>
+<p>关于<strong>update</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 列名 = 列的值 <span class="keyword">where</span> ename = <span class="string">'XXX'</span></span><br></pre></td></tr></table></figure>
+<p>关于<strong>delete</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名 [<span class="keyword">where</span> 条件];</span><br></pre></td></tr></table></figure>
+<h3 id="delete-amp-truncate的区别"><a href="#delete-amp-truncate的区别" class="headerlink" title="delete &amp; truncate的区别"></a>delete &amp; truncate的区别</h3><ul>
+<li>delete是DML data manipulation language 数据操作语言<ul>
+<li>支持事务操作,删除一行</li>
+</ul>
+</li>
+<li>truncate 属于DDL ,数据库定义语言<ul>
+<li>不支持事务. 删除表中的全部数据,不记录日志 </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/21/DQL/" rel="next" title="DQL">
+                <i class="fa fa-chevron-left"></i> DQL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/22/PLSQL/" rel="prev" title="PLSQL">
+                PLSQL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL-数据定义语言"><span class="nav-number">1.</span> <span class="nav-text">DDL 数据定义语言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建表"><span class="nav-number">1.1.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改表"><span class="nav-number">1.2.</span> <span class="nav-text">修改表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">1.3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表的五大约束"><span class="nav-number">1.4.</span> <span class="nav-text">表的五大约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单表约束"><span class="nav-number">1.5.</span> <span class="nav-text">单表约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多表约束"><span class="nav-number">1.6.</span> <span class="nav-text">多表约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#级联删除"><span class="nav-number">1.7.</span> <span class="nav-text">级联删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种添加主键约束的方式"><span class="nav-number">1.8.</span> <span class="nav-text">两种添加主键约束的方式:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加主键约束-或者候选码约束"><span class="nav-number">1.9.</span> <span class="nav-text">添加主键约束(或者候选码约束)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DML"><span class="nav-number">2.</span> <span class="nav-text">DML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#delete-amp-truncate的区别"><span class="nav-number">2.1.</span> <span class="nav-text">delete &amp; truncate的区别</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
