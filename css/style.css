@@ -1499,6 +1499,7 @@ a {
 }
 .article-entry code {
   background: #eee;
+  border-radius: 5px;
   text-shadow: 0 0 #fff;
   padding: 0 0;
   border: none;
