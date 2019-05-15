@@ -14,7 +14,7 @@
 <meta property="og:description" content="Oracle数据库的体系结构 数据库: database   Oracle数据库是数据的物理存储,和mysql不一样的是,只要我们愿意,我们就可以在mysql下创建任意的数据库,每个新项目的启动,创建一个数据库,然后通过showdatabases可以查看到全部数据库,但是Oracle的数据库是一个操作系统只有一个库,说白了,就是把Oracle看成一个大的数据库">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/20/Oracle-干货/1.jpg">
-<meta property="og:updated_time" content="2019-04-20T14:11:57.096Z">
+<meta property="og:updated_time" content="2019-05-14T13:20:45.966Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Oracle--干货">
 <meta name="twitter:description" content="Oracle数据库的体系结构 数据库: database   Oracle数据库是数据的物理存储,和mysql不一样的是,只要我们愿意,我们就可以在mysql下创建任意的数据库,每个新项目的启动,创建一个数据库,然后通过showdatabases可以查看到全部数据库,但是Oracle的数据库是一个操作系统只有一个库,说白了,就是把Oracle看成一个大的数据库">
@@ -106,7 +106,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/nginx-FDFS/" style="font-size: 10px;">nginx,FDFS</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
 					</div>
 				</section>
 				
@@ -283,15 +283,7 @@
 </blockquote>
 <h3 id="4-DBA给新创建的用户授权"><a href="#4-DBA给新创建的用户授权" class="headerlink" title="4. DBA给新创建的用户授权"></a>4. DBA给新创建的用户授权</h3><p><strong>DBA给普通用户授权sql</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> 角色/权限 <span class="keyword">to</span> 用户名;</span><br></pre></td></tr></table></figure></p>
 <p><strong>DBA自定义角色sql</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> 自定义角色名</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后使用 grant给我们的角色授权,grant给用户</p>
-</blockquote>
-<p><strong>DBA删除角色sql</strong></p>
-<blockquote>
-<p><strong>试了一下,DBA删除系统自带的角色,果然还是裤衩穿在外面,二话不说,删除成功了</strong></p>
-</blockquote>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> 角色/权限 <span class="keyword">to</span> 用户名;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> 自定义角色名</span><br><span class="line"><span class="string">``</span><span class="string">`创建会话</span></span><br><span class="line"><span class="string">&gt; 然后使用 grant给我们的角色授权,grant给用户</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">**DBA删除角色sql**</span></span><br><span class="line"><span class="string">&gt; **试了一下,DBA删除系统自带的角色,果然还是裤衩穿在外面,二话不说,删除成功了**</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span><span class="keyword">sql</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">user</span> 用户名 <span class="keyword">cascade</span>;  <span class="comment">-- 删除用户级联的关系也会被删除掉</span></span><br></pre></td></tr></table></figure>
 <p><strong>权限的传递(包括普通用户,只要求当前的东西是属于他的就行)</strong></p>
 <p>关键字: <code>with grant option;</code></p>
 <p>例: scott 把属于他的emp表的 增删改查权限给 另一个用户B ,同时允许B把权限传递给别人<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> all <span class="keyword">on</span> emp <span class="keyword">to</span> B <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br></pre></td></tr></table></figure></p>
@@ -341,7 +333,7 @@
 </ul>
 <p><strong>3. Connect 最终用户的权限</strong></p>
 <ul>
-<li>alter session  创建会话</li>
+<li>alter session  修改</li>
 <li>create cluster 建立聚簇</li>
 <li>create Database Link 创建数据库连接</li>
 <li>create session – 创建会话(登录的前提)</li>

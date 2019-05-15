@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>ubuntu16搭建文件服务器 | 随笔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤">
+<meta name="keywords" content="nginx,FDFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu16搭建文件服务器">
+<meta property="og:url" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/index.html">
+<meta property="og:site_name" content="随笔">
+<meta property="og:description" content="这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-15T07:15:13.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ubuntu16搭建文件服务器">
+<meta name="twitter:description" content="这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">赐我白日梦</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">归档</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="http://github.com/zhuchangwu" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="/646450308@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/Elasticsearch/" style="font-size: 12.5px;">Elasticsearch</a> <a href="/tags/Hibernate-Validator/" style="font-size: 10px;">Hibernate-Validator</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Oracle/" style="font-size: 17.5px;">Oracle</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 12.5px;">Redis</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringMvc/" style="font-size: 12.5px;">SpringMvc</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/mybatis/" style="font-size: 10px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/nginx-FDFS/" style="font-size: 10px;">nginx,FDFS</a> <a href="/tags/多线程/" style="font-size: 20px;">多线程</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">学会爱,学会生活,学会经历风雨...不忘初心,砥砺前行</div>
+				</section>
+				
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">赐我白日梦</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/headportrait.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">赐我白日梦</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/zhuchangwu" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="/646450308@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-ubuntu16搭建文件服务器" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/05/15/ubuntu16搭建文件服务器/" class="article-date">
+  	<time datetime="2019-05-15T06:48:52.000Z" itemprop="datePublished">2019-05-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ubuntu16搭建文件服务器
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx-FDFS/">nginx,FDFS</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">	
+      
+	  
+		
+		
+        <blockquote>
+<p>这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="环境依赖"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt-get install make</span><br><span class="line"></span><br><span class="line">apt-get install unzip</span><br><span class="line"></span><br><span class="line">apt-get install gcc</span><br><span class="line"></span><br><span class="line">apt-get install libevent-dev</span><br><span class="line"></span><br><span class="line">nginx 依赖</span><br><span class="line"></span><br><span class="line">安装gcc g++的依赖库</span><br><span class="line">sudo apt-get install build-essential</span><br><span class="line">sudo apt-get install libtool</span><br><span class="line"></span><br><span class="line">安装pcre依赖库（http://www.pcre.org/）</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libpcre3 libpcre3-dev</span><br><span class="line"></span><br><span class="line">安装zlib依赖库（http://www.zlib.net）</span><br><span class="line">sudo apt-get install zlib1g-dev</span><br><span class="line"></span><br><span class="line">安装SSL依赖库（16.04默认已经安装了）</span><br><span class="line">sudo apt-get install openssl</span><br></pre></td></tr></table></figure>
+<h3 id="安装libevent-2-0-2"><a href="#安装libevent-2-0-2" class="headerlink" title="安装libevent 2.0.2"></a>安装libevent 2.0.2</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf libevent-2.0.22-stable.tzr.gz</span><br><span class="line"><span class="built_in">cd</span> libevent-2.0.22-stable</span><br><span class="line"></span><br><span class="line">配置安装库的目标路径：</span><br><span class="line">./configure --prefix=/usr</span><br><span class="line"></span><br><span class="line">编译安装libevent库：</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">检测安装是否成功</span><br><span class="line"></span><br><span class="line">ls -al /usr/lib | grep libevent</span><br></pre></td></tr></table></figure>
+<h3 id="安装libfastcommon-master"><a href="#安装libfastcommon-master" class="headerlink" title="安装libfastcommon-master"></a>安装libfastcommon-master</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">解压</span><br><span class="line">unzip libfastcommon-master.zip</span><br><span class="line"></span><br><span class="line">进入该文件,安装  </span><br><span class="line">./make.sh &amp;&amp; ./make.sh install</span><br></pre></td></tr></table></figure>
+<h2 id="至此-所有环境依赖ok"><a href="#至此-所有环境依赖ok" class="headerlink" title="至此,所有环境依赖ok"></a>至此,所有环境依赖ok</h2><h3 id="安装FDFS"><a href="#安装FDFS" class="headerlink" title="安装FDFS"></a>安装FDFS</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解压</span><br><span class="line">tar -xvf FastDFS_v5.08.tar.gz</span><br><span class="line"></span><br><span class="line">进入</span><br><span class="line"><span class="built_in">cd</span> FastDFS</span><br><span class="line"></span><br><span class="line">编译安装</span><br><span class="line">sudo ./make.sh </span><br><span class="line">sudo ./make.sh install</span><br><span class="line"></span><br><span class="line">查看是否安装成功</span><br><span class="line">ll /etc/init.d/ | grep fdfs</span><br><span class="line">结果如下图所示,同时出现 tracker 和 storage</span><br></pre></td></tr></table></figure>
+<h1 id="图1"><a href="#图1" class="headerlink" title="图1"></a>图1</h1><blockquote>
+<p>上面那两个文件是脚本,分别用来启动FDFS的tracker和storage , 还要记住他们所在的路径 /etc/init.d/ 下面<br>以后要是做开机启动也是在这里做</p>
+</blockquote>
+<blockquote>
+<p>安装完了fdfs之后，重启一下， 不然下面配置完了 tracker之后，启动不起来</p>
+</blockquote>
+<h3 id="FDFS配置文件"><a href="#FDFS配置文件" class="headerlink" title="FDFS配置文件"></a>FDFS配置文件</h3><blockquote>
+<p>fdfs启动回去 /etc/fdfs/下面读取配置文件, 安装完后默认会有三个模板配置文件,后续还会添加和http等相关的三个配置文件</p>
+</blockquote>
+<p>我们先启动 tracker–&gt; 去/etc/fdfs/ 修改tracker的配置文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/fdfs</span><br></pre></td></tr></table></figure>
+<h1 id="图2"><a href="#图2" class="headerlink" title="图2"></a>图2</h1><p>在FDFS安装包所在的目录 创建出两个新目录,分别存放 tracker/storage 里面的 数据和日志文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir XXX</span><br></pre></td></tr></table></figure>
+<p>我们先修改tracker , 修改第三个配置文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">重命名配置文件</span><br><span class="line"> mv tracker.conf.sample tracker.conf</span><br></pre></td></tr></table></figure>
+<h1 id="图三"><a href="#图三" class="headerlink" title="图三"></a>图三</h1><h3 id="修改了配置文件-去启动tracker"><a href="#修改了配置文件-去启动tracker" class="headerlink" title="修改了配置文件,去启动tracker"></a>修改了配置文件,去启动tracker</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service fdfs_trackerd start <span class="comment"># 启动fdfs_trackerd服务，停止用stop</span></span><br></pre></td></tr></table></figure>
+<p>通过下面命令查看是否成功启动</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef |grep fdfs</span><br></pre></td></tr></table></figure>
+<h3 id="启动storage-–编辑storage配置"><a href="#启动storage-–编辑storage配置" class="headerlink" title="启动storage –编辑storage配置"></a>启动storage –编辑storage配置</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  修改文件名</span></span><br><span class="line">sudo cp storage.conf.sample storage.conf</span><br><span class="line">sudo vim storage.conf</span><br><span class="line"></span><br><span class="line">修改配置文件 -- 传输过来的文件保存的目录</span><br><span class="line">base_path=/home/fdfschangwu/fdfs/storage <span class="comment"># storage的数据和日志存放目录</span></span><br><span class="line">store_path0=/home/fdfschangwu/fdfs/storage <span class="comment"># storage的上传文件存放路径</span></span><br><span class="line">tracker_server=192.168.56.101:22122 <span class="comment"># tracker的地址</span></span><br><span class="line"></span><br><span class="line">创建不存在的目录</span><br><span class="line">XXX</span><br><span class="line"></span><br><span class="line">启动storage</span><br><span class="line">sudo service fdfs_storaged start</span><br><span class="line"></span><br><span class="line">查看是否启动</span><br><span class="line">ps -ef | grep fdfs</span><br></pre></td></tr></table></figure>
+<h1 id="图4"><a href="#图4" class="headerlink" title="图4"></a>图4</h1><h3 id="修改客户端配置文件"><a href="#修改客户端配置文件" class="headerlink" title="修改客户端配置文件"></a>修改客户端配置文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash_path：换成一个存在的文件夹</span><br><span class="line">tracker_server: 真正存在的那个地址</span><br></pre></td></tr></table></figure>
+<h1 id="图5"><a href="#图5" class="headerlink" title="图5"></a>图5</h1><h3 id="测试上传"><a href="#测试上传" class="headerlink" title="测试上传:"></a>测试上传:</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">命令:</span><br><span class="line">/usr/bin/fdfs_upload_file client.conf /tmp/1.jpg</span><br><span class="line"></span><br><span class="line">响应如下:</span><br><span class="line">group1/M00/00/00/rBUAAlzbpG-ADLFNAAN_1nDfKJs466.jpg</span><br><span class="line"></span><br><span class="line">group1: 是我们在storage里面配置的组名</span><br><span class="line">M00: 对应的是我们在storage.conf里面配置的store_path0</span><br><span class="line">00/00 : 是文件目录的打散处理</span><br></pre></td></tr></table></figure>
+<h3 id="配置-Nginx-–-FastDFS模块-加上这一步操作的原因是-80端口被nginx控制了-我们需要在nginx配置一下-让他反向代理请求-把请求转发的文件服务器"><a href="#配置-Nginx-–-FastDFS模块-加上这一步操作的原因是-80端口被nginx控制了-我们需要在nginx配置一下-让他反向代理请求-把请求转发的文件服务器" class="headerlink" title="配置  Nginx – FastDFS模块 ( 加上这一步操作的原因是 80端口被nginx控制了,我们需要在nginx配置一下,让他反向代理请求,把请求转发的文件服务器 )"></a>配置  Nginx – FastDFS模块 ( 加上这一步操作的原因是 80端口被nginx控制了,我们需要在nginx配置一下,让他反向代理请求,把请求转发的文件服务器 )</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">解压 </span><br><span class="line">tar -xvf fastdfs-nginx-module_v1.16.tar.gz</span><br><span class="line"></span><br><span class="line">进入配置目录</span><br><span class="line"><span class="built_in">cd</span> /fastdfs-nginx-module/src</span><br><span class="line"></span><br><span class="line">修改配置</span><br><span class="line">vim config</span><br><span class="line"></span><br><span class="line">执行下面命令（将配置中的/usr/<span class="built_in">local</span>改为/usr）：</span><br><span class="line">:%s+/usr/<span class="built_in">local</span>/+/usr/+g</span><br><span class="line"></span><br><span class="line">将src目录下的mod_fastdfs.conf复制到 /etc/fdfs目录：当前全部的配置文件都在这里面,</span><br><span class="line">fdfs运行也会读取这里面的配置文件</span><br><span class="line"></span><br><span class="line">sudo cp mod_fastdfs.conf /etc/fdfs/</span><br><span class="line"></span><br><span class="line"> 编辑该文件</span><br><span class="line">sudo vim /etc/fdfs/mod_fastdfs.conf</span><br><span class="line"></span><br><span class="line">修改配置</span><br><span class="line">connect_timeout=10                  		<span class="comment"># 客户端访问文件连接超时时长（单位：秒）</span></span><br><span class="line">tracker_server=192.168.56.101:22122  	<span class="comment"># tracker服务IP和端口</span></span><br><span class="line">url_have_group_name=<span class="literal">true</span>            		<span class="comment"># 访问链接前缀加上组名</span></span><br><span class="line">store_path0=/home/fdfschangwu/fdfs/storage        		<span class="comment"># 文件存储路径</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制 FastDFS的和http请求相关的配置文件到/etc/fdfs</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/fdfschangwu/fdfs/FastDFS/config/  <span class="comment"># http相关的请求在这里面</span></span><br><span class="line">cp http.conf mime.types /etc/fdfs/</span><br></pre></td></tr></table></figure>
+<h1 id="6"><a href="#6" class="headerlink" title="6"></a>6</h1><p>—- 至此  Nginx模块安装完毕</p>
+<hr>
+<h3 id="nginx原来已经安装过了-现在去做些修改"><a href="#nginx原来已经安装过了-现在去做些修改" class="headerlink" title="nginx原来已经安装过了,现在去做些修改"></a>nginx原来已经安装过了,现在去做些修改</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">进入 nginx目录</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/nginx-1.10.0/</span><br><span class="line"></span><br><span class="line">执行下面的命令 -- 添加一个新的模块(fdfs的源码包))</span><br><span class="line">./configure --prefix=/opt/nginx --sbin-path=/usr/bin/nginx </span><br><span class="line">--add-module=/home/fdfschangwu/fdfs/fastdfs-nginx-module/src</span><br><span class="line"></span><br><span class="line">重新编译-- 不要安装!!!</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">备份之前的nginx</span><br><span class="line">mv /usr/bin/nginx /usr/bin/nginx-back</span><br><span class="line"></span><br><span class="line">停止nginx</span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line">用刚刚编译的nginx 替换原来的nginx</span><br><span class="line">cp /home/ubuntu/nginx-1.10.0/objs/nginx /usr/bin/</span><br></pre></td></tr></table></figure>
+<h3 id="修改nginx-的配置文件"><a href="#修改nginx-的配置文件" class="headerlink" title="修改nginx 的配置文件"></a>修改nginx 的配置文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">在 nginx安装目录中  /opt/nginx/conf/nginx.conf</span><br><span class="line"></span><br><span class="line"> &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  211.159.146.192;</span><br><span class="line"></span><br><span class="line">       <span class="comment"># fdfs配置</span></span><br><span class="line">       location ~/group([0-9])/&#123;</span><br><span class="line">	ngx_fastdfs_module;	<span class="comment"># 代理到fdfs的nginx模块</span></span><br><span class="line">      &#125;		</span><br><span class="line"> </span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="启动nginx"><a href="#启动nginx" class="headerlink" title="启动nginx"></a>启动nginx</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx </span><br><span class="line"></span><br><span class="line">看到下面的响应证明,一切ok</span><br><span class="line">ngx_http_fastdfs_set pid=1628</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/23/JS-实现动态轮播图/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JS 实现动态轮播图</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<div class="social-share"></div>
+
+	<!--  css & js -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2019 赐我白日梦
+    	</div>
+      	<div class="footer-right">
+      		<p>
+            <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten    
+            </p>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+<!--百度统计的代码-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b759ac2a7fa45129e3ef060bf68259f0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+  </div>
+</body>
+</html>
