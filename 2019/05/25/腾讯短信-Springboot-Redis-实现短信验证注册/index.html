@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
+<meta name="description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 未过期,直接退出发短信的方法 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="腾讯短信+Springboot+Redis 实现短信验证注册">
 <meta property="og:url" content="http://yoursite.com/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/index.html">
 <meta property="og:site_name" content="随笔">
-<meta property="og:description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
+<meta property="og:description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 未过期,直接退出发短信的方法 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-25T11:52:09.223Z">
+<meta property="og:updated_time" content="2019-05-25T12:42:25.006Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="腾讯短信+Springboot+Redis 实现短信验证注册">
-<meta name="twitter:description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
+<meta name="twitter:description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 未过期,直接退出发短信的方法 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
 
 
 
@@ -365,6 +365,7 @@
 <li>用户提交表单 包含用户的基本信息+验证码<ul>
 <li>取出用户的验证码去redis中查找<ul>
 <li>若不存在返回异常</li>
+<li>未过期,直接退出发短信的方法</li>
 <li>存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常</li>
 </ul>
 </li>
