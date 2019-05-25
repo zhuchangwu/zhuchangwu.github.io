@@ -87,17 +87,10 @@
 <meta property="og:site_name" content="随笔">
 <meta property="og:description" content="这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/1.png">
-<meta property="og:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/2.png">
-<meta property="og:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/3.png">
-<meta property="og:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/4.png">
-<meta property="og:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/5.png">
-<meta property="og:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/6.png">
-<meta property="og:updated_time" content="2019-05-16T02:48:24.263Z">
+<meta property="og:updated_time" content="2019-05-22T10:57:42.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu16搭建文件服务器">
 <meta name="twitter:description" content="这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤">
-<meta name="twitter:image" content="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/1.png">
 
 
 
@@ -345,7 +338,6 @@
 <h3 id="安装libevent-2-0-2"><a href="#安装libevent-2-0-2" class="headerlink" title="安装libevent 2.0.2"></a>安装libevent 2.0.2</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf libevent-2.0.22-stable.tzr.gz</span><br><span class="line"><span class="built_in">cd</span> libevent-2.0.22-stable</span><br><span class="line"></span><br><span class="line">配置安装库的目标路径：</span><br><span class="line">./configure --prefix=/usr</span><br><span class="line"></span><br><span class="line">编译安装libevent库：</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">检测安装是否成功</span><br><span class="line"></span><br><span class="line">ls -al /usr/lib | grep libevent</span><br></pre></td></tr></table></figure>
 <h3 id="安装libfastcommon-master"><a href="#安装libfastcommon-master" class="headerlink" title="安装libfastcommon-master"></a>安装libfastcommon-master</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">解压</span><br><span class="line">unzip libfastcommon-master.zip</span><br><span class="line"></span><br><span class="line">进入该文件,安装  </span><br><span class="line">./make.sh &amp;&amp; ./make.sh install</span><br></pre></td></tr></table></figure>
 <h2 id="至此-所有环境依赖ok"><a href="#至此-所有环境依赖ok" class="headerlink" title="至此,所有环境依赖ok"></a>至此,所有环境依赖ok</h2><h3 id="安装FDFS"><a href="#安装FDFS" class="headerlink" title="安装FDFS"></a>安装FDFS</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解压</span><br><span class="line">tar -xvf FastDFS_v5.08.tar.gz</span><br><span class="line"></span><br><span class="line">进入</span><br><span class="line"><span class="built_in">cd</span> FastDFS</span><br><span class="line"></span><br><span class="line">编译安装</span><br><span class="line">sudo ./make.sh </span><br><span class="line">sudo ./make.sh install</span><br><span class="line"></span><br><span class="line">查看是否安装成功</span><br><span class="line">ll /etc/init.d/ | grep fdfs</span><br><span class="line">结果如下图所示,同时出现 tracker 和 storage</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/15/ubuntu16搭建文件服务器/1.png">
 <blockquote>
 <p>上面那两个文件是脚本,分别用来启动FDFS的tracker和storage , 还要记住他们所在的路径 /etc/init.d/ 下面<br>以后要是做开机启动也是在这里做</p>
 </blockquote>
@@ -357,22 +349,17 @@
 </blockquote>
 <p>我们先启动 tracker–&gt; 去/etc/fdfs/ 修改tracker的配置文件</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/fdfs</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/15/ubuntu16搭建文件服务器/2.png">
 <p>在FDFS安装包所在的目录 创建出两个新目录,分别存放 tracker/storage 里面的 数据和日志文件</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir XXX</span><br></pre></td></tr></table></figure>
 <p>我们先修改tracker , 修改第三个配置文件</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">重命名配置文件</span><br><span class="line"> mv tracker.conf.sample tracker.conf</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/15/ubuntu16搭建文件服务器/3.png">
 <h3 id="修改了配置文件-去启动tracker"><a href="#修改了配置文件-去启动tracker" class="headerlink" title="修改了配置文件,去启动tracker"></a>修改了配置文件,去启动tracker</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service fdfs_trackerd start <span class="comment"># 启动fdfs_trackerd服务，停止用stop</span></span><br></pre></td></tr></table></figure>
 <p>通过下面命令查看是否成功启动</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef |grep fdfs</span><br></pre></td></tr></table></figure>
 <h3 id="启动storage-–编辑storage配置"><a href="#启动storage-–编辑storage配置" class="headerlink" title="启动storage –编辑storage配置"></a>启动storage –编辑storage配置</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  修改文件名</span></span><br><span class="line">sudo cp storage.conf.sample storage.conf</span><br><span class="line">sudo vim storage.conf</span><br><span class="line"></span><br><span class="line">修改配置文件 -- 传输过来的文件保存的目录</span><br><span class="line">base_path=/home/fdfschangwu/fdfs/storage <span class="comment"># storage的数据和日志存放目录</span></span><br><span class="line">store_path0=/home/fdfschangwu/fdfs/storage <span class="comment"># storage的上传文件存放路径</span></span><br><span class="line">tracker_server=192.168.56.101:22122 <span class="comment"># tracker的地址</span></span><br><span class="line"></span><br><span class="line">创建不存在的目录</span><br><span class="line">XXX</span><br><span class="line"></span><br><span class="line">启动storage</span><br><span class="line">sudo service fdfs_storaged start</span><br><span class="line"></span><br><span class="line">查看是否启动</span><br><span class="line">ps -ef | grep fdfs</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/15/ubuntu16搭建文件服务器/4.png">
 <h3 id="修改客户端配置文件"><a href="#修改客户端配置文件" class="headerlink" title="修改客户端配置文件"></a>修改客户端配置文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash_path：换成一个存在的文件夹</span><br><span class="line">tracker_server: 真正存在的那个地址</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/15/ubuntu16搭建文件服务器/5.png">
 <h3 id="测试上传"><a href="#测试上传" class="headerlink" title="测试上传:"></a>测试上传:</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">命令:</span><br><span class="line">/usr/bin/fdfs_upload_file client.conf /tmp/1.jpg</span><br><span class="line"></span><br><span class="line">响应如下:</span><br><span class="line">group1/M00/00/00/rBUAAlzbpG-ADLFNAAN_1nDfKJs466.jpg</span><br><span class="line"></span><br><span class="line">group1: 是我们在storage里面配置的组名</span><br><span class="line">M00: 对应的是我们在storage.conf里面配置的store_path0</span><br><span class="line">00/00 : 是文件目录的打散处理</span><br></pre></td></tr></table></figure>
 <h3 id="配置-Nginx-–-FastDFS模块-加上这一步操作的原因是-80端口被nginx控制了-我们需要在nginx配置一下-让他反向代理请求-把请求转发的文件服务器"><a href="#配置-Nginx-–-FastDFS模块-加上这一步操作的原因是-80端口被nginx控制了-我们需要在nginx配置一下-让他反向代理请求-把请求转发的文件服务器" class="headerlink" title="配置  Nginx – FastDFS模块 ( 加上这一步操作的原因是 80端口被nginx控制了,我们需要在nginx配置一下,让他反向代理请求,把请求转发的文件服务器 )"></a>配置  Nginx – FastDFS模块 ( 加上这一步操作的原因是 80端口被nginx控制了,我们需要在nginx配置一下,让他反向代理请求,把请求转发的文件服务器 )</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">解压 </span><br><span class="line">tar -xvf fastdfs-nginx-module_v1.16.tar.gz</span><br><span class="line"></span><br><span class="line">进入配置目录</span><br><span class="line"><span class="built_in">cd</span> /fastdfs-nginx-module/src</span><br><span class="line"></span><br><span class="line">修改配置</span><br><span class="line">vim config</span><br><span class="line"></span><br><span class="line">执行下面命令（将配置中的/usr/<span class="built_in">local</span>改为/usr）：</span><br><span class="line">:%s+/usr/<span class="built_in">local</span>/+/usr/+g</span><br><span class="line"></span><br><span class="line">将src目录下的mod_fastdfs.conf复制到 /etc/fdfs目录：当前全部的配置文件都在这里面,</span><br><span class="line">fdfs运行也会读取这里面的配置文件</span><br><span class="line"></span><br><span class="line">sudo cp mod_fastdfs.conf /etc/fdfs/</span><br><span class="line"></span><br><span class="line"> 编辑该文件</span><br><span class="line">sudo vim /etc/fdfs/mod_fastdfs.conf</span><br><span class="line"></span><br><span class="line">修改配置</span><br><span class="line">connect_timeout=10                  		<span class="comment"># 客户端访问文件连接超时时长（单位：秒）</span></span><br><span class="line">tracker_server=192.168.56.101:22122  	<span class="comment"># tracker服务IP和端口</span></span><br><span class="line">url_have_group_name=<span class="literal">true</span>            		<span class="comment"># 访问链接前缀加上组名</span></span><br><span class="line">store_path0=/home/fdfschangwu/fdfs/storage        		<span class="comment"># 文件存储路径</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制 FastDFS的和http请求相关的配置文件到/etc/fdfs</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/fdfschangwu/fdfs/FastDFS/config/  <span class="comment"># http相关的请求在这里面</span></span><br><span class="line">cp http.conf mime.types /etc/fdfs/</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/15/ubuntu16搭建文件服务器/6.png">
 <p>—- 至此  Nginx模块安装完毕</p>
 <hr>
 <h3 id="nginx原来已经安装过了-现在去做些修改"><a href="#nginx原来已经安装过了-现在去做些修改" class="headerlink" title="nginx原来已经安装过了,现在去做些修改"></a>nginx原来已经安装过了,现在去做些修改</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">进入 nginx目录</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/nginx-1.10.0/</span><br><span class="line"></span><br><span class="line">执行下面的命令 -- 添加一个新的模块(fdfs的源码包))</span><br><span class="line">./configure --prefix=/opt/nginx --sbin-path=/usr/bin/nginx </span><br><span class="line">--add-module=/home/fdfschangwu/fdfs/fastdfs-nginx-module/src</span><br><span class="line"></span><br><span class="line">重新编译-- 不要安装!!!</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">备份之前的nginx</span><br><span class="line">mv /usr/bin/nginx /usr/bin/nginx-back</span><br><span class="line"></span><br><span class="line">停止nginx</span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line">用刚刚编译的nginx 替换原来的nginx</span><br><span class="line">cp /home/ubuntu/nginx-1.10.0/objs/nginx /usr/bin/</span><br></pre></td></tr></table></figure>
@@ -416,6 +403,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" rel="prev" title="腾讯短信+Springboot+Redis 实现短信验证注册">
+                腾讯短信+Springboot+Redis 实现短信验证注册 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -494,7 +485,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -505,7 +496,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -516,7 +507,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
