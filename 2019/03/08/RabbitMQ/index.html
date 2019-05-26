@@ -96,7 +96,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/8.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/9.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/08/RabbitMQ/10.png">
-<meta property="og:updated_time" content="2019-05-26T02:26:25.904Z">
+<meta property="og:updated_time" content="2019-05-26T02:41:10.073Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RabbitMQ">
 <meta name="twitter:description" content="消息队列是典型的生产者-消费者模型,生产者只管发送消息,消费者只管监听队列取出消息,没有业务逻辑的侵入,实现了生产者和消费者的解耦,这篇博客主要从如下几个方面整理相关RabbitMQ的知识点   消息中间件在项目中的使用场景 RabbitMQ常见的五种消息模型 如何避免消息的丢失 SpringAMQP">
@@ -442,7 +442,7 @@
 <li><p>能者多劳?  </p>
 </li>
 </ul>
-<p>给队列添加一条属性,不再是队列把任务平均分配开给消费者,而是让消费者,消费完了后,问队列要新的任务,这样能着多劳</p>
+<p>给队列添加一条属性,不再是队列把任务平均分配开给消费者,而是让消费者,消费完了后,问队列要新的任务,这样能者多劳</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置每个消费者同时只能处理一条消息</span></span><br><span class="line">channel.basicQos(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
 <h3 id="订阅模型分类"><a href="#订阅模型分类" class="headerlink" title="订阅模型分类"></a>订阅模型分类</h3><ol>
 <li><p>不同的订阅模型是根据交换机(Exchange)的类型划分的</p>
@@ -466,7 +466,7 @@
 <p>生产者</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 获取到连接</span></span><br><span class="line">        Connection connection = ConnectionUtil.getConnection();</span><br><span class="line">        <span class="comment">// 获取通道</span></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        <span class="comment">// 声明exchange，指定类型为fanout</span></span><br><span class="line">        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);</span><br><span class="line">        <span class="comment">// 消息内容</span></span><br><span class="line">        String message = <span class="string">"Hello everyone"</span>;</span><br><span class="line">        <span class="comment">// 发布消息到Exchange</span></span><br><span class="line">        channel.basicPublish(EXCHANGE_NAME, <span class="string">""</span>, <span class="keyword">null</span>, message.getBytes());</span><br><span class="line">        System.out.println(<span class="string">" [生产者] Sent '"</span> + message + <span class="string">"'"</span>);</span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>对于消费者来说,<strong>他不在去声明队列了</strong>, 获取完Channel之后,直接去创建交换机,然后发送消息</p>
+<p>对于生产者来说,<strong>他不在去声明队列了</strong>, 获取完Channel之后,直接去创建交换机,然后发送消息</p>
 <hr>
 <p>消费者: </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绑定队列到交换机</span></span><br><span class="line">channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
