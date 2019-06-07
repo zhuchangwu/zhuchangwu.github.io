@@ -1,360 +1,220 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html>
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT">
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="随笔">
-<meta property="og:type" content="website">
-<meta property="og:title" content="随笔">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="随笔">
-<meta property="og:description" content="随笔">
-<meta property="og:locale" content="zh-Hans">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="随笔">
-<meta name="twitter:description" content="随笔">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/">
-
-
-
-
-
-  <title>随笔</title>
-  
-
-
-
-
-
-
-
-
-</head>
-
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
     
-  
-
-  <div class="container sidebar-position-left 
-  page-home">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+    <meta name="description" content="随笔">
     
+    
+    
+    
+    
+    
+    <title>随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
 
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">随笔</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
+    
+</header>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            
+<div class="cube-excerpt" id="cube-excerpt-TCP/IP 协议与 HTTP协议">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/06/07/TCP-IP-协议与-HTTP协议/">TCP/IP 协议与 HTTP协议</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+                2019-06-07
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+                
+            </div>
+        </div>
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
+        
+        
+           <h3 id="不得不提的TCP-IP协议-TCP-IP不是两个协议-而是一整个协议栈"><a href="#不得不提的TCP-IP协议-TCP-IP不是两个协议-而是一整个协议栈" class="headerlink" title="不得不提的TCP/IP协议,TCP/IP不是两个协议,而是一整个协议栈;"></a>不得不提的TCP/IP协议,TCP/IP不是两个协议,而是一整个协议栈;</h3><p>TCP/IP包含如下图四层:其中每一层都使用着一个或者多个协议,遵循这些协议就可以实现不同设备之间的轻松通信</p>
+<ul>
+<li>应用层(Http协议 DNS协议 Email协议…)</li>
+<li>传输层(TCP协议 UDP协议)  </li>
+<li>网络层 (IP协议 )</li>
+<li>网络接口层(设备的驱动程序+接口卡)</li>
+</ul>
+<p>其中TCP(transfer control protocol)协议是传输层的协议,他是面向连接的,基于字节流的传输通信协议, Java对Tcp的支持体现在它的网络编程包中的<code>Socket</code>与<code>ServerSocket</code>的封装.<br>
+        
+    </p></article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/06/07/TCP-IP-协议与-HTTP协议/">Read More</a>
+    </footer>
 </div>
 
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            归档
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" itemprop="url">腾讯短信+Springboot+Redis 实现短信验证注册</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-25T19:50:19+08:00">
+<div class="cube-excerpt" id="cube-excerpt-腾讯短信+Springboot+Redis 实现短信验证注册">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/">腾讯短信+Springboot+Redis 实现短信验证注册</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/Java/" class="cube-excerpt-tag-link">#Java</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <p>使用redis做缓存实现用户的注册功能:</p>
+        
+           <p>使用redis做缓存实现用户的注册功能:</p>
 <ul>
 <li>异步请求发送短信,给 发送短信的按钮 绑定异步事件<ul>
 <li>调用发送短信逻辑发送短信<ul>
@@ -374,580 +234,126 @@
 </ul>
 </li>
 </ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/15/ubuntu16搭建文件服务器/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/15/ubuntu16搭建文件服务器/" itemprop="url">ubuntu16搭建文件服务器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T14:48:52+08:00">
+<div class="cube-excerpt" id="cube-excerpt-ubuntu16搭建文件服务器">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/05/15/ubuntu16搭建文件服务器/">ubuntu16搭建文件服务器</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+                
+                <a href="/tags/nginx-FDFS/" class="cube-excerpt-tag-link">#nginx,FDFS</a>
+                
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <blockquote>
+        
+           <blockquote>
 <p>这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤</p>
 </blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/05/15/ubuntu16搭建文件服务器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/05/15/ubuntu16搭建文件服务器/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-JavaScript" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/JS-实现动态轮播图/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/23/JS-实现动态轮播图/" itemprop="url">JS 实现动态轮播图</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-23T20:51:39+08:00">
+<div class="cube-excerpt" id="cube-excerpt-JS 实现动态轮播图">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/23/JS-实现动态轮播图/">JS 实现动态轮播图</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/JavaScript/" class="cube-excerpt-tag-link">#JavaScript</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <p>JavaScript实现轮播图思路 + html/css + js源码</p>
+        
+           <p>JavaScript实现轮播图思路 + html/css + js源码</p>
 <ol>
 <li>整个轮播图的效果是通过js代码,操作dom, 拿到html我们需要的元素,控制整个ul的距离浏览器左边的位置,让排好的图片依次出现在相框中,不在相框中的元素会被css中的 overflow : hidden 隐藏掉, 其次,图片是经过处理的 ,正好和我们的相关等宽等高!</li>
 <li>动态的创建元素,下面我们会动态创建li,并通过css把它修饰成小按钮格式,其次给小按钮添加点击事件,鼠标经过,离开事件,动态的实现图片的移动, 其实就是根据不同的参数,移动 ul的left值</li>
 <li>最后添加定时器,在回调函数的位置让他每隔一定的时间就调用一次点击左边按钮的事件</li>
 </ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/23/JS-实现动态轮播图/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/23/JS-实现动态轮播图/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-Oracle" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/22/PLSQL/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/22/PLSQL/" itemprop="url">PLSQL</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-22T09:15:06+08:00">
+<div class="cube-excerpt" id="cube-excerpt-PLSQL">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/22/PLSQL/">PLSQL</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index">
-                    <span itemprop="name">Oracle</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/Oracle/" class="cube-excerpt-tag-link">#Oracle</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <p>plsql : procedure language sql 是Oracle特有的数据库编程语言,普通的sql可以实现对数据的增删改查,一条sql很难做到 即查询,又根据不同的条件筛选数据,修改数据,而PLSQL可以帮我们实现</p>
+        
+           <p>plsql : procedure language sql 是Oracle特有的数据库编程语言,普通的sql可以实现对数据的增删改查,一条sql很难做到 即查询,又根据不同的条件筛选数据,修改数据,而PLSQL可以帮我们实现</p>
 <h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><p>分成三部分: </p>
 <ol>
 <li>声明部分 (声明一些临时变量,后续使用)</li>
 <li>可执行部分 (我们的业务逻辑)</li>
 <li>异常处理部分(可执行部分出现的异常信息,并处理)
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/22/PLSQL/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </li></ol></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </li></ol></article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/22/PLSQL/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-Oracle" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/21/DDL-DML/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/21/DDL-DML/" itemprop="url">DDL--DML</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-21T20:35:51+08:00">
+<div class="cube-excerpt" id="cube-excerpt-DDL--DML">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/21/DDL-DML/">DDL--DML</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index">
-                    <span itemprop="name">Oracle</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/Oracle/" class="cube-excerpt-tag-link">#Oracle</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <h2 id="DDL-数据定义语言"><a href="#DDL-数据定义语言" class="headerlink" title="DDL 数据定义语言"></a>DDL 数据定义语言</h2><p>DDL是基于数据表级别的操作的统称,<strong>对数据表的 创建 删 改</strong></p>
+        
+           <h2 id="DDL-数据定义语言"><a href="#DDL-数据定义语言" class="headerlink" title="DDL 数据定义语言"></a>DDL 数据定义语言</h2><p>DDL是基于数据表级别的操作的统称,<strong>对数据表的 创建 删 改</strong></p>
 <ul>
 <li>删除<ul>
 <li>drop – 删除表,记录日志</li>
@@ -966,152 +372,33 @@
 <li>rename – 给表重命名</li>
 <li>create – 创建新表</li>
 </ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/21/DDL-DML/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/21/DDL-DML/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-Oracle" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/21/DQL/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/21/DQL/" itemprop="url">DQL</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-21T20:34:05+08:00">
+<div class="cube-excerpt" id="cube-excerpt-DQL">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/21/DQL/">DQL</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index">
-                    <span itemprop="name">Oracle</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/Oracle/" class="cube-excerpt-tag-link">#Oracle</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <p>常见的sql分类五种分类</p>
+        
+           <p>常见的sql分类五种分类</p>
 <ol>
 <li>DDL (Data Definition Language)数据库定义语言</li>
 <li>DML (Data Manipulation Language)数据操作语言</li>
@@ -1122,954 +409,604 @@
 <blockquote>
 <p><strong>有时候会把DQL归入到DML中, 因为DML常见的操作是针对数据表中数据的 增删改 ,而查数据的DQL,同样是基于表中数据级别的操作,所以真的把DQL归入到DML也说的过去,但是DQL 单条select语句的复杂程度就远远高于 DDL DML DCL TCL中的任意一种,所以我单独整理出来</strong></p>
 </blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/21/DQL/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/21/DQL/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-Oracle" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/20/Oracle-干货/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/20/Oracle-干货/" itemprop="url">Oracle--干货</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-20T22:09:26+08:00">
+<div class="cube-excerpt" id="cube-excerpt-Oracle--干货">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/20/Oracle-干货/">Oracle--干货</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index">
-                    <span itemprop="name">Oracle</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/Oracle/" class="cube-excerpt-tag-link">#Oracle</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <h2 id="Oracle数据库的体系结构"><a href="#Oracle数据库的体系结构" class="headerlink" title="Oracle数据库的体系结构"></a>Oracle数据库的体系结构</h2><ol>
+        
+           <h2 id="Oracle数据库的体系结构"><a href="#Oracle数据库的体系结构" class="headerlink" title="Oracle数据库的体系结构"></a>Oracle数据库的体系结构</h2><ol>
 <li><strong>数据库: database</strong></li>
 </ol>
 <blockquote>
 <p>Oracle数据库是数据的物理存储,和mysql不一样的是,只要我们愿意,我们就可以在mysql下创建任意的数据库,每个新项目的启动,创建一个数据库,然后通过<code>showdatabases</code>可以查看到全部数据库,但是Oracle的数据库是一个操作系统只有一个库,说白了,就是把Oracle看成一个大的数据库<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/20/Oracle-干货/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </p></blockquote></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </p></blockquote></article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/20/Oracle-干货/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-SpringMvc" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/15/SpringMvc-开发手册/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/15/SpringMvc-开发手册/" itemprop="url">SpringMvc -- 开发手册</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T22:14:22+08:00">
+<div class="cube-excerpt" id="cube-excerpt-SpringMvc -- 开发手册">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/15/SpringMvc-开发手册/">SpringMvc -- 开发手册</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/SpringMvc/" itemprop="url" rel="index">
-                    <span itemprop="name">SpringMvc</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/SpringMvc/" class="cube-excerpt-tag-link">#SpringMvc</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <p>本片博客记录SpringMvc带给了我们什么?,图解运行流程,以及开发中,常用的注解</p>
+        
+           <p>本片博客记录SpringMvc带给了我们什么?,图解运行流程,以及开发中,常用的注解</p>
 <p>SpringMvc基于servlet设计,用于处理用户的请求,基于方法级别拦截,参数通过入参传递,处理器设计为单例模式,和Spring无缝整合, 分离了 控制器,模型对象,让它们更容易被定制</p>
 <img src="/2019/04/15/SpringMvc-开发手册/999.jpg" title="流程图">
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/15/SpringMvc-开发手册/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/15/SpringMvc-开发手册/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-SpringMvc" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/14/SpringMvc-环境搭建/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/14/SpringMvc-环境搭建/" itemprop="url">SpringMvc -- 环境搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T21:41:40+08:00">
+<div class="cube-excerpt" id="cube-excerpt-SpringMvc -- 环境搭建">
+    <header class="cube-excerpt-header">
+        <h1><a href="/2019/04/14/SpringMvc-环境搭建/">SpringMvc -- 环境搭建</a></h1>
+        <div class="cube-excerpt-header-msg">
+            <div class="cube-excerpt-date">
+                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
                 2019-04-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/SpringMvc/" itemprop="url" rel="index">
-                    <span itemprop="name">SpringMvc</span>
-                  </a>
-                </span>
-
+            </div>
+            <div class="cube-excerpt-tags">
+                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
                 
+                <a href="/tags/SpringMvc/" class="cube-excerpt-tag-link">#SpringMvc</a>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+    </header>
+    <article class="cube-excerpt-entry cube-markdown">
         
-          <blockquote>
+        
+           <blockquote>
 <p>IDEA搭建SpringMvc开发环境<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/14/SpringMvc-环境搭建/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </p></blockquote></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
+    </p></blockquote></article>
+    <footer class="cube-excerpt-footer">
+        <a class="cube-excerpt-more" href="/2019/04/14/SpringMvc-环境搭建/">Read More</a>
     </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-JavaScript" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/12/JavaScript-筑基/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赐我白日梦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/JavaScript-筑基/" itemprop="url">JavaScript -- 筑基</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-12T13:45:34+08:00">
-                2019-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>本片博客记录了我JavaScript筑基阶段的学习内容,JavaScript不是Java,但是我下意识的把它和java对比学习,有些地方比较有趣,有些地方从java角度看,简直匪夷所思,不过现在总体感觉下来,还算不错(不涉及ES5 ES6)</p>
-</blockquote>
-<p>我会从如下几个方便展开
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/12/JavaScript-筑基/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
-
-          </div>
-          
-
-
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
-            
-              <p class="site-author-name" itemprop="name">赐我白日梦</p>
-              <p class="site-description motion-element" itemprop="description">随笔</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">44</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
-
-  
 </div>
 
 
 
-  <div class="powered-by">
-  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
-    本站访客数:<span id="busuanzi_value_site_uv"></span>
-  </span>
-  </div>
-
-  <!--
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
-  </div>
-
-
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
--->
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
+<ul class="cube-pagination cube-pagination-7">
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
+    <li class="cube-pagination-prev disabled">
+        <span>« Prev</span>
+    </li>
+    
+    
         
-      </div>
+            
+            <li class="cube-pagination-index disabled">
+                <span>1</span>
+            </li>
+            
+        
+            
+            <li class="cube-pagination-index">
+                <a href="/page/2">2</a>
+            </li>
+            
+        
+            
+            <li class="cube-pagination-index">
+                <a href="/page/3">3</a>
+            </li>
+            
+        
+            
+            <li class="cube-pagination-index">
+                <a href="/page/4">4</a>
+            </li>
+            
+        
+            
+            <li class="cube-pagination-index">
+                <a href="/page/5">5</a>
+            </li>
+            
+        
     
 
     
+    <li class="cube-pagination-next">
+        <a href="/page/2/">Next »</a>
+    </li>
+    
+</ul>
 
-  </div>
+<!--其他组件后续添加-->
+        </div>
+        <div class="cube-right">
+            
 
-  
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
 </script>
 
 
 
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
 </body>
 </html>
-<!-- 页面点击小红心 -->
-<script type="text/javascript" src="/js/src/clicklove.js"></script>
