@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="多线程,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="拉呱:这是第一篇并发的博客,在后续的并发博文中,我会尽力整理出较全的关于并发的知识点,先却分开两个概念,并发与高并发">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程一 基本概念">
+<meta property="og:url" content="http://yoursite.com/2019/01/09/多线程一 多线程技能序言/index.html">
+<meta property="og:site_name" content="随笔">
+<meta property="og:description" content="拉呱:这是第一篇并发的博客,在后续的并发博文中,我会尽力整理出较全的关于并发的知识点,先却分开两个概念,并发与高并发">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-16T04:07:58.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程一 基本概念">
+<meta name="twitter:description" content="拉呱:这是第一篇并发的博客,在后续的并发博文中,我会尽力整理出较全的关于并发的知识点,先却分开两个概念,并发与高并发">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/09/多线程一 多线程技能序言/">
+
+
+
+
+
+  <title>多线程一 基本概念 | 随笔</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/09/多线程一 多线程技能序言/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">多线程一 基本概念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-09T21:52:06+08:00">
+                2019-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/多线程/" itemprop="url" rel="index">
+                    <span itemprop="name">多线程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>拉呱:这是第一篇并发的博客,在后续的并发博文中,我会尽力整理出较全的关于并发的知识点,先却分开两个概念,<strong>并发与高并发</strong><a id="more"></a>就是多线程操作相同资源时如何保证数据安全,线程安全以及合理利用资源.和它仅一字只差的是<strong>高并发</strong>,高并发是指<strong>服务能够处理很多请求,比如12306的抢票,处理不好,会降低用户的体验度,甚至是服务器宕机</strong></p>
+</blockquote>
+<h3 id="一-进程-amp-线程-amp-基本的线程机制"><a href="#一-进程-amp-线程-amp-基本的线程机制" class="headerlink" title="一 进程&amp;线程&amp;基本的线程机制"></a>一 进程&amp;线程&amp;基本的线程机制</h3><ul>
+<li>进程是<strong>运行在自己的地址空间内的自包容程序</strong>(一个程序至少包含一个进程,而一个进程至少包含一条线程),多任务操作系统周期性的将CPU在进程之间切换,来实现同时运行多个程序,尽管进程的运行歇歇停停,但是CPU的运算速度太快了,以至于给人一种进程一直运行而没有停的假象.<ul>
+<li>windows系统中的一个 .exe 的程序,实际上就是一个进程</li>
+</ul>
+</li>
+<li>线程就是进程中的一个单一的顺序执行流,因此单个进程可以拥有多个线程并发执行任务(底层的实现机制是切分CPU的时间片段),CPU给每个任务轮流的分配其执行的时间,以至于每个任务都觉得自己一直占用CPU.<ul>
+<li>线程一个理解为进程中的一个子任务<blockquote>
+<p> QQ就是一个进程,和好友视频聊天可以理解成一个线程</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>当然,如果程序确实运行在多核的机器上,那么有可能真的是在同时运行  </p>
+</blockquote>
+<ul>
+<li>好处: 可以使我们从单个线程这个层次抽身出来,而多任务和多线程也是使用多处理器系统的最合适的方式<blockquote>
+<p>尽管JAVASE5在并发中做出了显著的改进,但是仍然没有编译器验证和检查型异常(?)</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h3 id="二-线程带来的风险"><a href="#二-线程带来的风险" class="headerlink" title="二 线程带来的风险"></a>二 线程带来的风险</h3><h3 id="2-1活跃性问题"><a href="#2-1活跃性问题" class="headerlink" title="2.1活跃性问题:"></a>2.1活跃性问题:</h3><ol>
+<li><p><strong>死锁</strong></p>
+<blockquote>
+<p>哲学家问题,当哲学家们都不肯把手里的筷子借给其他人,最后的结果就是全部饿死</p>
+</blockquote>
+</li>
+<li><p><strong>饥饿</strong></p>
+<blockquote>
+<p>排队打饭,假设所有人都来这一个窗口排队打饭,打完饭也不走,可能就会导致比较瘦弱的女生吃不上饭而饥饿(反应在线程的优先级问题上)</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>高优先级吞噬所有低优先级的时间片<ul>
+<li>设置线程的优先级   <strong>setPrioriry(int newPriority)</strong>  </li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>线程被永久的堵塞在进入同步块的状态</p>
+</li>
+<li><p>等待的线程永远不会被唤醒</p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>活锁</strong></li>
+</ol>
+<blockquote>
+<p>独木桥问题,相互谦让,导致最后谁都过不去</p>
+</blockquote>
+<h3 id="2-2安全性问题"><a href="#2-2安全性问题" class="headerlink" title="2.2安全性问题"></a>2.2安全性问题</h3><ul>
+<li>原子性:访问互斥,同一时刻只允许一个线程对它进行操作为线程安全</li>
+<li>可见性:一条线程对主内存的修改可以及时的被其他线程看到</li>
+<li>有序性:一个线程观察其他线程中指令的执行顺序,由于指令重排序的存在,一般它们看到的结果都是杂乱无序的</li>
+</ul>
+<h3 id="非线程安全-amp-线程安全"><a href="#非线程安全-amp-线程安全" class="headerlink" title="非线程安全&amp;线程安全"></a>非线程安全&amp;线程安全</h3><ul>
+<li><p>多个线程对同一个实例对象中的实例变量进行并发访问,产生的后果就是脏读(读取到了被更改的数据)–存在非线程安全问题</p>
+</li>
+<li><p>获取到的对象的实例是经过同步处理的,不会出现脏读的现象–线程安全</p>
+</li>
+<li><p>说到线程的安全性问题,和<strong>重排序和happens-before法则</strong>是紧密相关的</p>
+</li>
+</ul>
+<h3 id="2-3性能问题"><a href="#2-3性能问题" class="headerlink" title="2.3性能问题"></a>2.3性能问题</h3><p><strong>多线程速度一定会快吗?</strong><br>关于性能,是具有多面性的,多线程不一定快,单核的处理器也可以实现多线程,就像烤烧饼,CPU分配给各个线程的时间片很短,但是来回的切换是有成本的<strong>但是并发通常是提高运行在单核处理器上的程序的性能</strong>,表面上看CPU在多个线程上进行切换很浪费时间,但是<strong>阻塞</strong>是这个问题变得不同,大多数情况下是因为<strong>IO</strong>或者<strong>进行过一项很复杂的计算</strong>,如果没有并发,整个程序都将会停止下来</p>
+<hr>
+<h3 id="什么是重排序"><a href="#什么是重排序" class="headerlink" title="什么是重排序?"></a>什么是重排序?</h3><h3 id="1-重排序的定义"><a href="#1-重排序的定义" class="headerlink" title="1:重排序的定义"></a>1:重排序的定义</h3><p>重排序就是<strong>编译器，处理器</strong>,在不改变程序执行结果的前提下,重新排序指令的执行顺序,以达到最佳的运行效果</p>
+<h3 id="2-分类"><a href="#2-分类" class="headerlink" title="2:分类"></a>2:分类</h3><ul>
+<li>编译器重排序</li>
+<li>处理器重排序</li>
+</ul>
+<h3 id="3-什么是数据依赖"><a href="#3-什么是数据依赖" class="headerlink" title="3: 什么是数据依赖"></a>3: 什么是数据依赖</h3><p>数据依赖指的是,某些指令存在某种先后关系,比如相邻的两行执行都访问通同一个变量,并且其中一个指令执行了写操作,那么,这两行指令就存在数据依赖,换言之,执行的顺序不能改变,否者得出错误的结果  </p>
+<p>因此,编译器和处理器仅仅对没有数据依赖的指令进行重排序</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读后写</td>
+<td>a=b ; b=1;</td>
+</tr>
+<tr>
+<td>写后读</td>
+<td>a=1; b=a;</td>
+</tr>
+<tr>
+<td>写后写</td>
+<td>a=1; a=2;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-什么是as-if-serial"><a href="#4-什么是as-if-serial" class="headerlink" title="4: 什么是as-if-serial?"></a>4: 什么是as-if-serial?</h3><p>在单线程的开发中程序员不需要知道指令是如何进行重排序的,只是简单认为程序是按顺序执行就行,故 意为:<strong>貌似是串行的</strong></p>
+<h3 id="5-多线程的中重排序问题"><a href="#5-多线程的中重排序问题" class="headerlink" title="5: 多线程的中重排序问题"></a>5: 多线程的中重排序问题</h3><p>举个例子,假设多个线程并发访问下面两个方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span> flag;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> a;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    a=<span class="number">1</span>;</span><br><span class="line">    flag=<span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">       <span class="keyword">int</span> b = a+<span class="number">1</span>;</span><br><span class="line">       System.out.println(<span class="string">"b=="</span>+b);</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码,a=1,flag=ture;显然没有依赖关系,因此可能会被重排序成flag=true; a=1;这时候就会出现问题,当执行到fl,ag=ture,cpu的执行权被另一个线程抢去执行write(),write()里面的输出语句输出的不再是2,而是其他意想不到的值</p>
+<h3 id="6-多线程中重排序问题的解决方法"><a href="#6-多线程中重排序问题的解决方法" class="headerlink" title="6: 多线程中重排序问题的解决方法"></a>6: 多线程中重排序问题的解决方法</h3><ul>
+<li>同步,给上面那两个方法加上锁,同一时刻,只允许一个持有该锁线程去访问同步方法,等它执行完释放锁后,其他线程才能去访问</li>
+</ul>
+<h3 id="什么是happens-before"><a href="#什么是happens-before" class="headerlink" title="什么是happens-before?"></a>什么是<strong>happens-before</strong>?</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1: 定义:"></a>1: 定义:</h4><ul>
+<li>happens-before 用来指定两个操作之间的执行顺序,提供跨线程的内存可见性</li>
+<li>在java的内存模型中,如果一个操作的执行结果需要对另一个操作可见,那么这两个操作之间必然存在happens-before的关系</li>
+</ul>
+<h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ul>
+<li>程序顺序规则 <ul>
+<li>单个线程中的每个操作,总是前一个操作happens-before于该线程的任意后续操作 </li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">1</span>; <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">int</span> b =<span class="number">2</span>; <span class="comment">//2</span></span><br><span class="line"><span class="keyword">int</span> c =<span class="number">3</span>;   <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+<p> 在上面代码中 1happens-before 2 3</p>
+<ul>
+<li>监视器规则<ul>
+<li>对于同一个锁的解锁,总是 happens-before于 随后对这个锁的加锁</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">private</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="comment">//do something ...</span></span><br><span class="line">        lock.unlock();  <span class="comment">//1 解锁</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">()</span></span>&#123;</span><br><span class="line">        lock.lock();  <span class="comment">// 加锁</span></span><br><span class="line">        <span class="comment">//do something ...</span></span><br><span class="line">        lock.unlock();</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">如上, <span class="number">1</span>的解锁,后跟着<span class="number">2</span>的加锁</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* <span class="keyword">volatile</span>变量规则</span><br><span class="line">    * 对一个<span class="keyword">volatile</span>域的写,happens-before于任意后续对这个变量的读</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* 传递性</span><br><span class="line">    * A happens-before B ; B happens-before C; 那么 A happens-before C</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">* Start 规则(线程启动规则)</span><br><span class="line">    * 如果ThreadA里面 启动了ThreadB,那么ThreadB.start() happens-before于线程B中的任意操作</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* Join 规则(线程终止规则)</span><br><span class="line">    * 和Start相反,线程中的所有操作,都优先发生于 对线程的终止检验, Thread.jion(); Thread.isAlive()</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">* 线程的中断规则:</span><br><span class="line">    * interrupt()优先发生于 被中断线程的代码,检测到中断事件的发生</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">* 对象终结规则</span><br><span class="line">    * 一个对象的初始化完成,先行于它的finalize()方法</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### happens-before 和 重排序的区别与联系</span><br><span class="line"></span><br><span class="line">两个操作具有happens-before关系,并不意味着前一个操作一定要在后一个操作之</span><br><span class="line">前执行,(假如两个操作没有数据依赖那么可能会被编译器处理器进行指令的重排序),他只是要求**前一个操作的执行结果**对后一个操作是可见的(也就是前一个操作不一定先开始,但是它一定要比后一个操作先结束)让其他线程看到结果,前一个操作肯定要把执行的结果,从他自己的**缓存中刷回到内存**  </span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">### 三. 什么是锁</span><br><span class="line"></span><br><span class="line">* 锁是工具,是作为并发共享数据,保证数据一致性的工具</span><br><span class="line"></span><br><span class="line">### 前言:锁的内存语义</span><br><span class="line"></span><br><span class="line">* 锁的获取与释放建立的happens-before关系</span><br><span class="line"></span><br><span class="line">### 锁存在于对象的哪里?</span><br><span class="line"></span><br><span class="line">&gt; **存在于对象头中**  </span><br><span class="line">&gt; 对象头中的信息  </span><br><span class="line">&gt; **Mark Word**:存储对象的hashset值,锁信息  </span><br><span class="line">&gt; **Class MetaData Address**:存储对象所属类的位置  </span><br><span class="line">&gt; **Array Length** : 数组对象特有的标记数组的长度</span><br><span class="line"></span><br><span class="line">### 1 内置锁</span><br><span class="line"></span><br><span class="line">&gt; java中每一个对象都可被当作同步的锁,这些锁就叫做内置锁,例如 Synchronized修饰方法,获取到<span class="keyword">this</span>对象锁,修饰静态方法,获取到Class类锁,同步代码块里面可以设置<span class="keyword">this</span>对象锁,非<span class="keyword">this</span>对象锁等等</span><br><span class="line"></span><br><span class="line">### 2 互斥锁(排它锁)和共享锁</span><br><span class="line"></span><br><span class="line">前者指该锁一次性只能被一条线程占有,后者表示该锁一次性可以被多条线程占有<span class="keyword">synchronized</span>和ReentarntLock都是互斥的,而ReentrantReadWriteLock中的读锁,是共享的,读读共享</span><br><span class="line"></span><br><span class="line">### 3 偏向锁/轻量级锁/重量级锁</span><br><span class="line"></span><br><span class="line">这三种锁是指锁的状态,并且是**针对<span class="keyword">synchronized</span>**,java5通过引入锁的升级来实现高效的<span class="keyword">synchronized</span>,这三种锁的状态,是通过对象监视器在对象头中的字段来区分</span><br><span class="line"></span><br><span class="line">* 偏向锁是指一段同步代码块一直被一条线程锁访问,那么以后该线程就会自动的获取锁,来降低获取锁的代价</span><br><span class="line">* 轻量级锁是指,在偏向锁的基础上,出现其他线程来访问此代码,偏向锁升级为轻量级锁,其他线程通过自旋,尝试获取锁</span><br><span class="line"></span><br><span class="line">**运行流程**:</span><br><span class="line">&gt; 当前线程获取到锁,修改锁对象头里面的Mark Word里面的锁标志位,然后去执行同步代码体,这时候,其他的线程也对象头信息复制到虚拟机栈,企图去更改锁标志位,但是上一个线程没有释放,他就不停的尝试去修改,直到对象锁被释放了为止</span><br><span class="line"></span><br><span class="line">* 当锁是轻量级锁的时候,其他线程来访问代码,会自旋,但是当它自旋到一定次数之后还是没有获取到锁,就阻塞.轻量级锁也就转换成重量级锁</span><br><span class="line"></span><br><span class="line">### 4. 重入锁</span><br><span class="line"></span><br><span class="line">可重入锁,有叫递归锁,就是说某一个线程运气比较好,拿到锁之后,在释放之前,再次拿到了这个锁,而且不会被锁阻塞 </span><br><span class="line"></span><br><span class="line">* ReentrantLock就是一把可重入的锁  </span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 经典的验证 锁的重复问题 ,在单一的线程下, a()  想在  未释放锁  的前提下  调用b(),前提就是可冲入锁</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    System.out.println(<span class="string">"a"</span>);</span><br><span class="line">    b();</span><br><span class="line">    lock.unlock();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    System.out.println(<span class="string">"b"</span>);</span><br><span class="line">    lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实例二: synchronized也是一把重入锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">safe</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method01</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ....</span><br><span class="line">    method02();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method02</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>method01() 和 method02 () 都是线程安全的,假如当前线程拿到对象锁后,<strong>在执行method01()时,碰到了method(),他可以重复拿到锁,而不会被阻塞!</strong>  </p>
+</li>
+<li><p>容易和Synchronized方法,或者代码块的特性混淆:两条线程分别竞争执行method01()和method02() ,无论哪条线程正在执行 Synchronized方法也好,同步代码块也好,另一条线程都不能执行其他任意Synchronized方法或者代码块</p>
+</li>
+<li><p>其中<strong>Synchronized  和 locked  都是可重入锁!</strong></p>
+</li>
+<li><p>如过多个线程使用多个锁对象,一定是一部执行,锁不住线程!</p>
+</li>
+</ul>
+<h3 id="5-自旋锁"><a href="#5-自旋锁" class="headerlink" title="5.  自旋锁"></a>5.  自旋锁</h3><ul>
+<li>所谓自旋锁,实际上就是在空转cup的时间片,while(true) 抢到cup的执行权,却不做任何事,while(true){},等着其他线程把cup的执行权抢走!</li>
+</ul>
+<h3 id="6-死锁"><a href="#6-死锁" class="headerlink" title="6.  死锁"></a>6.  死锁</h3><ul>
+<li>当一个线程永远持有一把锁还不释放,其他线程一直在等待… </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">siSuo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">Object a = <span class="keyword">new</span> Object();</span><br><span class="line">Object b = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method01</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (a)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">synchronized</span>(b)&#123;</span><br><span class="line">            System.out.println(<span class="string">"method1执行了"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method02</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (b)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">synchronized</span>(a)&#123;</span><br><span class="line">            System.out.println(<span class="string">"method2执行了"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    siSuo siSuo = <span class="keyword">new</span> siSuo();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">        siSuo.method01();</span><br><span class="line">    &#125;).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">        siSuo.method02();</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7-公平锁"><a href="#7-公平锁" class="headerlink" title="7.  公平锁"></a>7.  公平锁</h3><p><strong>Lock锁分为公平锁和非公平锁,所谓公平锁,就是表示线程获取锁的顺序,是按照线程加锁的顺序来实现的,也就是FIFO的顺序先进先出的顺序,而非公平锁描述的则是一种锁的随机抢占机制,还可能会导致一些线程根本抢不着锁而被饿死,结果就是不公平了</strong></p>
+<h3 id="8-乐观锁和悲观锁"><a href="#8-乐观锁和悲观锁" class="headerlink" title="8.  乐观锁和悲观锁"></a>8.  乐观锁和悲观锁</h3><ul>
+<li><p><strong>就像生活中乐观的人,什么事都往好处想,因此它每次拿到数据之后呢,都认为别人不会来修改它的值,</strong>也就是读写不互斥<strong>,但是为了安全,他需要在更新数据之前判断一下,有没有人修改过,java.util.Concurrent.atomic包下的原子类,就是乐观锁的实现方法cas完成的</strong></p>
+</li>
+<li><p><strong>就像生活中悲观的人,什么事都往坏处想,因此它在每次拿数据的时候,都会加上锁阻塞住其他的线程,因为它总是想其他线程肯定回来修改它拿到的数据,传统的关系型数据库中就大量的使用了悲观锁,如行锁,表锁,读锁,写锁等等,Synchronized 和 ReentrantLock都是悲观锁思想的实现</strong></p>
+</li>
+</ul>
+<h3 id="9-分段锁"><a href="#9-分段锁" class="headerlink" title="9. 分段锁"></a>9. 分段锁</h3><p><strong>分段式锁是一种设计理念</strong>分段锁的设计目的就是细化锁的颗粒度,当操作不需要操作整个数组的时候,仅仅获取它想要的那一段数据的锁就可以,而其他线程仍然可以获取其他段的锁的数据的内容</p>
+<ul>
+<li><p>ConcurrentHashMap就是通过分段式锁来实现的高效并发Map集合,它的分段式锁叫segment(分片),每一段内部有一个Entry数组,数组中的每一个元素即是一个链表,也是一个ReentrantLock,因此当我们往里面put的时候,只需要获取到此段的锁就可以,实现了并行put,同时gut()无锁</p>
+<hr>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/多线程/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/12/两个Demo/" rel="next" title="两个Demo">
+                <i class="fa fa-chevron-left"></i> 两个Demo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/10/多线程二 基本技能/" rel="prev" title="多线程二 基本技能">
+                多线程二 基本技能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-进程-amp-线程-amp-基本的线程机制"><span class="nav-number">1.</span> <span class="nav-text">一 进程&amp;线程&amp;基本的线程机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-线程带来的风险"><span class="nav-number">2.</span> <span class="nav-text">二 线程带来的风险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1活跃性问题"><span class="nav-number">3.</span> <span class="nav-text">2.1活跃性问题:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2安全性问题"><span class="nav-number">4.</span> <span class="nav-text">2.2安全性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非线程安全-amp-线程安全"><span class="nav-number">5.</span> <span class="nav-text">非线程安全&amp;线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3性能问题"><span class="nav-number">6.</span> <span class="nav-text">2.3性能问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是重排序"><span class="nav-number">7.</span> <span class="nav-text">什么是重排序?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-重排序的定义"><span class="nav-number">8.</span> <span class="nav-text">1:重排序的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-分类"><span class="nav-number">9.</span> <span class="nav-text">2:分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-什么是数据依赖"><span class="nav-number">10.</span> <span class="nav-text">3: 什么是数据依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-什么是as-if-serial"><span class="nav-number">11.</span> <span class="nav-text">4: 什么是as-if-serial?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-多线程的中重排序问题"><span class="nav-number">12.</span> <span class="nav-text">5: 多线程的中重排序问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-多线程中重排序问题的解决方法"><span class="nav-number">13.</span> <span class="nav-text">6: 多线程中重排序问题的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是happens-before"><span class="nav-number">14.</span> <span class="nav-text">什么是happens-before?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-定义"><span class="nav-number">14.1.</span> <span class="nav-text">1: 定义:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#规则"><span class="nav-number">14.2.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-自旋锁"><span class="nav-number">15.</span> <span class="nav-text">5.  自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-死锁"><span class="nav-number">16.</span> <span class="nav-text">6.  死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-公平锁"><span class="nav-number">17.</span> <span class="nav-text">7.  公平锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-乐观锁和悲观锁"><span class="nav-number">18.</span> <span class="nav-text">8.  乐观锁和悲观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-分段锁"><span class="nav-number">19.</span> <span class="nav-text">9. 分段锁</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

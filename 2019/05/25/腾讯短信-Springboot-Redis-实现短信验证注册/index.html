@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 未过期,直接退出发短信的方法 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯短信+Springboot+Redis 实现短信验证注册">
+<meta property="og:url" content="http://yoursite.com/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/index.html">
+<meta property="og:site_name" content="随笔">
+<meta property="og:description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 未过期,直接退出发短信的方法 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-25T12:42:25.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="腾讯短信+Springboot+Redis 实现短信验证注册">
+<meta name="twitter:description" content="使用redis做缓存实现用户的注册功能:  异步请求发送短信,给 发送短信的按钮 绑定异步事件 调用发送短信逻辑发送短信 缓存 key1:验证码 缓存 key2:短信发送时刻的时间     用户提交表单 包含用户的基本信息+验证码 取出用户的验证码去redis中查找 若不存在返回异常 未过期,直接退出发短信的方法 存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/">
+
+
+
+
+
+  <title>腾讯短信+Springboot+Redis 实现短信验证注册 | 随笔</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">腾讯短信+Springboot+Redis 实现短信验证注册</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-25T19:50:19+08:00">
+                2019-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用redis做缓存实现用户的注册功能:</p>
+<ul>
+<li>异步请求发送短信,给 发送短信的按钮 绑定异步事件<ul>
+<li>调用发送短信逻辑发送短信<ul>
+<li>缓存 key1:验证码</li>
+<li>缓存 key2:短信发送时刻的时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>用户提交表单 包含用户的基本信息+验证码<ul>
+<li>取出用户的验证码去redis中查找<ul>
+<li>若不存在返回异常</li>
+<li>未过期,直接退出发短信的方法</li>
+<li>存在根据key1取出验证码,和用户提交的比对,相同继续注册,否则返回异常</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<p>主要调用腾讯短信的接口实现如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.sms.Utils;</span><br><span class="line"><span class="keyword">import</span> com.github.qcloudsms.SmsSingleSender;</span><br><span class="line"><span class="keyword">import</span> com.github.qcloudsms.SmsSingleSenderResult;</span><br><span class="line"><span class="keyword">import</span> com.github.qcloudsms.httpclient.HTTPException;</span><br><span class="line"><span class="keyword">import</span> com.sms.properties.SmsRepository;</span><br><span class="line"><span class="keyword">import</span> org.json.JSONException;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.EnableConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.StringRedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 发送短信的工具类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Changwu</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/5/25 14:00</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(SmsRepository.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SendSms</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    SmsRepository smsRepository;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    StringRedisTemplate stringRedisTemplate;</span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  发送短信</span></span><br><span class="line"><span class="comment">     *  查看redis缓存中是否存在未过期的验证码信息,</span></span><br><span class="line"><span class="comment">     *  如果存在直接返回,拒绝发送验证码,</span></span><br><span class="line"><span class="comment">     *  否则重新发送</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> photoNumber</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span>  发送的验证码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sendSms</span><span class="params">(String photoNumber)</span></span>&#123;</span><br><span class="line">        String key=smsRepository.getPREFIX()+photoNumber;</span><br><span class="line">        String lastTime = stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">        <span class="comment">// 判断发送的时长</span></span><br><span class="line">        <span class="keyword">if</span> (lastTime!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            Long aLong = Long.valueOf(lastTime);</span><br><span class="line">            logger.info(<span class="string">"lastTime==="</span>+aLong);</span><br><span class="line">            <span class="keyword">if</span> (System.currentTimeMillis()-aLong&lt;smsRepository.getExpireTime())&#123;</span><br><span class="line">                logger.warn(<span class="string">"手机号&#123;&#125;,发送短信频率过高被拒绝..."</span>+photoNumber);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 生成随机数</span></span><br><span class="line">        <span class="keyword">this</span>.msg=createRodom();</span><br><span class="line">        <span class="comment">// 发送短信</span></span><br><span class="line">       String errmsg = send(photoNumber,msg);</span><br><span class="line">       <span class="keyword">if</span> (!errmsg.equals(<span class="string">"OK"</span>))&#123;</span><br><span class="line">           <span class="keyword">this</span>.msg=errmsg;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"故意整出来的异常"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">        <span class="comment">// 把发送短信的时间写入缓存</span></span><br><span class="line">        stringRedisTemplate.opsForValue().set(key,String.valueOf(System.currentTimeMillis()),smsRepository.getExpireTime()/<span class="number">1000</span>, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> phone</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> msg</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">send</span><span class="params">(String phone,String msg)</span></span>&#123;</span><br><span class="line">        SmsSingleSenderResult result =<span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            String time = String.valueOf(smsRepository.getExpireTime()/<span class="number">60000</span>);</span><br><span class="line">            <span class="comment">// 模板需要的两个参数 , 验证码+过期时间</span></span><br><span class="line">            String[] params = &#123;msg,time&#125;;</span><br><span class="line">            SmsSingleSender ssender = <span class="keyword">new</span> SmsSingleSender(smsRepository.getAppid(), smsRepository.getAppkey());</span><br><span class="line">            <span class="comment">// 单发短信</span></span><br><span class="line">            result = ssender.sendWithParam(</span><br><span class="line">                    <span class="string">"86"</span>,  <span class="comment">// 国家码，如 86 为中国</span></span><br><span class="line">                    phone,  <span class="comment">// 不带国家码的手机号</span></span><br><span class="line">                    smsRepository.getTemplateId(),  <span class="comment">// 模板Id 指定信息内容</span></span><br><span class="line">                    params, <span class="comment">// 参数内容</span></span><br><span class="line">                    smsRepository.getSmsSign(),  <span class="comment">// 签名, 如果为空,会使用默认的签名</span></span><br><span class="line">                    <span class="string">""</span>, <span class="comment">// 扩展码，可填空</span></span><br><span class="line">                    <span class="string">""</span>); <span class="comment">// 服务端原样返回的参数，可填空</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (HTTPException e) &#123;</span><br><span class="line">            <span class="comment">// HTTP响应码错误</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">            <span class="comment">// json解析错误</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="comment">// 网络IO错误</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 保存验证码到redis</span></span><br><span class="line">        stringRedisTemplate.opsForValue().set(phone,msg,<span class="number">5</span>,TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">return</span> result.errMsg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建六位随机数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">createRodom</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        String result=<span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            result+=random.nextInt(<span class="number">10</span>);</span><br><span class="line">        &#125;</span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置类如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Changwu</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/5/25 15:39</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"sms"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SmsRepository</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 短信应用SDK AppID  // 1400开头</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> appid ;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 短信应用SDK AppKey</span></span><br><span class="line">    <span class="keyword">private</span>  String appkey ;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 短信模板ID，需要在短信应用中申请</span></span><br><span class="line">    <span class="keyword">private</span>  <span class="keyword">int</span> templateId  ; <span class="comment">// <span class="doctag">NOTE:</span> 这里的模板ID`7839`只是一个示例，真实的模板ID需要在短信控制台中申请</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// <span class="doctag">NOTE:</span> 这里的签名"腾讯云"只是一个示例，真实的签名需要在短信控制台中申请，另外签名参数使用的是`签名内容`，而不是`签名ID`</span></span><br><span class="line">    <span class="keyword">private</span>   String smsSign;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 缓存的前缀</span></span><br><span class="line">    <span class="keyword">private</span> String PREFIX;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 过期时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expireTime;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9999</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">   host:</span> <span class="number">192.168</span><span class="number">.43</span><span class="number">.150</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 短信配置</span></span><br><span class="line"><span class="attr">sms:</span></span><br><span class="line"><span class="attr">  appid:</span> <span class="string">XXX</span>  <span class="comment">#短信应用SDK AppID</span></span><br><span class="line"><span class="attr">  appkey:</span> <span class="string">XXX</span>  <span class="comment">#短信应用SDK AppKey</span></span><br><span class="line"><span class="attr">  templateId:</span> <span class="number">329108</span>  <span class="comment"># 短信模板ID，需要在短信应用中申请</span></span><br><span class="line"><span class="attr">  smsSign:</span> <span class="string">LFJHelper</span> <span class="comment"># 签名--自定义</span></span><br><span class="line"><span class="attr">  expireTime:</span> <span class="number">60000</span> <span class="comment"># 过期时间,默认六十秒</span></span><br><span class="line"><span class="attr">  PREFIX:</span> <span class="string">PHOTO_SMS</span>  <span class="comment"># 缓存进redis的key</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/15/ubuntu16搭建文件服务器/" rel="next" title="ubuntu16搭建文件服务器">
+                <i class="fa fa-chevron-left"></i> ubuntu16搭建文件服务器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" rel="prev" title="TCP/IP 协议与 HTTP协议">
+                TCP/IP 协议与 HTTP协议 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

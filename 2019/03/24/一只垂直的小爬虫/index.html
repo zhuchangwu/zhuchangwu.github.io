@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="爬虫,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="今天的主角是一只垂直的小爬虫,爬取工大要闻,(我爱我的工大),其实这个小爬虫,还有很多不足,但是拥有它,整个Internet好像还挺透明的  这只垂直的小爬虫,使用如下实现  HttpClient  点击进入官方文档 Jsoup   点击进入官方文档 多线程 jdbc">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一只垂直的小爬虫">
+<meta property="og:url" content="http://yoursite.com/2019/03/24/一只垂直的小爬虫/index.html">
+<meta property="og:site_name" content="随笔">
+<meta property="og:description" content="今天的主角是一只垂直的小爬虫,爬取工大要闻,(我爱我的工大),其实这个小爬虫,还有很多不足,但是拥有它,整个Internet好像还挺透明的  这只垂直的小爬虫,使用如下实现  HttpClient  点击进入官方文档 Jsoup   点击进入官方文档 多线程 jdbc">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-28T03:05:05.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一只垂直的小爬虫">
+<meta name="twitter:description" content="今天的主角是一只垂直的小爬虫,爬取工大要闻,(我爱我的工大),其实这个小爬虫,还有很多不足,但是拥有它,整个Internet好像还挺透明的  这只垂直的小爬虫,使用如下实现  HttpClient  点击进入官方文档 Jsoup   点击进入官方文档 多线程 jdbc">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/24/一只垂直的小爬虫/">
+
+
+
+
+
+  <title>一只垂直的小爬虫 | 随笔</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/24/一只垂直的小爬虫/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一只垂直的小爬虫</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T22:44:20+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>今天的主角是<strong>一只垂直的小爬虫</strong>,爬取工大要闻,(我爱我的工大),其实这个小爬虫,还有很多不足,但是拥有它,整个Internet好像还挺透明的</p>
+</blockquote>
+<p>这只垂直的小爬虫,使用如下实现</p>
+<ul>
+<li><strong>HttpClient</strong>  <a href="http://hc.apache.org/httpcomponents-client-4.5.x/tutorial/html/index.html" target="_blank" rel="noopener">点击进入官方文档</a></li>
+<li><strong>Jsoup</strong>   <a href="https://jsoup.org/cookbook/introduction/parsing-a-document" target="_blank" rel="noopener">点击进入官方文档</a></li>
+<li><strong>多线程</strong></li>
+<li><strong>jdbc</strong><a id="more"></a>
+</li>
+</ul>
+<p>实现的思路很简单,我从主函数开始简单叙述一下整个运行流程,<strong>第一步</strong>:收集需要爬取的url地址,容器我选择的是<strong>ConcurrentLinkedQueue</strong>非阻塞队列,它底层使用Unsafe实现,要的就是它线程安全的特性</p>
+<p>主函数代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    <span class="keyword">static</span> String url = <span class="string">"http://www.qlu.edu.cn/38/list.htm"</span>;</span><br><span class="line">    <span class="comment">// 添加url任务</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ConcurrentLinkedQueue&lt;String&gt;  <span class="title">add</span><span class="params">( ConcurrentLinkedQueue&lt;String&gt; queue)</span></span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">19</span>;i++)&#123;</span><br><span class="line">                String subString = StringUtils.substringBefore(url, <span class="string">".htm"</span>);</span><br><span class="line">                queue.add(subString+i+<span class="string">".htm"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          <span class="keyword">return</span> queue;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ConcurrentLinkedQueue&lt;String&gt; queue = <span class="keyword">new</span> ConcurrentLinkedQueue();</span><br><span class="line">        queue.add(url);</span><br><span class="line">        ConcurrentLinkedQueue&lt;String&gt; newQueue = add(queue);</span><br><span class="line">        <span class="comment">// 多线程下载解析</span></span><br><span class="line">        TPoolForDownLoadRootUrl.downLoadRootTaskPool(queue);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>第二步:</strong>把url列表丢线程池:</p>
+<p>我使用的线程池是<strong>newCachedThreadPool</strong> 根据提交的任务数,动态分配线程</p>
+<p>线程池里面干了这么几件事,下载源html</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  下载html的业务实现</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Changwu</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/3/24 11:13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">downLoadHtml</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Logger logger = Logger.getLogger(downLoadHtml.class);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据url 下载网页源码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> url</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">downLoadHtmlByUrl</span><span class="params">(String url)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        CloseableHttpClient httpClient = HttpClients.createDefault();</span><br><span class="line">        HttpGet httpGet = <span class="keyword">new</span> HttpGet(url);</span><br><span class="line">        <span class="comment">//设置请求头</span></span><br><span class="line">        httpGet.setHeader(<span class="string">"User-Agent"</span>,<span class="string">"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36"</span>);</span><br><span class="line"></span><br><span class="line">        CloseableHttpResponse response = httpClient.execute(httpGet);</span><br><span class="line">        logger.info(<span class="string">"请求"</span>+url+<span class="string">"状态码为"</span>+response.getStatusLine().getStatusCode());</span><br><span class="line">        HttpEntity entity = response.getEntity();</span><br><span class="line">        String result = EntityUtils.toString(entity, <span class="string">"utf-8"</span>);</span><br><span class="line">        <span class="keyword">return</span>  result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>解析rootUrl,目的是拿到新闻主页的url,因为新闻的正文,在那里面,边解析遍封装RootBean</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解析源html.封装成一级Bean对象并返回</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> sourceHtml</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;RootBean&gt; <span class="title">getRootBeanList</span><span class="params">(String sourceHtml)</span> </span>&#123;</span><br><span class="line">    LinkedList&lt;RootBean&gt; rootBeanList = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">    Document doc = Jsoup.parse(sourceHtml);</span><br><span class="line">    Elements elements = doc.select(<span class="string">"#wp_news_w6 ul li"</span>);</span><br><span class="line">    String rootUrl = <span class="string">"http://www.qlu.edu.cn"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Element element : elements) &#123;</span><br><span class="line">        RootBean rootBean = <span class="keyword">new</span> RootBean();</span><br><span class="line">        <span class="comment">// 获取url并拼装</span></span><br><span class="line">        String href = element.child(<span class="number">0</span>).child(<span class="number">0</span>).attr(<span class="string">"href"</span>);</span><br><span class="line">        <span class="comment">// 获取title</span></span><br><span class="line">        String title = element.text();</span><br><span class="line">        String[] split = title.split(<span class="string">"\\s+"</span>);</span><br><span class="line">        <span class="comment">//封装</span></span><br><span class="line">        System.out.println(title);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (split.length &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">            String s = element.outerHtml();</span><br><span class="line">            String regex = <span class="string">"class=\"news_meta\"&gt;.*"</span>;</span><br><span class="line">            Pattern compile = Pattern.compile(regex);</span><br><span class="line">            Matcher matcher = compile.matcher(s);</span><br><span class="line">            <span class="keyword">if</span> (matcher.find()) &#123;</span><br><span class="line"></span><br><span class="line">                String group = matcher.group(<span class="number">0</span>);</span><br><span class="line">                String ss = StringUtils.substring(group, <span class="number">18</span>);</span><br><span class="line">                ss = StringUtils.substringBefore(ss, <span class="string">"&lt;/span&gt; &lt;/li&gt;"</span>);</span><br><span class="line">                rootBean.setPostTime(ss);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        rootBean.setTitle(split[<span class="number">0</span>]);</span><br><span class="line">        rootBean.setUrl(rootUrl + href);</span><br><span class="line"></span><br><span class="line">        rootBeanList.add(rootBean);</span><br><span class="line">        <span class="comment">/*System.out.println();</span></span><br><span class="line"><span class="comment">        System.out.println(split[0]);</span></span><br><span class="line"><span class="comment">        System.out.println();*/</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rootBeanList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>类似,处理二级任务,这里使用到了正则表达式,原来没好好学,今天用的时候,完全蒙,还好慢慢悠悠整出来了,这块这要是观察源html,根据特性,使用jsoup提供的选择器选择,剪切,拼接出我们想要的内容,然后封装</p>
+<p>为啥说是垂直的小爬虫,它只适合爬取我学校新闻,看下面的代码,没办法,只能拼凑剪切,最坑的是,100条新闻中,99条标题放在<a></a>里面,总有那么一条放在了<span></span>里面, 这个时候,就不得不去改刚才写好的规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析封装二级任务</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> htmlSouce</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;PojoBean&gt; <span class="title">getPojoBeanByHtmlSource</span><span class="params">(String htmlSouce, RootBean bean)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        LinkedList&lt;PojoBean&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        PojoBean pojoBean = <span class="keyword">new</span> PojoBean();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 解析</span></span><br><span class="line">        Document doc = Jsoup.parse(htmlSouce);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 编辑</span></span><br><span class="line">        Elements elements1 = doc.select(<span class="string">".arti_metas"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Element element : elements1) &#123;</span><br><span class="line"></span><br><span class="line">            String text = element.text();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 编辑</span></span><br><span class="line">            String regex = <span class="string">"(责任编辑：.*)"</span>;</span><br><span class="line">            Pattern compile = Pattern.compile(regex);</span><br><span class="line">            Matcher matcher = compile.matcher(text);</span><br><span class="line">            String editor = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (matcher.find()) &#123;</span><br><span class="line">                <span class="comment">//System.out.println(matcher.group(group));</span></span><br><span class="line">                editor = matcher.group(<span class="number">1</span>);</span><br><span class="line">                editor = StringUtils.substring(editor, <span class="number">5</span>);</span><br><span class="line">                <span class="comment">//System.out.println(editor);</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 作者</span></span><br><span class="line">            regex = <span class="string">"(作者：.*出处)"</span>;</span><br><span class="line">            compile = Pattern.compile(regex);</span><br><span class="line">            matcher = compile.matcher(text);</span><br><span class="line">            String author = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (matcher.find()) &#123;</span><br><span class="line">                <span class="comment">//System.out.println(matcher.group(group));</span></span><br><span class="line">                author = matcher.group(<span class="number">1</span>);</span><br><span class="line">                author = StringUtils.substring(author, <span class="number">3</span>);</span><br><span class="line">                author = StringUtils.substringBefore(author, <span class="string">"出处"</span>);</span><br><span class="line">                <span class="comment">//System.out.println(author);</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 出处</span></span><br><span class="line">            regex = <span class="string">"(出处：.*责任编辑)"</span>;</span><br><span class="line">            compile = Pattern.compile(regex);</span><br><span class="line">            matcher = compile.matcher(text);</span><br><span class="line">            String source = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (matcher.find()) &#123;</span><br><span class="line">                source = matcher.group(<span class="number">1</span>);</span><br><span class="line">                source = StringUtils.substring(source, <span class="number">3</span>);</span><br><span class="line">                source = StringUtils.substringBefore(source, <span class="string">"责任编辑"</span>);</span><br><span class="line">                <span class="comment">//  System.out.println(source);</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 正文</span></span><br><span class="line">            Elements EBody = doc.select(<span class="string">".wp_articlecontent"</span>);</span><br><span class="line">            String body = EBody.first().text();</span><br><span class="line">            <span class="comment">// System.out.println(body);</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 封装</span></span><br><span class="line">            pojoBean.setAuthor(author);</span><br><span class="line">            pojoBean.setBody(body);</span><br><span class="line">            pojoBean.setEditor(editor);</span><br><span class="line">            pojoBean.setSource(source);</span><br><span class="line">            pojoBean.setUrl(bean.getUrl());</span><br><span class="line">            pojoBean.setPostTime(bean.getPostTime());</span><br><span class="line">            pojoBean.setTitle(bean.getTitle());</span><br><span class="line">            list.add(pojoBean);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>持久化,使用的是底册的JDBC</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 持久化单个pojo</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pojo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertOnePojo</span><span class="params">(PojoBean pojo)</span> <span class="keyword">throws</span> ClassNotFoundException, SQLException </span>&#123;</span><br><span class="line">        <span class="comment">// 注册驱动</span></span><br><span class="line">        Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line">        <span class="comment">// 连接</span></span><br><span class="line">        Connection connection = DriverManager.getConnection(<span class="string">"jdbc:mysql://localhost:3306/spider"</span>, <span class="string">"root"</span>, <span class="string">"root"</span>);</span><br><span class="line">        String sql = <span class="string">"insert into qluspider (title,url,post_time,insert_time,author,source,editor,body) values (?,?,?,?,?,?,?,?)"</span>;</span><br><span class="line">        PreparedStatement ps = connection.prepareStatement(sql);</span><br><span class="line">        <span class="comment">// 填充sql</span></span><br><span class="line">        ps.setString(<span class="number">1</span>,pojo.getTitle());</span><br><span class="line">        ps.setString(<span class="number">2</span>,pojo.getUrl());</span><br><span class="line">        <span class="comment">// 把字符串转换成日期</span></span><br><span class="line">        ps.setTimestamp(<span class="number">3</span>,<span class="keyword">new</span> java.sql.Timestamp(SpiderUtil.stringToDate(pojo.getPostTime()).getTime()));</span><br><span class="line">        ps.setTimestamp(<span class="number">4</span>,<span class="keyword">new</span> java.sql.Timestamp(<span class="keyword">new</span> Date().getTime()));</span><br><span class="line">        ps.setString(<span class="number">5</span>,pojo.getAuthor());</span><br><span class="line">        ps.setString(<span class="number">6</span>,pojo.getSource());</span><br><span class="line">        ps.setString(<span class="number">7</span>,pojo.getEditor());</span><br><span class="line">        ps.setString(<span class="number">8</span>,pojo.getBody());</span><br><span class="line"></span><br><span class="line">        ps.execute();</span><br><span class="line"></span><br><span class="line">        connection.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>拿到的新的url称作是二级</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Logger logger = Logger.getLogger(TPoolForDownLoadRootUrl.class);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 下载,解析 根url的线程池</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">downLoadRootTaskPool</span><span class="params">(ConcurrentLinkedQueue queue)</span> </span>&#123;</span><br><span class="line">    ExecutorService executor = Executors.newCachedThreadPool();</span><br><span class="line">    <span class="comment">//ExecutorService executor = Executors.newFixedThreadPool(5);</span></span><br><span class="line">    <span class="keyword">for</span> (  <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=queue.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        executor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    logger.info(<span class="string">"1号线程池开启,将要下载解析root任务"</span>);</span><br><span class="line">                    <span class="comment">// 获取根任务url</span></span><br><span class="line">                    String url = (String) queue.poll();</span><br><span class="line"></span><br><span class="line">                    logger.info(<span class="string">"根URL=="</span> + url);</span><br><span class="line">                    <span class="keyword">if</span> (StringUtils.isNotBlank(url)) &#123;</span><br><span class="line">                        <span class="comment">// 下载当前url对应的rootHtml</span></span><br><span class="line">                        String sourceHtml = downLoadHtml.downLoadHtmlByUrl(url);</span><br><span class="line">                        <span class="comment">// 解析rootHtml里面所有的RootBean对象</span></span><br><span class="line">                        List&lt;RootBean&gt; rootBeanList = parseHtmlByJsoup.getRootBeanList(sourceHtml);</span><br><span class="line">                        <span class="comment">// 二级任务开始</span></span><br><span class="line">                        <span class="keyword">for</span> (RootBean rootBean : rootBeanList) &#123;</span><br><span class="line">                            logger.info(<span class="keyword">this</span> + <span class="string">"进入二级任务"</span>);</span><br><span class="line">                            String subUrl = rootBean.getUrl();</span><br><span class="line">                            <span class="comment">// 下载二级任务 html</span></span><br><span class="line">                            String htmlSouce = downLoadHtml.downLoadHtmlByUrl(subUrl);</span><br><span class="line">                            <span class="comment">// 解析封装</span></span><br><span class="line">                            List&lt;PojoBean&gt; pojoList = parseHtmlByJsoup.getPojoBeanByHtmlSource(htmlSouce, rootBean);</span><br><span class="line">                            <span class="comment">// 持久化</span></span><br><span class="line">                            logger.info(<span class="keyword">this</span> + <span class="string">"将持久化"</span> + subUrl + <span class="string">"中的二级任务"</span>);</span><br><span class="line">                            Persistence.insertPojoListToDB(pojoList);</span><br><span class="line">                            logger.info(<span class="string">"持久化完成......."</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    System.out.println();</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/爬虫/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/19/Hibernate-Validator/" rel="next" title="Hibernate-Validator">
+                <i class="fa fa-chevron-left"></i> Hibernate-Validator
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/28/redis基础/" rel="prev" title="Redis基础">
+                Redis基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
