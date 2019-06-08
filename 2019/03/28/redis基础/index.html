@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>Redis基础 | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">Redis基础</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-03-28
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/Redis/">#Redis</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <blockquote>
+<p>本篇博客整理了一些关于redis基础相关的内容,主要会从一下几个方面展开, 其中有很多命令,其实也很重要,后期代码控制redis时,api基本上约等于命令</p>
+</blockquote>
+<ul>
+<li>常识</li>
+<li>redis的五大数据类型</li>
+<li>常用命令</li>
+<li>RDB 与 AOF</li>
+<li>redis的事务</li>
+<li>主从复制-读写分离</li>
+</ul>
+<a id="more"></a>
+<h2 id="常识补充"><a href="#常识补充" class="headerlink" title="常识补充"></a>常识补充</h2><p><a href="https://redis.io/" target="_blank" rel="noopener">点击进入redis官网</a></p>
+<p>redis简介(REmote dIctionary Server 远程字典服务器):</p>
+<ul>
+<li>是完全开源免费的,由C语言编写的,一个高性能的(key/value)分布式内存数据库,<strong>基于内存运行, 并支持持久化的Nosql数据库</strong>,时下也是超级人们的nosql数据库,被称为” 数据结构服务器 “</li>
+</ul>
+<p>提前剧透,redis关于key-value的三大特点:</p>
+<ol>
+<li>redis是支持持久化的! 我们可以控制 数据 何时,用何种方式 保存到磁盘中,每次重启再次加载该文件,可以完成数据恢复</li>
+<li>redis不单单支持简单的key-value数据类型,同时还可以提供list,set,hash,zset等数据类型的存储</li>
+<li>支持数据的备份,mater-slave模式,即,当下时髦的主从复制读写分离</li>
+</ol>
+<p>应用场景:</p>
+<ul>
+<li><strong>内存存储的持久化</strong>: 虽然redis是单线程实现的,但是支持异步将数据持久化到硬盘上,同时不影响继续服务</li>
+<li><strong>发布订阅</strong></li>
+<li><strong>定时器,计时器</strong>: 我们可以把这个特性用到发短信的服务中,每次发送完短信后,就进入倒计时,在指定的时间内,决绝发送第二次,有效的缓解短信服务的压力,节流</li>
+<li><strong>取出最新的N个数据的操作</strong>: <strong>比如新浪微博的评论系统,他要展示最新的10条评论,就是把最新的10条评论的id放到redis的list里面</strong></li>
+</ul>
+<h2 id="Redis五大数据类型"><a href="#Redis五大数据类型" class="headerlink" title="Redis五大数据类型"></a>Redis五大数据类型</h2><h3 id="String：等同于java中的，Map-lt-String-String-gt"><a href="#String：等同于java中的，Map-lt-String-String-gt" class="headerlink" title="String：等同于java中的，Map&lt;String,String&gt;"></a><strong>String：等同于java中的，<code>Map&lt;String,String&gt;</code></strong></h3><ul>
+<li>string 是redis里面的最基本的数据类型,一个key对应一个value</li>
+<li>string 是二进制安全的,意味着,就算我们通过加密算法把图片或者序列化的对象set给redis,它帮我们安全的存储</li>
+<li>string的最大内存值 512M</li>
+</ul>
+<p>常用命令:</p>
+<table>
+<thead>
+<tr>
+<th>常用命令</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加一对kv</td>
+<td>set value</td>
+</tr>
+<tr>
+<td>添加多对kv(可覆盖)</td>
+<td>mset key value key value….</td>
+</tr>
+<tr>
+<td>添加多对kv(不可覆盖,只要有一个已存在,全部取消)</td>
+<td>msetnx key value key value….</td>
+</tr>
+<tr>
+<td>获取</td>
+<td>get value</td>
+</tr>
+<tr>
+<td>获取多对kv</td>
+<td>mget key key…</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>del  key</td>
+</tr>
+<tr>
+<td>在末尾追加</td>
+<td>append key value</td>
+</tr>
+<tr>
+<td>查询v的长度</td>
+<td>strlen key</td>
+</tr>
+<tr>
+<td>给数值类型的v加/减1</td>
+<td>incr/decr key</td>
+</tr>
+<tr>
+<td>给数值类型增加/减少指定大小的值</td>
+<td>incrby/decrby key value</td>
+</tr>
+<tr>
+<td>获取v的长度</td>
+<td>getrange key</td>
+</tr>
+<tr>
+<td>在指定位置添加指定值(中间默认用空格补全)</td>
+<td>setrange key offset value</td>
+</tr>
+<tr>
+<td>添加指定生命周期的kv</td>
+<td>setex key seconds value  </td>
+</tr>
+<tr>
+<td>如果不存在则添加</td>
+<td>setnx key value</td>
+</tr>
+<tr>
+<td>获取旧值,设置新值</td>
+<td>setget key value</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Hash：等同于java中的：Map-lt-String-Map-lt-String-String-gt-gt"><a href="#Hash：等同于java中的：Map-lt-String-Map-lt-String-String-gt-gt" class="headerlink" title="Hash：等同于java中的：Map&lt;String,Map&lt;String,String&gt;&gt;"></a>Hash：等同于java中的：<code>Map&lt;String,Map&lt;String,String&gt;&gt;</code></h3><ul>
+<li>redis的hash是一个键值对的集合  Map(string, Object)</li>
+<li>redis的hash是一个string类型的field和value的映射表,<strong>特别适合存储对象</strong> </li>
+</ul>
+<h1 id="划重点-特别适合存储对象"><a href="#划重点-特别适合存储对象" class="headerlink" title="划重点!!!特别适合存储对象"></a><strong>划重点!!!特别适合存储对象</strong></h1><p><strong>同样,hash相关的指令,以 h  开头</strong></p>
+<table>
+<thead>
+<tr>
+<th>作用</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加单个</td>
+<td>hset key field value</td>
+</tr>
+<tr>
+<td>获取单个</td>
+<td>hget key field</td>
+</tr>
+<tr>
+<td>一次性添加多个键值</td>
+<td>hmset key field1 value1 field2 value2 …</td>
+</tr>
+<tr>
+<td>一次性获取多个</td>
+<td>hmget</td>
+</tr>
+<tr>
+<td>获取所有键值</td>
+<td>hgetall key</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>hdel</td>
+</tr>
+<tr>
+<td>获取键值对的个数</td>
+<td>hlen </td>
+</tr>
+<tr>
+<td>检查是否包含某个字段</td>
+<td>hget key field</td>
+</tr>
+<tr>
+<td>查看所有key</td>
+<td>hkeys</td>
+</tr>
+<tr>
+<td>给某个数值类型(否则报错)的值增加指定整数值</td>
+<td>hincrby key field increment</td>
+</tr>
+<tr>
+<td>给某个数字类型值,增加指定浮点类型值</td>
+<td>hincrbyfloat  key field increment</td>
+</tr>
+<tr>
+<td>如果不存在则添加</td>
+<td>hsetnx</td>
+</tr>
+</tbody>
+</table>
+<h3 id="list：等同于java中的Map-lt-String-List-lt-String-gt-gt"><a href="#list：等同于java中的Map-lt-String-List-lt-String-gt-gt" class="headerlink" title="list：等同于java中的Map&lt;String,List&lt;String&gt;&gt;"></a>list：等同于java中的<code>Map&lt;String,List&lt;String&gt;&gt;</code></h3><ul>
+<li>redis的list是一个简单的字符串类型的列表,从功能上看, 它就像是栈和队列结婚后的产物 <strong>首先</strong>:  它会按照我们插入的顺序排序, 然后我们可以从他的头部添加/获取元素,也可以从它的尾部添加/获取元素, (底层实际上是个链表)</li>
+</ul>
+<blockquote>
+<p>list中有比较容易混淆的左右之分,我是把整个list看成一个两边相同的管子,如果是L开头的操作,就想象用左手把这个管子竖起来(我取名字叫左压栈),如果是R开头,就想象是右手把这个管子竖起来,这样就不会混淆取出来的值到底是谁</p>
+</blockquote>
+<p><strong>list相关的指令,开头全部是   l  意味list</strong></p>
+<table>
+<thead>
+<tr>
+<th>常用命令</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>左压栈</td>
+<td>lpush key v1 v2 v3 v4…</td>
+</tr>
+<tr>
+<td>右压栈</td>
+<td>rpush key v1 v2 …</td>
+</tr>
+<tr>
+<td>查看里面的元素</td>
+<td>lrange key start offset</td>
+</tr>
+<tr>
+<td>左弹栈</td>
+<td>lpop key</td>
+</tr>
+<tr>
+<td>右弹栈</td>
+<td>rpop key</td>
+</tr>
+<tr>
+<td>按照索引查找</td>
+<td>lindex key index</td>
+</tr>
+<tr>
+<td>查看长度</td>
+<td>llen key</td>
+</tr>
+<tr>
+<td>删除几个几</td>
+<td>lrem key 数量 value</td>
+</tr>
+<tr>
+<td>指定开始和结束的位置截取,再赋值给key</td>
+<td>ltrim key start offset</td>
+</tr>
+<tr>
+<td>右出栈左压栈,把resoure的左后一个,压倒dest的第一个</td>
+<td>rpoplpush resource destination</td>
+</tr>
+<tr>
+<td>重置指定索引的值</td>
+<td>lset key index value</td>
+</tr>
+<tr>
+<td>在指定元素前/后插入指定元素</td>
+<td>linsert key before/after 值1 值2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>性能总结</strong>:</p>
+<p>他是一个字符串链表,left,right都可以插入添加</p>
+<ul>
+<li>如果键不存在,创建新的链表</li>
+<li>如果键已经存在,新增内容</li>
+<li>值全部移除,key消失</li>
+<li>由于是链表,所以它对头和尾操作的效率都极高,但是假如是对中间元素的操作,效率就可怜了</li>
+</ul>
+<h3 id="Set：等同于java中的Map-lt-String-Set-lt-String-gt-gt"><a href="#Set：等同于java中的Map-lt-String-Set-lt-String-gt-gt" class="headerlink" title="Set：等同于java中的Map&lt;String,Set&lt;String&gt;&gt;"></a>Set：等同于java中的<code>Map&lt;String,Set&lt;String&gt;&gt;</code></h3><ul>
+<li>第一眼看到set,有没有想起来,它不允许有重复的元素? 没错,它的底层是有hashTable实现的,天生去重</li>
+</ul>
+<p><strong>Set的所有指令,全部以  s 开头</strong></p>
+<table>
+<thead>
+<tr>
+<th>常用命令</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加值</td>
+<td>sadd key values</td>
+</tr>
+<tr>
+<td>查看值</td>
+<td>smembers key</td>
+</tr>
+<tr>
+<td>检查集合是否有值</td>
+<td>sismember key value</td>
+</tr>
+<tr>
+<td>查看set集合里面的元素个数</td>
+<td>scard key</td>
+</tr>
+<tr>
+<td>删除集合中的指定元素</td>
+<td>srem key value</td>
+</tr>
+<tr>
+<td>随机弹出某个元素</td>
+<td>srandmember key</td>
+</tr>
+<tr>
+<td>随机出栈</td>
+<td>spop key</td>
+</tr>
+<tr>
+<td>把key1中的某个值赋值给key2</td>
+<td>smove SourceKey destKey member</td>
+</tr>
+<tr>
+<td>添加值</td>
+<td>sadd key values</td>
+</tr>
+<tr>
+<td>查看值</td>
+<td>smembers key</td>
+</tr>
+<tr>
+<td>添加值</td>
+<td>sadd key values</td>
+</tr>
+<tr>
+<td>查看值</td>
+<td>smembers key</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>数学集合类</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>差集</td>
+<td>sdiff</td>
+</tr>
+<tr>
+<td>交集</td>
+<td>sinte</td>
+</tr>
+<tr>
+<td>并集</td>
+<td>sunion</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Zset-sorted-set-有序集合-sort-set：可排序的set"><a href="#Zset-sorted-set-有序集合-sort-set：可排序的set" class="headerlink" title="Zset(sorted set: 有序集合)sort_set：可排序的set"></a>Zset(sorted set: 有序集合)sort_set：可排序的<code>set</code></h3><ul>
+<li>首先: 它同样具有set的特性,去重!</li>
+<li>其次: 每一个元素的<strong>value之前会关联上一个double类型的分数</strong>.redis会按照分数的成员,从小到大进行排序.(分数可以重复)  <strong>据说,我们平时玩的游戏得分排行榜就是它搞的</strong> </li>
+</ul>
+<p>set的值是 k1 v1 k2 v2<br>zset的值  K1 score v1 k2 score v2</p>
+<hr>
+<h2 id="补充常用命令"><a href="#补充常用命令" class="headerlink" title="补充常用命令"></a>补充常用命令</h2><p><a href="http://redis" target="_blank" rel="noopener">点击查看所有命令</a></p>
+<table>
+<thead>
+<tr>
+<th>数据库的相关命令</th>
+<th>指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>关闭redis</td>
+<td>shutdown</td>
+</tr>
+<tr>
+<td>选择数据库</td>
+<td>select 库索引</td>
+</tr>
+<tr>
+<td>查看当前数据库中key的数量</td>
+<td>Dbsize</td>
+</tr>
+<tr>
+<td>清空当前库</td>
+<td>Flushdb</td>
+</tr>
+<tr>
+<td>通杀所有库</td>
+<td>Flushall</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key常用命令</th>
+<th>指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看所有key</td>
+<td>keys *</td>
+</tr>
+<tr>
+<td>判断某个key是否存在</td>
+<td>exists key</td>
+</tr>
+<tr>
+<td>把key移动到别的库</td>
+<td>move key db</td>
+</tr>
+<tr>
+<td>为key 设定过期时间</td>
+<td>expire key  秒钟</td>
+</tr>
+<tr>
+<td>查看还有多少秒过期</td>
+<td>ttl key</td>
+</tr>
+<tr>
+<td>查看当前key是什么类型的</td>
+<td>type key</td>
+</tr>
+</tbody>
+</table>
+<h2 id="RDB-amp-AOF"><a href="#RDB-amp-AOF" class="headerlink" title="RDB &amp; AOF"></a>RDB &amp; AOF</h2><p>Redis有两种方式支持持久化,RDB(redis database)与AOF(append only file)</p>
+<h3 id="RDB是什么"><a href="#RDB是什么" class="headerlink" title="RDB是什么?"></a>RDB是什么?</h3><p>就是在指定的时间把把内存中的数据快照(snapshot)写入磁盘, 恢复数据是将快照文件从磁盘读取到内存</p>
+<h3 id="redis是单线程的-他是怎么分神持久化的呢"><a href="#redis是单线程的-他是怎么分神持久化的呢" class="headerlink" title="redis是单线程的,他是怎么分神持久化的呢?"></a>redis是单线程的,他是怎么分神持久化的呢?</h3><p>会单独(创建)fork一个子进程,负责持久化,子进程把数据写进一个临时文件,等这个持久化的过程完成之后,用这个临时文件替换原来的rdb文件,整个过程中,主进程不会进行任何IO操作,这也就极大的提高了redis的可用性,尤其是对大规模的文件的恢复,RDB的优势远远高于AOF , 当然她也有缺点,加入突然断电了,redis没来的及fork,就会丢失最后一份文件</p>
+<p>redis.config中有关RDB的配置如下:为了容易区分我写的笔记,会从中间断开,但是其实他们还是完整的一段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">################################ SNAPSHOTTING  ################################</span><br><span class="line">#</span><br><span class="line"># Save the DB on disk:</span><br><span class="line">#</span><br><span class="line">#   save &lt;seconds&gt; &lt;changes&gt;</span><br><span class="line">#</span><br><span class="line">#   Will save the DB if both the given number of seconds and the given</span><br><span class="line">#   number of write operations against the DB occurred.</span><br><span class="line">#</span><br><span class="line">#   In the example below the behaviour will be to save:</span><br><span class="line">#   after 900 sec (15 min) if at least 1 key changed</span><br><span class="line">#   after 300 sec (5 min) if at least 10 keys changed</span><br><span class="line">#   after 60 sec if at least 10000 keys changed</span><br><span class="line">#</span><br><span class="line">#   Note: you can disable saving completely by commenting out all &quot;save&quot; lines.</span><br><span class="line">#</span><br><span class="line">#   It is also possible to remove all the previously configured save</span><br><span class="line">#   points by adding a save directive with a single empty string argument</span><br><span class="line">#   like in the following example:</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+<p><strong>把下面的注释打开就会禁用掉RDB的持久化策略</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#   save &quot;&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>RDB是整个内存压缩过的Snapshot,RDB的数据结构,可以配置复合的快照触发条件,如下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">save 900 1          #15分钟内key改变了1次</span><br><span class="line">save 300 10         #五分钟内改变了十次</span><br><span class="line">save 60 10000       #一分钟内改变了一万次</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># By default Redis will stop accepting writes if RDB snapshots are enabled</span><br><span class="line"># (at least one save point) and the latest background save failed.</span><br><span class="line"># This will make the user aware (in a hard way) that data is not persisting</span><br><span class="line"># on disk properly, otherwise chances are that no one will notice and some</span><br><span class="line"># disaster will happen.</span><br><span class="line">#</span><br><span class="line"># If the background saving process will start working again Redis will</span><br><span class="line"># automatically allow writes again.</span><br><span class="line">#</span><br><span class="line"># However if you have setup your proper monitoring of the Redis server</span><br><span class="line"># and persistence, you may want to disable this feature so that Redis will</span><br><span class="line"># continue to work as usual even if there are problems with disk,</span><br><span class="line"># permissions, and so forth.</span><br><span class="line">stop-writes-on-bgsave-error yes</span><br><span class="line"></span><br><span class="line"># Compress string objects using LZF when dump .rdb databases?</span><br><span class="line"># For default that&apos;s set to &apos;yes&apos; as it&apos;s almost always a win.</span><br><span class="line"># If you want to save some CPU in the saving child set it to &apos;no&apos; but</span><br><span class="line"># the dataset will likely be bigger if you have compressible values or keys.</span><br></pre></td></tr></table></figure>
+<p><strong>对于储存到磁盘中的快照,我们可以设置是否进行压缩储存,如果是的化,redis会采用LZF压缩算法进行压缩,如果你不想消耗CPU进行压缩,可以把它关闭</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rdbcompression yes</span><br><span class="line"></span><br><span class="line"># Since version 5 of RDB a CRC64 checksum is placed at the end of the file.</span><br><span class="line"># This makes the format more resistant to corruption but there is a performance</span><br><span class="line"># hit to pay (around 10%) when saving and loading RDB files, so you can disable it</span><br><span class="line"># for maximum performances.</span><br><span class="line">#</span><br><span class="line"># RDB files created with checksum disabled have a checksum of zero that will</span><br><span class="line"># tell the loading code to skip the check.</span><br></pre></td></tr></table></figure>
+<p><strong>在存储快照后,还可以让redis使用CRC64算法进行数据校验,但是这样会增加大约 10%的性能消耗</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rdbchecksum yes</span><br><span class="line"></span><br><span class="line"># The filename where to dump the DB</span><br></pre></td></tr></table></figure>
+<p><strong>默认的文件名</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dbfilename dump.rdb</span><br><span class="line"># The working directory.</span><br><span class="line">#</span><br><span class="line"># The DB will be written inside this directory, with the filename specified</span><br><span class="line"># above using the &apos;dbfilename&apos; configuration directive.</span><br><span class="line">#</span><br><span class="line"># The Append Only File will also be created inside this directory.</span><br><span class="line">#</span><br><span class="line"># Note that you must specify a directory here, not a file name.</span><br><span class="line">dir ./</span><br><span class="line"></span><br><span class="line">######################################################################################</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="其他方法触发RDB快照"><a href="#其他方法触发RDB快照" class="headerlink" title="其他方法触发RDB快照?"></a>其他方法触发RDB快照?</h3><ul>
+<li>save命令: 只管保存,但是会堵塞其他的操作(一般这个命令都是在夜深人静的时候偷偷做)</li>
+<li>bgsave: 异步进行快照操作,同时还可以响应客户端的请求, 通过lastsave命令获取最后一次执行的时间</li>
+<li>执行flushall命令,清空所有, 同样会产生dump.rdb ,但是他是空的,没有任何意义</li>
+</ul>
+<h3 id="如何恢复"><a href="#如何恢复" class="headerlink" title="如何恢复?"></a>如何恢复?</h3><ul>
+<li>一般想恢复数据,会进行冷拷贝,就是说,这台挂了的redis的dump.rdb文件其实在别的机器上有实时的备份, 所以我们把备份的dump.rdb移动到redis的安装目录然后启动(通过 config get dir 获取本目录)</li>
+</ul>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>对于大规模,且数据的完整性一致性要求不高的数据的恢复,它表现的很突出!</li>
+</ul>
+<h3 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h3><ul>
+<li>他每隔一段时间才会备份,假如说真的停电了,那么最后一份数据没有备份,肯定就丢失了!</li>
+<li>每次备份时的fork操作,就算我们不考虑子进程会影响主进程的资源,那么内存中的数据突然膨胀为两倍也是需要考虑的</li>
+</ul>
+<hr>
+<h3 id="AOF是什么"><a href="#AOF是什么" class="headerlink" title="AOF是什么?"></a>AOF是什么?</h3><p>AOF是redis第二种持久化策略,它以日志的形式<strong>实时</strong>记录每个写操作,而且,他的规则是只追加,不修改! redis重启后会读取该文件,挨个执行里面的命令,完成数据恢复</p>
+<h3 id="如何开启AOF-及AOF的配置策略"><a href="#如何开启AOF-及AOF的配置策略" class="headerlink" title="如何开启AOF,及AOF的配置策略 ?"></a>如何开启AOF,及AOF的配置策略 ?</h3><p>下面的配置问价截取自 redis.config关于aof部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">############################## APPEND ONLY MODE ###############################</span><br><span class="line"></span><br><span class="line"># By default Redis asynchronously dumps the dataset on disk. This mode is</span><br><span class="line"># good enough in many applications, but an issue with the Redis process or</span><br><span class="line"># a power outage may result into a few minutes of writes lost (depending on</span><br><span class="line"># the configured save points).</span><br><span class="line">#</span><br><span class="line"># The Append Only File is an alternative persistence mode that provides</span><br><span class="line"># much better durability. For instance using the default data fsync policy</span><br><span class="line"># (see later in the config file) Redis can lose just one second of writes in a</span><br><span class="line"># dramatic event like a server power outage, or a single write if something</span><br><span class="line"># wrong with the Redis process itself happens, but the operating system is</span><br><span class="line"># still running correctly.</span><br><span class="line">#</span><br><span class="line"># AOF and RDB persistence can be enabled at the same time without problems.</span><br><span class="line"># If the AOF is enabled on startup Redis will load the AOF, that is the file</span><br><span class="line"># with the better durability guarantees.</span><br><span class="line">#</span><br><span class="line"># Please check http://redis.io/topics/persistence for more information.</span><br></pre></td></tr></table></figure>
+<p><strong>开启AOF, 修改下面的只追加为 yes</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"># The name of the append only file (default: &quot;appendonly.aof&quot;)</span><br></pre></td></tr></table></figure>
+<p><strong>默认的名字</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>下面一段的大意是,redis通过fsync()调用告诉操作系统实际在磁盘上写入数据，而不是在输出缓冲区中等待更多的数据,具体有下面的三种策略 always  everysec no</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># The fsync() call tells the Operating System to actually write data on disk</span><br><span class="line"># instead of waiting for more data in the output buffer. Some OS will really flush</span><br><span class="line"># data on disk, some other OS will just try to do it ASAP.</span><br><span class="line">#</span><br><span class="line"># Redis supports three different modes:</span><br><span class="line">#</span><br><span class="line"># no: don&apos;t fsync, just let the OS flush the data when it wants. Faster.</span><br><span class="line"># always: fsync after every write to the append only log. Slow, Safest.</span><br><span class="line"># everysec: fsync only one time every second. Compromise.</span><br><span class="line">#</span><br><span class="line"># The default is &quot;everysec&quot;, as that&apos;s usually the right compromise between</span><br><span class="line"># speed and data safety. It&apos;s up to you to understand if you can relax this to</span><br><span class="line"># &quot;no&quot; that will let the operating system flush the output buffer when</span><br><span class="line"># it wants, for better performances (but if you can live with the idea of</span><br><span class="line"># some data loss consider the default persistence mode that&apos;s snapshotting),</span><br><span class="line"># or on the contrary, use &quot;always&quot; that&apos;s very slow but a bit safer than</span><br><span class="line"># everysec.</span><br><span class="line">#</span><br><span class="line"># More details please check the following article:</span><br><span class="line"># http://antirez.com/post/redis-persistence-demystified.html</span><br><span class="line">#</span><br><span class="line"># If unsure, use &quot;everysec&quot;.</span><br></pre></td></tr></table></figure>
+<p><strong>这是那具体的三条配置</strong></p>
+<ul>
+<li>always : 同步持久化,每次发生数据变更,立刻记录到磁盘,性能比较差,但是数据完整性很好</li>
+<li>everysec: 出场的默认推荐,异步记录,每秒钟记录一次,如果宕机,丢失一秒数据</li>
+<li>no: 不记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># appendfsync always</span><br><span class="line">appendfsync everysec</span><br><span class="line"># appendfsync no</span><br><span class="line"></span><br><span class="line"># When the AOF fsync policy is set to always or everysec, and a background</span><br><span class="line"># saving process (a background save or AOF log background rewriting) is</span><br><span class="line"># performing a lot of I/O against the disk, in some Linux configurations</span><br><span class="line"># Redis may block too long on the fsync() call. Note that there is no fix for</span><br><span class="line"># this currently, as even performing fsync in a different thread will block</span><br><span class="line"># our synchronous write(2) call.</span><br><span class="line">#</span><br><span class="line"># In order to mitigate this problem it&apos;s possible to use the following option</span><br><span class="line"># that will prevent fsync() from being called in the main process while a</span><br><span class="line"># BGSAVE or BGREWRITEAOF is in progress.</span><br><span class="line">#</span><br><span class="line"># This means that while another child is saving, the durability of Redis is</span><br><span class="line"># the same as &quot;appendfsync none&quot;. In practical terms, this means that it is</span><br><span class="line"># possible to lose up to 30 seconds of log in the worst scenario (with the</span><br><span class="line"># default Linux settings).</span><br><span class="line"></span><br><span class="line"># If you have latency problems turn this to &quot;yes&quot;. Otherwise leave it as</span><br><span class="line"># &quot;no&quot; that is the safest pick from the point of view of durability.</span><br></pre></td></tr></table></figure>
+<p><strong>重启的时候是否可以运行Appendfsync,使用默认的no就行,保证数据安全性</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">no-appendfsync-on-rewrite no</span><br><span class="line"></span><br><span class="line"># Automatic rewrite of the append only file.</span><br><span class="line"># Redis is able to automatically rewrite the log file implicitly calling</span><br><span class="line"># BGREWRITEAOF when the AOF log size grows by the specified percentage.</span><br><span class="line">#</span><br><span class="line"># This is how it works: Redis remembers the size of the AOF file after the</span><br><span class="line"># latest rewrite (if no rewrite has happened since the restart, the size of</span><br><span class="line"># the AOF at startup is used).</span><br><span class="line">#</span><br><span class="line"># This base size is compared to the current size. If the current size is</span><br><span class="line"># bigger than the specified percentage, the rewrite is triggered. Also</span><br><span class="line"># you need to specify a minimal size for the AOF file to be rewritten, this</span><br><span class="line"># is useful to avoid rewriting the AOF file even if the percentage increase</span><br><span class="line"># is reached but it is still pretty small.</span><br><span class="line">#</span><br><span class="line"># Specify a percentage of zero in order to disable the automatic AOF</span><br><span class="line"># rewrite feature.</span><br></pre></td></tr></table></figure>
+<p>设置<strong>重写</strong>的基础值 (在这里说一下,<strong>啥是重写?</strong> 随着redis工作时间的增加,appendonly.aof文件的体积越来越大!!!,为了给节省空间,重写aof文件, 去掉所有没用的命令,达到瘦身的效果)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb  # 一般企业3G起步</span><br><span class="line"></span><br><span class="line"># An AOF file may be found to be truncated at the end during the Redis</span><br><span class="line"># startup process, when the AOF data gets loaded back into memory.</span><br><span class="line"># This may happen when the system where Redis is running</span><br><span class="line"># crashes, especially when an ext4 filesystem is mounted without the</span><br><span class="line"># data=ordered option (however this can&apos;t happen when Redis itself</span><br><span class="line"># crashes or aborts but the operating system still works correctly).</span><br><span class="line">#</span><br><span class="line"># Redis can either exit with an error when this happens, or load as much</span><br><span class="line"># data as possible (the default now) and start if the AOF file is found</span><br><span class="line"># to be truncated at the end. The following option controls this behavior.</span><br><span class="line">#</span><br><span class="line"># If aof-load-truncated is set to yes, a truncated AOF file is loaded and</span><br><span class="line"># the Redis server starts emitting a log to inform the user of the event.</span><br><span class="line"># Otherwise if the option is set to no, the server aborts with an error</span><br><span class="line"># and refuses to start. When the option is set to no, the user requires</span><br><span class="line"># to fix the AOF file using the &quot;redis-check-aof&quot; utility before to restart</span><br><span class="line"># the server.</span><br><span class="line">#</span><br><span class="line"># Note that if the AOF file will be found to be corrupted in the middle</span><br><span class="line"># the server will still exit with an error. This option only applies when</span><br><span class="line"># Redis will try to read more data from the AOF file but not enough bytes</span><br><span class="line"># will be found.</span><br><span class="line">aof-load-truncated yes</span><br><span class="line"></span><br><span class="line"># When rewriting the AOF file, Redis is able to use an RDB preamble in the</span><br><span class="line"># AOF file for faster rewrites and recoveries. When this option is turned</span><br><span class="line"># on the rewritten AOF file is composed of two different stanzas:</span><br><span class="line">#</span><br><span class="line">#   [RDB file][AOF tail]</span><br><span class="line">#</span><br><span class="line"># When loading Redis recognizes that the AOF file starts with the &quot;REDIS&quot;</span><br><span class="line"># string and loads the prefixed RDB file, and continues loading the AOF</span><br><span class="line"># tail.</span><br><span class="line">#</span><br><span class="line"># This is currently turned off by default in order to avoid the surprise</span><br><span class="line"># of a format change, but will at some point be used as the default.</span><br><span class="line">aof-use-rdb-preamble no</span><br><span class="line">######################################################################################</span><br></pre></td></tr></table></figure>
+<p>开启后,重启redis,会创建出<code>appendonly.aof</code>文件,里面记录的就是我们所有的写操作</p>
+<h3 id="实操场景"><a href="#实操场景" class="headerlink" title="实操场景"></a>实操场景</h3><ol>
+<li><p>假如说我们是执行<code>flushall</code>命令,清空了redis, appendonly.aof同样会记录下这条命令,所以,我们想恢复数据的话,需要去除<code>appendonly.aof</code>里面的<code>flushall</code>命令</p>
+</li>
+<li><p>假如说,redis使用AOF记录着我们的写操作,这时候突然断电了… <code>appendonly.aof</code>文件里面记录上了一条不完整的命令, 好,来电开机,!!! 我们是开不了机的,会报错! 这说明下面这个问题</p>
+<ul>
+<li>aof 和 rdb共存,优先查找的是aof<br>如何修复呢<code>appendonly.aof</code>文件?</li>
+</ul>
+</li>
+</ol>
+<p>在redis的安装目录下面有两个脚本文件 , 分别修复aof和rdb文件</p>
+<p>命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-check-aof  --fix appendonly.aof</span><br></pre></td></tr></table></figure>
+<img src="/2019/03/28/redis基础/1.png" title="图一">
+<h3 id="关于AOF的rewirte"><a href="#关于AOF的rewirte" class="headerlink" title="关于AOF的rewirte"></a>关于AOF的rewirte</h3><ul>
+<li>rewirte是什么?</li>
+</ul>
+<p>AOF采取的是文件追加的方式,文件的体积越来越大,为了优化这种现象,增加了重写机制,当aof文件的体积到达我们在上面的配置文件上的阕值时,就会触发重写策略,只保留和数据恢复相关的命令</p>
+<ul>
+<li>手动重写</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bgrewriteaof</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重写的原理?</li>
+</ul>
+<p>配置文件的阕值达到时,redis会fork出一条新的进行,(同样是先复制到一份新的临时文件,最后再rename),遍历每一条语句,记录下有set的语句</p>
+<ul>
+<li>触发机制?</li>
+</ul>
+<p>redis会记录下,上次重写时aof的大小,默认配置是,当aof文件的大小是上次重写后aof文件大小的一倍且文件大于64M时,触发</p>
+<h3 id="优势-1"><a href="#优势-1" class="headerlink" title="优势"></a>优势</h3><p>它既可以每秒同步,也可以实时同步,也可以不同步,数据完整性更强</p>
+<h3 id="劣势-1"><a href="#劣势-1" class="headerlink" title="劣势"></a>劣势</h3><p>aof文件的体积远远大于rdb文件,恢复的速度也会比rdb文件缓慢</p>
+<blockquote>
+<p>总结一下:AOF是一个只追加的日志文件,用于数据恢复,当它的体积到达一定大时,redis会rewrite它,</p>
+</blockquote>
+<h3 id="AOF-与-RDB-的抉择"><a href="#AOF-与-RDB-的抉择" class="headerlink" title="AOF 与 RDB 的抉择"></a>AOF 与 RDB 的抉择</h3><ul>
+<li>两者的优缺点,上面已经论述过,这里不再唠叨</li>
+<li>如果我们的redis只是简单的作为缓存,那两者都不要也没事</li>
+<li>同时开启两者: 在这种情况下,redis优先加载的是aof,因为它的数据很可能比rdb更全,但是并不建议只是用aof,因为aof不是那么的安全,很可能存在潜在的bug</li>
+</ul>
+<p>关于性能的建议:</p>
+<ul>
+<li>因为RDB只是用于后备用途,因此建议在从机slave上只备份rdb文件,而且只要15分钟备份一次就够了</li>
+<li>如果启动了aof,我们尽量减少rewrite的频率,基础大小设置为5G完全可以,起步也要3G</li>
+<li>如果我们不选择aof, 而是选择了主从复制的架构实现高可用同样可以,能省掉一大笔IO操作,但是意外发生的话,会丢失十几分钟的数据,<strong>新浪选择的就是这种架构</strong></li>
+</ul>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h3 id="什么是事务"><a href="#什么是事务" class="headerlink" title="什么是事务?"></a>什么是事务?</h3><p>事务可以理解成一组写命令的集合,一组事务中的所有命令都会序列化,这组命令会按顺序串行执行,一次性,顺序性,排他性的执行一系列命令,不允许加塞</p>
+<table>
+<thead>
+<tr>
+<th>redis中的事务命令</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开启事务</td>
+<td>MULTI</td>
+</tr>
+<tr>
+<td>监控key,如果在事务执行之前key被其他命令改动,事务被打断</td>
+<td>WATCH key1 key2 …</td>
+</tr>
+<tr>
+<td>取消监控</td>
+<td>UNWATCH</td>
+</tr>
+<tr>
+<td>取消事务</td>
+<td>DISCARD</td>
+</tr>
+<tr>
+<td>提交事务</td>
+<td>EXEC</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>开启事务后经常会遇到下面两种情况<ul>
+<li>这组将要持久化的命令中某一条,<strong>出现了语法错误,提交事务,整组命令会连做,全部取消</strong></li>
+<li>这组将要持久化的命令中某一条,<strong>出现了逻辑错误,比如给字母a加1,提交事务,单条语句取消,其它不变</strong></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>通过上面两点对比,我们可以发现,其实redis对事务的支持其实是片面的</strong></p>
+</blockquote>
+<h3 id="监控锁机制watch"><a href="#监控锁机制watch" class="headerlink" title="监控锁机制watch"></a>监控锁机制watch</h3><p>如何使用?</p>
+<p>在开启事务之前,声明一下要监控的键<code>watch key1 key2 ...</code>, 它相当于一把乐观锁,当我们行锁,会记录数据的版本号,提交事务时,如果发现版本号改变了,那么回滚,取消本次操作</p>
+<h3 id="redis事务的三大特性"><a href="#redis事务的三大特性" class="headerlink" title="redis事务的三大特性"></a>redis事务的三大特性</h3><ul>
+<li>单独的隔离操作: 事务中的所有命令都会被序列化,按顺序执行,也不会被其他客户端发来的请求打断</li>
+<li>没有隔离级别的概念: 这组事务在提交之前不会被真正的执行,因此存在着这样的情况,<strong>事务内的查询看不到实事务里的更新,他只是提示我们queued(命令入队),事务外的查询也查询不到事务内的更新</strong></li>
+<li><strong>不能保证原子性</strong>: 就算是有一条命令执行失败了,其他命令依然会执行,没有回滚</li>
+</ul>
+<hr>
+<p>相对于传统的事务的特性:</p>
+<ul>
+<li>A(Atomicity)</li>
+<li>C(Consistency) </li>
+<li>I(Isolation) </li>
+<li>D(Durability)</li>
+</ul>
+<p>nosql同样也有一套属于自己的CAP</p>
+<ul>
+<li><strong>C(Consistency 强一致性)</strong> </li>
+<li><strong>A(Availability可用性)</strong> </li>
+<li><strong>P(Partition tolerance分区容错性)</strong></li>
+</ul>
+<p>CAP 的理论核心是: 一个分布式的系统,不可能很好的满足一致性,可用性,分区容错性这三个需求,最多同时只能满足两个.因此CAP原理将nosql分成了三大原则:</p>
+<ul>
+<li>CA- 单点集群,满足强一致性和可用性,比如说oracle,扩展性收到了限制</li>
+<li>CP- 满足一致性,和分区容错性<strong>Redis和MongoDB都属于这种类型</strong></li>
+<li>AP- 选择了可用性和分区容错性,他也是大多数网站的选择,容忍数据可以暂时不一致,但是不容忍系统挂掉</li>
+</ul>
+<blockquote>
+<p>由于硬件或者网络在传输数据的时候出现丢包的现象, Partition tolerrance是我们必选的, 因此只能在强一致性和可用性之间进行权衡,没有任何nosql可以同时满足上面的三点,redis选择了强一致性, 至于可用性怎么整? 我们可以搭建集群,做备份,<strong>尤其是第七部分的主流的主从复制读写分离可以很有效的解决这个问题</strong></p>
+</blockquote>
+<h2 id="主从复制-读写分离"><a href="#主从复制-读写分离" class="headerlink" title="主从复制,读写分离"></a>主从复制,读写分离</h2><h3 id="什么是主从复制-读写分离"><a href="#什么是主从复制-读写分离" class="headerlink" title="什么是主从复制,读写分离?"></a>什么是主从复制,读写分离?</h3><p>据说这是一句行话,意思就是说,主机的数据更新后会根据配置和策略,自动的同步到备机的master和slaver机制,说白了,就是redis坚决不能挂, 主机挂了,从机顶上,从机挂了,挂了就挂了吧,反正主机还在</p>
+<h3 id="怎么玩"><a href="#怎么玩" class="headerlink" title="怎么玩?"></a>怎么玩?</h3><ul>
+<li><strong>2.1 配置从库,让他认祖归宗</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaveof 主机ip 主机端口</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从机每次和主机断开后,重启都要重新连接,除非我们把更改配置文件,让他自动认祖归宗</p>
+</blockquote>
+<ul>
+<li><strong>2.2如何搭建起master-slaver集群</strong></li>
+</ul>
+<p>说白了,就是启动多个redis,如果我们是在单机Linux模仿,就得做如下几件事,比如改端口,总不能都用6379吧</p>
+<ol>
+<li>拷贝多份配置文件, redis.conf</li>
+<li>全部开启daemonize yes  # 允许redis后台运行</li>
+<li>修改pid文件的名字</li>
+<li>修改端口</li>
+<li>修改log的名字</li>
+<li>修改Dump.rdb名字  # 上面说了,slave从机仅仅备份的是主机的dump.rdb文件</li>
+</ol>
+<h3 id="常见的三种模式"><a href="#常见的三种模式" class="headerlink" title="常见的三种模式"></a>常见的三种模式</h3><p>1.<strong>一主二仆</strong></p>
+<ul>
+<li>我们需要手动给slave设置它的依附的主机<code>slaveif 主机ip 端口</code></li>
+</ul>
+<p>主机新添加后,从机会立即备份</p>
+<ul>
+<li>查看一主二仆的状态</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info replication</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一主二仆的主人仆人挨个挂的集中情况<ul>
+<li>主机挂—默认从机原地待命</li>
+<li>主机复活— 从机认主归宗</li>
+<li>从机挂 — 从机复活后,不再认识老主人,翻身成主机,我们需要再次手动执行命令,让他认祖归宗</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><strong>星火相传</strong></li>
+</ol>
+<p>上一个slave 逻辑上可以是下一个slave的Master,Slave同样可以就收其他slave的连接和同步的请求,成一条链</p>
+<p>命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaceof 新ip 新端口</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>反客为主</li>
+</ol>
+<p>反客为主,有两种模式,自动版和手动版</p>
+<p>手动版:</p>
+<ol>
+<li>主机挂</li>
+<li>从机默认等待</li>
+<li>我们选一台从机当作新主机,手动敲命令<code>slaveof no one</code></li>
+<li>让其他从机认新主机为主 挨个敲<code>slaveof 新主机ip 端口</code>–组成新体系</li>
+<li>老主机复活,和新体系没一毛钱关系</li>
+</ol>
+<p>自动版:— 哨兵模式</p>
+<blockquote>
+<p>他可以自动监控主机是否有故障,如果主机有故障,它会根据投票数选取一个从库担任新的主机,老主机复活,被哨兵抓到,成为新主机的从机</p>
+</blockquote>
+<p>怎么玩?</p>
+<ul>
+<li>新建<code>sentinel.conf</code>文件</li>
+<li>配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor host6379 127.0.0.1 6379 1</span><br></pre></td></tr></table></figure>
+<p>6379host是被监控的主机名字(自定义) , 最后的1表示主机挂掉后,让salve投票选举新主机</p>
+<ul>
+<li>启动哨兵(可哟同时监控多个master)</li>
+</ul>
+<img src="/2019/03/28/redis基础/2.png" title="图二">
+<p>执行上图的 redis-sentinel + 我们上面新建的sentinel.conf文件路径</p>
+<blockquote>
+<p>复制的缺点: 所有的写操作都是现在master上操作,再同步到slave上,难免会产生延迟,尤其是系统繁忙或者网络拥堵,slave的数量的增加,这种现象更严重</p>
+</blockquote>
+
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/03/28/Jedis-spring-boot-redis/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                Jedis &amp; spring-data-redis
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/03/24/一只垂直的小爬虫/">
+                一只垂直的小爬虫
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>

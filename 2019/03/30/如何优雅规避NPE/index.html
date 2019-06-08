@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>如何优雅规避NPE | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">如何优雅规避NPE</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-03-30
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/java/">#java</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <blockquote>
+<p>项目中尤其是在持久层,难免会有大量的针对集合,对象,字符串的操作,为了程序的健壮性,我们不得不进行判空,像下面箭头式编码吗?<br><a id="more"></a></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">null</span>!=person)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">null</span>!=address)&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">null</span>!=phone)&#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="NO"><a href="#NO" class="headerlink" title="NO"></a>NO</h1><hr>
+<h2 id="优雅的规避空指针异常"><a href="#优雅的规避空指针异常" class="headerlink" title="优雅的规避空指针异常"></a>优雅的规避空指针异常</h2><h3 id="一-工具类"><a href="#一-工具类" class="headerlink" title="一. 工具类"></a>一. 工具类</h3><p>坐标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>针对字符串</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String name=<span class="string">""</span>;</span><br><span class="line"><span class="keyword">boolean</span> blank = StringUtils.isBlank(name);</span><br><span class="line">System.out.println(blank);</span><br></pre></td></tr></table></figure>
+<p>坐标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-collections&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-collections&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.2.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>针对集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">boolean empty = CollectionUtils.isEmpty(new ArrayList());</span><br><span class="line">System.out.println(empty);</span><br></pre></td></tr></table></figure>
+<p>上面两个工具类也是真正项目中重用的,会比我们自己写一堆if去判断相对安全</p>
+<hr>
+<p>我们知道,后端通常会从DB查询多条数据,封装一个集合交给前端渲染,一旦这个集合为空,就会报错 NPE,前面的工具类可以帮我们很好的做出判断,具体怎么做,大概有两种方式</p>
+<ul>
+<li>第一种,我们自定义异常,一旦出现null,我们抛出自定义的异常给前端,前端接收到异常,进行处理</li>
+<li>第二种,一旦出现null;我们手动new 一个相应的集合或者对象,前端接受到空的集合,渲染的也是空,同样避免的空指针异常</li>
+</ul>
+<h3 id="二-Optional"><a href="#二-Optional" class="headerlink" title="二. Optional"></a>二. Optional</h3><p>位于java.util包下Optional是jdk8新增的final工具类，我们可以通过它以一种函数式风格灵活的进行判断,处理</p>
+<blockquote>
+<p>Optional是一个容器对象,传递给它什么,他就包装什么!</p>
+</blockquote>
+<p>它有如下几种工厂方法创建OPtional对象</p>
+<ul>
+<li>使用  of 方法, 必须确保传递进去的对象不为空,不然直接抛出空指针异常</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Optional&lt;T&gt; <span class="title">of</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Optional&lt;&gt;(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建一个一定为空的容器对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Optional&lt;T&gt; <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    Optional&lt;T&gt; t = (Optional&lt;T&gt;) EMPTY;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建一个可能为空,也可能不为空的容器对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Optional&lt;T&gt; <span class="title">ofNullable</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value == <span class="keyword">null</span> ? empty() : of(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面几个方法引入函数式编程风格</p>
+<ul>
+<li>如果容器为空,打印备选值</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(optional.orElse(<span class="string">"hello"</span>));</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果容器为空,打印备选值  入参是Supplier, 不接受参数返回一个结果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(optional.orElseGet(()-&gt;<span class="string">"haha"</span>));</span><br></pre></td></tr></table></figure>
+<p>如何使用函数式编程风格替换掉</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">null</span>!=list)&#123;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList():</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模拟后端的查询出来的结果</span></span><br><span class="line">List&lt;student&gt; list = Arrays.asList(<span class="keyword">new</span> student(<span class="number">1</span>, <span class="string">"123"</span>), <span class="keyword">new</span> student(<span class="number">2</span>, <span class="string">"123"</span>));</span><br><span class="line">OptionalText optionalText = <span class="keyword">new</span> OptionalText();</span><br><span class="line">optionalText.setStuList(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//创容器</span></span><br><span class="line">Optional&lt;OptionalText&gt; optional1 = optional.ofNullable(optionalText);</span><br><span class="line"><span class="comment">//容器里面对象的list如果有值则返回,如果没有,则返回空list</span></span><br><span class="line">List&lt;student&gt; students = optional1.map(item -&gt; item.getStuList()).orElse(<span class="keyword">new</span> ArrayList&lt;student&gt;());</span><br></pre></td></tr></table></figure>
+<ul>
+<li>此外: Optional不能作为成员变量,方法参数   通常是作为方法的返回值</li>
+</ul>
+
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/03/30/函数式接口-lambda表达式-方法引用/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                函数式接口 &amp; lambda表达式 &amp; 方法引用
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/03/28/Jedis-spring-boot-redis/">
+                Jedis &amp; spring-data-redis
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>

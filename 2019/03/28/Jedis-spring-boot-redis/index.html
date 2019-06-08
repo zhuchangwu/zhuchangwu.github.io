@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>Jedis &amp; spring-data-redis | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">Jedis &amp; spring-data-redis</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-03-28
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/Redis/">#Redis</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <blockquote>
+<p>当我们了解了redis的五大数据类型,手动去敲一敲每个数据类型对应的命令,无论是再来看jedis,还是spring-data-redis都是很轻松的,他们提供的API都是基于原生的redis命令,可读性很强</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="jedis操作五大数据类型"><a href="#jedis操作五大数据类型" class="headerlink" title="jedis操作五大数据类型"></a>jedis操作五大数据类型</h3><blockquote>
+<p>其实关于怎么使用jedis的对应的五大数据类型的api,就不说太多了,因为可读性真的是太强了,只要了解那么底层的命令,开箱即用,忘记了,点一下,全出来了</p>
+</blockquote>
+<p>demo:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Changwu</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/3/28 11:45</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TextAPI</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.43.150"</span>, <span class="number">6379</span>);</span><br><span class="line">        jedis.hset(<span class="string">"user"</span>,<span class="string">"userName"</span>,<span class="string">"25"</span>);</span><br><span class="line">        jedis.hset(<span class="string">"user"</span>,<span class="string">"id"</span>,<span class="string">"1"</span>);</span><br><span class="line">        System.out.println(jedis.hget(<span class="string">"user"</span>,<span class="string">"userName"</span>));</span><br><span class="line">        HashMap&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"role1"</span>,<span class="string">"admin"</span>);</span><br><span class="line">        map.put(<span class="string">"role2"</span>,<span class="string">"user"</span>);</span><br><span class="line">        jedis.hmset(<span class="string">"role"</span>,map);</span><br><span class="line">        System.out.println(jedis.hmget(<span class="string">"role"</span>,<span class="string">"role1"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="jedis的事务demo"><a href="#jedis的事务demo" class="headerlink" title="jedis的事务demo"></a>jedis的事务demo</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Transaction multi = jedis.multi();</span><br><span class="line"><span class="comment">//放弃提交事务</span></span><br><span class="line">multi.discard();</span><br><span class="line"><span class="comment">// 提交事务</span></span><br><span class="line"><span class="comment">//  multi.exec();</span></span><br></pre></td></tr></table></figure>
+<p>因为他对事务是部分支持,所以一般都要加上<code>watch</code></p>
+<h3 id="RedisPool"><a href="#RedisPool" class="headerlink" title="RedisPool"></a>RedisPool</h3><blockquote>
+<p>一般在多线程下并发访问redis,为了提高性能,会使用redis连接池(单例)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 工具方法,获取jedispool的单例</span></span><br><span class="line"><span class="comment">* <span class="doctag">@Author</span>: Changwu</span></span><br><span class="line"><span class="comment">* <span class="doctag">@Date</span>: 2019/3/28 14:10</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">jedisPoolUtil</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> JedisPool jedisPool = <span class="keyword">null</span>;</span><br><span class="line"><span class="comment">// 私有化构造方法</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">jedisPoolUtil</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//提供工厂方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> JedisPool <span class="title">getJedisPoolInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line"> <span class="keyword">if</span> (jedisPool==<span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (jedisPoolUtil.class)&#123;</span><br><span class="line">     <span class="keyword">if</span> (jedisPool==<span class="keyword">null</span>)&#123;</span><br><span class="line">         <span class="comment">// jedispool 的相关配置</span></span><br><span class="line">         JedisPoolConfig poolConfig = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">         poolConfig.setMaxIdle(<span class="number">32</span>);  <span class="comment">// 最多有这么多尅空闲</span></span><br><span class="line">         poolConfig.setMaxTotal(<span class="number">500</span>);</span><br><span class="line">         poolConfig.setMaxWaitMillis(<span class="number">100</span>*<span class="number">1000</span>); <span class="comment">//最长等待的时间</span></span><br><span class="line">         poolConfig.setTestOnBorrow(<span class="keyword">true</span>); <span class="comment">// 获取redis连接时,是否检验redis的连接可用性</span></span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> JedisPool(poolConfig,<span class="string">"192.168.43.150"</span>,<span class="number">6379</span>);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line">     <span class="keyword">return</span> jedisPool;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  关闭具体某个池子的某个实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">(Jedis jedis)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (jedis!=<span class="keyword">null</span>)&#123;</span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="spring-data-redis"><a href="#spring-data-redis" class="headerlink" title="spring-data-redis"></a>spring-data-redis</h3><p>spring整个redis后提供了如下两个模板,供我们去操作redis</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BootRedisApplicationTests</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    StringRedisTemplate stringRedisTemplate;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>前者的kv 全是object</li>
+<li>后者的kv 全是string</li>
+</ul>
+<p>大多数情况下,我们都是把string字符串往redis里面存储,所以更倾向于<code>StringRedisTemplate</code></p>
+<p>两套模板针对五大数据类型对应如下api,同样可读性依然超级好</p>
+<table>
+<thead>
+<tr>
+<th>header 1</th>
+<th>header 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作字符串</td>
+<td>redisTemplate.opsForValue()</td>
+</tr>
+<tr>
+<td>操作hash</td>
+<td>redisTemplate.opsForHash()</td>
+</tr>
+<tr>
+<td>操作list</td>
+<td>redisTemplate.opsForList()</td>
+</tr>
+<tr>
+<td>操作set</td>
+<td>redisTemplate.opsForSet()</td>
+</tr>
+<tr>
+<td>操作zset</td>
+<td>redisTemplate.opsForZSet()</td>
+</tr>
+</tbody>
+</table>
+<p>注意点:</p>
+<p>RedisTemplate 前者针对对象操作,要求我们的bean要是实现可序列化接口<code>Serializable</code></p>
+<ul>
+<li>默认会使用jdk默认的序列化机制,把序列化后的数据保存到redis,当我们直接去redis上查看存进去的对象时,看到的无异于一堆乱码(当然并没错,依旧可以通过反序列化得到对象)</li>
+</ul>
+<p>如何解决?</p>
+<ol>
+<li>我们可以先把对象手动转化成json,再存储到redis</li>
+<li>定制RedisTemplate</li>
+</ol>
+<p>在redis的自动配置类中我们可以看到它的自动配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(RedisOperations.class)</span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(RedisProperties.class)</span><br><span class="line"><span class="meta">@Import</span>(&#123; LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class &#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisAutoConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"redisTemplate"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> RedisTemplate&lt;Object, Object&gt; <span class="title">redisTemplate</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			RedisConnectionFactory redisConnectionFactory)</span> <span class="keyword">throws</span> UnknownHostException </span>&#123;</span><br><span class="line">		RedisTemplate&lt;Object, Object&gt; template = <span class="keyword">new</span> RedisTemplate&lt;&gt;();</span><br><span class="line">		template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">		<span class="keyword">return</span> template;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>跟进 RedisTemplate 可以找到他默认使用的序列化器是 jdk的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">super</span>.afterPropertiesSet();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">boolean</span> defaultUsed = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (defaultSerializer == <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">		defaultSerializer = <span class="keyword">new</span> JdkSerializationRedisSerializer(</span><br><span class="line">				classLoader != <span class="keyword">null</span> ? classLoader : <span class="keyword">this</span>.getClass().getClassLoader());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">**我们要做的就是定制一个自己的关于redis的配置类,让他覆盖掉自动配置**</span><br><span class="line"></span><br><span class="line">新建类,加`<span class="meta">@Configuration</span>` 注解 , 拷贝原自动配置类的代码段,替换掉 它指定序列化器的部分</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">redisConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate&lt;Object, 将被序列化的类名&gt; redisTemplate(</span><br><span class="line">            RedisConnectionFactory redisConnectionFactory) <span class="keyword">throws</span> UnknownHostException &#123;</span><br><span class="line">        RedisTemplate&lt;Object, 将被序列化的类名&gt; template = <span class="keyword">new</span> RedisTemplate&lt;Object, 将被序列化的类名&gt;();</span><br><span class="line">        template.setConectionFactory(redisConnectionFactory);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更换默认的序列化器</span></span><br><span class="line">        RedisSerializer ser= <span class="keyword">new</span> Jackson2JsonRedisSerializer&lt;将被序列化的类名&gt;(将被序列化的类名.Class);</span><br><span class="line">        template.setDefaultSerializer(ser);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自动注入我们指定的redisTemplate</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"> RedisTemplate&lt;Object,将要序列化的类名&gt; redisTemplate;</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/03/30/如何优雅规避NPE/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                如何优雅规避NPE
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/03/28/redis基础/">
+                Redis基础
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>

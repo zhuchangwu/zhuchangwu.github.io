@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>ubuntu16搭建文件服务器 | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">ubuntu16搭建文件服务器</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-05-15
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <blockquote>
+<p>这篇记录,如何在ubuntu16 安装 FastDFS 文件服务器,详细步骤</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="环境依赖"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt-get install make</span><br><span class="line"></span><br><span class="line">apt-get install unzip</span><br><span class="line"></span><br><span class="line">apt-get install gcc</span><br><span class="line"></span><br><span class="line">apt-get install libevent-dev</span><br><span class="line"></span><br><span class="line">nginx 依赖</span><br><span class="line"></span><br><span class="line">安装gcc g++的依赖库</span><br><span class="line">sudo apt-get install build-essential</span><br><span class="line">sudo apt-get install libtool</span><br><span class="line"></span><br><span class="line">安装pcre依赖库（http://www.pcre.org/）</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libpcre3 libpcre3-dev</span><br><span class="line"></span><br><span class="line">安装zlib依赖库（http://www.zlib.net）</span><br><span class="line">sudo apt-get install zlib1g-dev</span><br><span class="line"></span><br><span class="line">安装SSL依赖库（16.04默认已经安装了）</span><br><span class="line">sudo apt-get install openssl</span><br></pre></td></tr></table></figure>
+<h3 id="安装libevent-2-0-2"><a href="#安装libevent-2-0-2" class="headerlink" title="安装libevent 2.0.2"></a>安装libevent 2.0.2</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf libevent-2.0.22-stable.tzr.gz</span><br><span class="line"><span class="built_in">cd</span> libevent-2.0.22-stable</span><br><span class="line"></span><br><span class="line">配置安装库的目标路径：</span><br><span class="line">./configure --prefix=/usr</span><br><span class="line"></span><br><span class="line">编译安装libevent库：</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">检测安装是否成功</span><br><span class="line"></span><br><span class="line">ls -al /usr/lib | grep libevent</span><br></pre></td></tr></table></figure>
+<h3 id="安装libfastcommon-master"><a href="#安装libfastcommon-master" class="headerlink" title="安装libfastcommon-master"></a>安装libfastcommon-master</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">解压</span><br><span class="line">unzip libfastcommon-master.zip</span><br><span class="line"></span><br><span class="line">进入该文件,安装  </span><br><span class="line">./make.sh &amp;&amp; ./make.sh install</span><br></pre></td></tr></table></figure>
+<h2 id="至此-所有环境依赖ok"><a href="#至此-所有环境依赖ok" class="headerlink" title="至此,所有环境依赖ok"></a>至此,所有环境依赖ok</h2><h3 id="安装FDFS"><a href="#安装FDFS" class="headerlink" title="安装FDFS"></a>安装FDFS</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">解压</span><br><span class="line">tar -xvf FastDFS_v5.08.tar.gz</span><br><span class="line"></span><br><span class="line">进入</span><br><span class="line"><span class="built_in">cd</span> FastDFS</span><br><span class="line"></span><br><span class="line">编译安装</span><br><span class="line">sudo ./make.sh </span><br><span class="line">sudo ./make.sh install</span><br><span class="line"></span><br><span class="line">查看是否安装成功</span><br><span class="line">ll /etc/init.d/ | grep fdfs</span><br><span class="line">结果如下图所示,同时出现 tracker 和 storage</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面那两个文件是脚本,分别用来启动FDFS的tracker和storage , 还要记住他们所在的路径 /etc/init.d/ 下面<br>以后要是做开机启动也是在这里做</p>
+</blockquote>
+<blockquote>
+<p>安装完了fdfs之后，重启一下， 不然下面配置完了 tracker之后，启动不起来</p>
+</blockquote>
+<h3 id="FDFS配置文件"><a href="#FDFS配置文件" class="headerlink" title="FDFS配置文件"></a>FDFS配置文件</h3><blockquote>
+<p>fdfs启动回去 /etc/fdfs/下面读取配置文件, 安装完后默认会有三个模板配置文件,后续还会添加和http等相关的三个配置文件</p>
+</blockquote>
+<p>我们先启动 tracker–&gt; 去/etc/fdfs/ 修改tracker的配置文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/fdfs</span><br></pre></td></tr></table></figure>
+<p>在FDFS安装包所在的目录 创建出两个新目录,分别存放 tracker/storage 里面的 数据和日志文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir XXX</span><br></pre></td></tr></table></figure>
+<p>我们先修改tracker , 修改第三个配置文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">重命名配置文件</span><br><span class="line"> mv tracker.conf.sample tracker.conf</span><br></pre></td></tr></table></figure>
+<h3 id="修改了配置文件-去启动tracker"><a href="#修改了配置文件-去启动tracker" class="headerlink" title="修改了配置文件,去启动tracker"></a>修改了配置文件,去启动tracker</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service fdfs_trackerd start <span class="comment"># 启动fdfs_trackerd服务，停止用stop</span></span><br></pre></td></tr></table></figure>
+<p>通过下面命令查看是否成功启动</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef |grep fdfs</span><br></pre></td></tr></table></figure>
+<h3 id="启动storage-–编辑storage配置"><a href="#启动storage-–编辑storage配置" class="headerlink" title="启动storage –编辑storage配置"></a>启动storage –编辑storage配置</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  修改文件名</span></span><br><span class="line">sudo cp storage.conf.sample storage.conf</span><br><span class="line">sudo vim storage.conf</span><br><span class="line"></span><br><span class="line">修改配置文件 -- 传输过来的文件保存的目录</span><br><span class="line">base_path=/home/fdfschangwu/fdfs/storage <span class="comment"># storage的数据和日志存放目录</span></span><br><span class="line">store_path0=/home/fdfschangwu/fdfs/storage <span class="comment"># storage的上传文件存放路径</span></span><br><span class="line">tracker_server=192.168.56.101:22122 <span class="comment"># tracker的地址</span></span><br><span class="line"></span><br><span class="line">创建不存在的目录</span><br><span class="line">XXX</span><br><span class="line"></span><br><span class="line">启动storage</span><br><span class="line">sudo service fdfs_storaged start</span><br><span class="line"></span><br><span class="line">查看是否启动</span><br><span class="line">ps -ef | grep fdfs</span><br></pre></td></tr></table></figure>
+<h3 id="修改客户端配置文件"><a href="#修改客户端配置文件" class="headerlink" title="修改客户端配置文件"></a>修改客户端配置文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash_path：换成一个存在的文件夹</span><br><span class="line">tracker_server: 真正存在的那个地址</span><br></pre></td></tr></table></figure>
+<h3 id="测试上传"><a href="#测试上传" class="headerlink" title="测试上传:"></a>测试上传:</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">命令:</span><br><span class="line">/usr/bin/fdfs_upload_file client.conf /tmp/1.jpg</span><br><span class="line"></span><br><span class="line">响应如下:</span><br><span class="line">group1/M00/00/00/rBUAAlzbpG-ADLFNAAN_1nDfKJs466.jpg</span><br><span class="line"></span><br><span class="line">group1: 是我们在storage里面配置的组名</span><br><span class="line">M00: 对应的是我们在storage.conf里面配置的store_path0</span><br><span class="line">00/00 : 是文件目录的打散处理</span><br></pre></td></tr></table></figure>
+<h3 id="配置-Nginx-–-FastDFS模块-加上这一步操作的原因是-80端口被nginx控制了-我们需要在nginx配置一下-让他反向代理请求-把请求转发的文件服务器"><a href="#配置-Nginx-–-FastDFS模块-加上这一步操作的原因是-80端口被nginx控制了-我们需要在nginx配置一下-让他反向代理请求-把请求转发的文件服务器" class="headerlink" title="配置  Nginx – FastDFS模块 ( 加上这一步操作的原因是 80端口被nginx控制了,我们需要在nginx配置一下,让他反向代理请求,把请求转发的文件服务器 )"></a>配置  Nginx – FastDFS模块 ( 加上这一步操作的原因是 80端口被nginx控制了,我们需要在nginx配置一下,让他反向代理请求,把请求转发的文件服务器 )</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">解压 </span><br><span class="line">tar -xvf fastdfs-nginx-module_v1.16.tar.gz</span><br><span class="line"></span><br><span class="line">进入配置目录</span><br><span class="line"><span class="built_in">cd</span> /fastdfs-nginx-module/src</span><br><span class="line"></span><br><span class="line">修改配置</span><br><span class="line">vim config</span><br><span class="line"></span><br><span class="line">执行下面命令（将配置中的/usr/<span class="built_in">local</span>改为/usr）：</span><br><span class="line">:%s+/usr/<span class="built_in">local</span>/+/usr/+g</span><br><span class="line"></span><br><span class="line">将src目录下的mod_fastdfs.conf复制到 /etc/fdfs目录：当前全部的配置文件都在这里面,</span><br><span class="line">fdfs运行也会读取这里面的配置文件</span><br><span class="line"></span><br><span class="line">sudo cp mod_fastdfs.conf /etc/fdfs/</span><br><span class="line"></span><br><span class="line"> 编辑该文件</span><br><span class="line">sudo vim /etc/fdfs/mod_fastdfs.conf</span><br><span class="line"></span><br><span class="line">修改配置</span><br><span class="line">connect_timeout=10                  		<span class="comment"># 客户端访问文件连接超时时长（单位：秒）</span></span><br><span class="line">tracker_server=192.168.56.101:22122  	<span class="comment"># tracker服务IP和端口</span></span><br><span class="line">url_have_group_name=<span class="literal">true</span>            		<span class="comment"># 访问链接前缀加上组名</span></span><br><span class="line">store_path0=/home/fdfschangwu/fdfs/storage        		<span class="comment"># 文件存储路径</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制 FastDFS的和http请求相关的配置文件到/etc/fdfs</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/fdfschangwu/fdfs/FastDFS/config/  <span class="comment"># http相关的请求在这里面</span></span><br><span class="line">cp http.conf mime.types /etc/fdfs/</span><br></pre></td></tr></table></figure>
+<p>—- 至此  Nginx模块安装完毕</p>
+<hr>
+<h3 id="nginx原来已经安装过了-现在去做些修改"><a href="#nginx原来已经安装过了-现在去做些修改" class="headerlink" title="nginx原来已经安装过了,现在去做些修改"></a>nginx原来已经安装过了,现在去做些修改</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">进入 nginx目录</span><br><span class="line"><span class="built_in">cd</span> /home/ubuntu/nginx-1.10.0/</span><br><span class="line"></span><br><span class="line">执行下面的命令 -- 添加一个新的模块(fdfs的源码包))</span><br><span class="line">./configure --prefix=/opt/nginx --sbin-path=/usr/bin/nginx </span><br><span class="line">--add-module=/home/fdfschangwu/fdfs/fastdfs-nginx-module/src</span><br><span class="line"></span><br><span class="line">重新编译-- 不要安装!!!</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">备份之前的nginx</span><br><span class="line">mv /usr/bin/nginx /usr/bin/nginx-back</span><br><span class="line"></span><br><span class="line">停止nginx</span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line">用刚刚编译的nginx 替换原来的nginx</span><br><span class="line">cp /home/ubuntu/nginx-1.10.0/objs/nginx /usr/bin/</span><br></pre></td></tr></table></figure>
+<h3 id="修改nginx-的配置文件"><a href="#修改nginx-的配置文件" class="headerlink" title="修改nginx 的配置文件"></a>修改nginx 的配置文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">在 nginx安装目录中  /opt/nginx/conf/nginx.conf</span><br><span class="line"></span><br><span class="line"> &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  211.159.146.192;</span><br><span class="line"></span><br><span class="line">       <span class="comment"># fdfs配置</span></span><br><span class="line">       location ~/group([0-9])/&#123;</span><br><span class="line">	ngx_fastdfs_module;	<span class="comment"># 代理到fdfs的nginx模块</span></span><br><span class="line">      &#125;		</span><br><span class="line"> </span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="启动nginx"><a href="#启动nginx" class="headerlink" title="启动nginx"></a>启动nginx</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx </span><br><span class="line"></span><br><span class="line">看到下面的响应证明,一切ok</span><br><span class="line">ngx_http_fastdfs_set pid=1628</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                腾讯短信+Springboot+Redis 实现短信验证注册
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/04/23/JS-实现动态轮播图/">
+                JS 实现动态轮播图
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>

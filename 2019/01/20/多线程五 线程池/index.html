@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>多线程五 线程池 | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">多线程五 线程池</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-01-20
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/多线程/">#多线程</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><h3 id="线程池的优势"><a href="#线程池的优势" class="headerlink" title="线程池的优势"></a>线程池的优势</h3><ul>
+<li>1:降低资源的消耗,通过重复利用已经创建的线程,降低线程的创建和销毁造成的资源的消耗<a id="more"></a></li>
+<li>2:提高响应速度,当任务到达时,任务可以不需要去等待线程的创建就可以执行</li>
+<li>3:提高线程的可管理,线程是稀缺资源,如果无限制的创建,会消耗系统的资源,降低系统的稳定性,但是使用线程池,可以进行统一的分配调优, 监控.</li>
+<li>4:提供了定时执行,定期执行,单行程,并发数控制等功能…</li>
+</ul>
+<h3 id="new-Thread的弊端"><a href="#new-Thread的弊端" class="headerlink" title="new Thread的弊端"></a>new Thread的弊端</h3><ul>
+<li>每次new Thread新建对象,性能差</li>
+<li>线程缺乏统一管理,可能无限制的新建线程,相互竞争,有可能过多的占用系统的资源</li>
+<li>缺少更多的功能,如更多执行,定期执行,线程中断</li>
+</ul>
+<blockquote>
+<p><strong>JDK提供了一套Executer框架,可以帮助开发人员,有效的进行线程控制,其中newFixedThreadPool(),newSingleThreadExecutor(),newCachedThreadPool均使用了 ThreadPoolExecutor,下面部分就是了解ThreadPoolExecutor</strong>    </p>
+</blockquote>
+<h3 id="1-ThreadPoolExecutor的简单使用"><a href="#1-ThreadPoolExecutor的简单使用" class="headerlink" title="1. ThreadPoolExecutor的简单使用"></a>1. ThreadPoolExecutor的简单使用</h3><h4 id="创建线程池并使用"><a href="#创建线程池并使用" class="headerlink" title="创建线程池并使用"></a>创建线程池并使用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">newMyThreadPool</span>  </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    AtomicInteger ai = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">//创建线程池</span></span><br><span class="line">    <span class="comment">//饱和策略默认使用的 abortPolicy(流产策略) : 表示无法处理提交的新任务,抛出异常</span></span><br><span class="line">    ThreadPoolExecutor threadPoolExecutor = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">10</span>, <span class="number">20</span>, <span class="number">10</span>, TimeUnit.DAYS, <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">10</span>),<span class="keyword">new</span> ThreadPoolExecutor.DiscardOldestPolicy());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//提交100个线程任务</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//提交带返回值的线程任务</span></span><br><span class="line">        Future&lt;String&gt; future = threadPoolExecutor.submit(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span></span>&#123;</span><br><span class="line">                ai.getAndIncrement();</span><br><span class="line">                <span class="keyword">return</span> Thread.currentThread().getName();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"线程名字:"</span>+future.get()+<span class="string">"执行结果"</span>+future.isDone());</span><br><span class="line">            System.out.println(<span class="string">"线程数为"</span>+ai);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*      // 提交不带返回值的线程任务</span></span><br><span class="line"><span class="comment">        threadPoolExecutor.execute(new Runnable() &#123;</span></span><br><span class="line"><span class="comment">            @Override</span></span><br><span class="line"><span class="comment">            public void run() &#123;</span></span><br><span class="line"><span class="comment">                System.out.println(Thread.currentThread().getName());</span></span><br><span class="line"><span class="comment">            &#125;</span></span><br><span class="line"><span class="comment">        &#125;);*/</span></span><br><span class="line">    &#125;</span><br><span class="line">    threadPoolExecutor.shutdown();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-1构造方法参数"><a href="#1-1构造方法参数" class="headerlink" title="1.1构造方法参数:"></a>1.1构造方法参数:</h3><table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>corePoolSize</td>
+<td>线程池的基本大小,运行时,当任务提交过来了,如果线程池中的线程数小于corePoolSize,即便当前的线程数够用了,也会继续创建新线程,当作辅助线程</td>
+</tr>
+<tr>
+<td>maximumPoolSize</td>
+<td>线程中最大的线程数量</td>
+</tr>
+<tr>
+<td>keepAliveTime</td>
+<td>当线程池中线程的数量达到corePoolSize的时候,此参数为到终止前,超出了corePoolSize的多余线程等待新任务的最长时间,时间到了还没有任务,就被销毁</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>keepAliveTime的时间单位</td>
+</tr>
+<tr>
+<td>workQueue</td>
+<td>任务队列,保存被提交的尚未执行的任务,(仅仅保存由execute方法提交的 Runable 任务)</td>
+</tr>
+<tr>
+<td>threadFactory</td>
+<td>执行程序创建新线程时使用的工厂。一般使用默认的即可</td>
+</tr>
+<tr>
+<td>handler</td>
+<td>拒绝策略,当任务太多,来不及处理时,如何拒绝的策略</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-2-详解workQueue和handler"><a href="#1-2-详解workQueue和handler" class="headerlink" title="1.2 详解workQueue和handler"></a>1.2 详解workQueue和handler</h3><p><strong>workQueue</strong></p>
+<ul>
+<li>ArrayBlockingQueue:一个基于数组结构的有界数组队列,按照FIFO的原则,对任务进行排序</li>
+<li>LinkedBlockingQueue:基于链表结构的阻塞队列,同样按照FIFO排序元素,吞吐量通常高于ArrayBlockingQueue<ul>
+<li>Excutor的静态工厂方法,Executors.newFixedThreadPool()使用了这个队列</li>
+</ul>
+</li>
+<li>SynchronizedQueue: 一个不存储元素的阻塞队列,每个插入操作,必须等待另一个线程调用移除操作,否则插入操作一直处于阻塞状态,吞吐量通常高于LinkedBlockingQueue高—它将任务直接提交给线程而不保持它们<ul>
+<li>静态工厂方法 Executors.newCachedThreadPool使用了这个队列</li>
+</ul>
+</li>
+<li>PriorityBlockingQueue: 一个具有优先级的无限阻塞队列</li>
+</ul>
+<p><strong>handler</strong><br>RejectedExecutionHandler饱和策略,当线程池和队列都满了,这个时候,又来了新的任务,那么久必须采用一种策略处理新的任务,这个策略默认使用的是abortPolicy,(流产策略,表示无法处理新任务而抛出异常)</p>
+<ul>
+<li>DiscardRunsPolicy:丢弃线程中最近的一个任务,并执行当前任务</li>
+<li>CallerRunsPolicy: 只用调用者所在的线程来执行任务</li>
+<li>DiscardPolicy: 不处理,丢弃掉</li>
+<li>实现RejectedExecutionHandler接口自定义策略,如记录日志,或者持久化不能处理的任务  </li>
+</ul>
+<h3 id="1-3-线程任务的提交"><a href="#1-3-线程任务的提交" class="headerlink" title="1.3 线程任务的提交"></a>1.3 线程任务的提交</h3><h3 id="execute-amp-submit"><a href="#execute-amp-submit" class="headerlink" title="execute() &amp; submit()"></a>execute() &amp; submit()</h3><ol>
+<li>execute()方法用于提交不需要返回值的任务,意味着,无法得知任务是否正常执行</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 提交不带返回值的线程任务</span></span><br><span class="line">        threadPoolExecutor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);*/</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>submit()用于提交一个任务,并带有返回值,submit()将返回一个Future类型的对象,然后我们可以通过这个对象判断任务是否执行成功并且可以同futrue.get()的方法获取返回值并使用,get()会阻塞当前线程,直到任务完成</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//提交带返回值的线程任务</span></span><br><span class="line">    Future&lt;String&gt; future = threadPoolExecutor.submit(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span></span>&#123;</span><br><span class="line">            ai.getAndIncrement();</span><br><span class="line">            <span class="keyword">return</span> Thread.currentThread().getName();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"线程名字:"</span>+future.get()+<span class="string">"执行结果"</span>+future.isDone());</span><br><span class="line">        System.out.println(<span class="string">"线程数为"</span>+ai);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-4-shutdown-与shutdownNow-方法"><a href="#1-4-shutdown-与shutdownNow-方法" class="headerlink" title="1.4 shutdown()与shutdownNow()方法"></a>1.4 shutdown()与shutdownNow()方法</h3><p><strong>区别</strong></p>
+<ol>
+<li>执行shutdown()方法后,会等待已经添加进来的任务全部执行完后,在关闭线程池<ul>
+<li>将线程的状态设置成SHUTDOWN,然后去中断没有执行任务的线程 </li>
+</ul>
+</li>
+<li>shutdownNow(),不管任务是否在执行,中断任务,关闭线程池<ul>
+<li>将线程的状态修改为STOP,然后尝试停止所有正在执行的线程任务,并返回等待执行任务的列表 </li>
+</ul>
+</li>
+</ol>
+<p><strong>相同点</strong></p>
+<p>都是遍历线程池中的工作线程,挨个调用它们的interrupt()方法</p>
+<h3 id="2-合理配置线程池"><a href="#2-合理配置线程池" class="headerlink" title="2 合理配置线程池"></a>2 合理配置线程池</h3><p>根据任务的特性,合理配置线程池</p>
+<ul>
+<li>任务性质: <ul>
+<li>PUC密集型任务(绝大部分时间花费在计算上)  <ul>
+<li>应该配置尽可能少的线程,如N+1 N是CPU数 Runtime.getRuntime().availableProcessors()</li>
+</ul>
+</li>
+<li>IO密集型任务(大部分时间花费在等待IO上)<ul>
+<li>应配置尽可能多的线程,如2*N</li>
+</ul>
+</li>
+<li>混合型任务<ul>
+<li>拆分成一个任务密集型和一个io密集型</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>任务的优先级: 高,底,中</li>
+<li>任务执行时间: 长,中,短</li>
+<li>任务的依赖性: 是否依赖其他系统资源,如数据库连接</li>
+</ul>
+<h3 id="3ThreadPoolExecutor同样提供了很多线程池监控的方法"><a href="#3ThreadPoolExecutor同样提供了很多线程池监控的方法" class="headerlink" title="3ThreadPoolExecutor同样提供了很多线程池监控的方法"></a>3ThreadPoolExecutor同样提供了很多线程池监控的方法</h3><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>beforeExecute(Thread t, Runnable r)</td>
+<td>在Runable执行任务之前调用</td>
+</tr>
+<tr>
+<td>afterExecute(Runnable r, Throwable t)</td>
+<td>Runnable任务执行完后调用</td>
+</tr>
+<tr>
+<td>getActiveCount()</td>
+<td>主动执行任务的近似线程数</td>
+</tr>
+</tbody>
+</table>
+<p>等等..</p>
+<hr>
+<h3 id="Executor多线程框架"><a href="#Executor多线程框架" class="headerlink" title="Executor多线程框架"></a>Executor多线程框架</h3><blockquote>
+<p>如果ThreadPoolExecutor是一个线程池,那么<strong>Executors就是一个线程池工厂</strong><br>java.util.concurrent<br>类 Executors<br>java.lang.Object</p>
+</blockquote>
+<p>  继承者 java.util.concurrent.Executors</p>
+<p> <strong>Executor是一个很灵活的基于接口的任务执行工具,使用它可以极为简单的创建出一个很棒的任务工作队列,却只需要一行代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executor = Executors.newCachedThreadPool();</span><br></pre></td></tr></table></figure>
+<p><strong>提交一个Runable方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">executor.execute(Runable);</span><br></pre></td></tr></table></figure>
+<p><strong>优雅的终止</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">executor.shutdown();</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">&gt; 在&lt;&lt;Effective java&gt;&gt;中提及,executor和task优先于线程,尽量不要编写自己的工作队列,而且尽量不要直接使用线程,现在的关键,不再是Thread了,它既是工作单元也就是任务(task),又是执行机制,**而现在工作单元和执行机制是分开的**,工作单元就是Runable和它的近亲Callable,而执行机制是 executor service,当我从任务的角度上问题,并让executor service替我们执行任务,**那么我们在策略的选择上就有很大的灵活性**,从本质上将,Executor Famework所做的事,就是替我们优雅的执行任务</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Executorsextends</span>   <span class="title">Object</span>此包中所定义的    <span class="title">Executor</span>、<span class="title">ExecutorService</span>、<span class="title">ScheduledExecutorService</span>、<span class="title">ThreadFactory</span> 和 <span class="title">Callable</span>   类的工厂和实用方法。此类支持以下各种方法：   </span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">创建并返回设置有常用配置字符串的 <span class="title">ExecutorService</span> 的方法。   </span></span><br><span class="line"><span class="class">创建并返回设置有常用配置字符串的 <span class="title">ScheduledExecutorService</span> 的方法。   </span></span><br><span class="line"><span class="class">创建并返回“包装的”<span class="title">ExecutorService</span> 方法，它通过使特定于实现的方法不可访问来禁用重新配置。   </span></span><br><span class="line"><span class="class">创建并返回 <span class="title">ThreadFactory</span> 的方法，它可将新创建的线程设置为已知的状态。   </span></span><br><span class="line"><span class="class">创建并返回非闭包形式的 <span class="title">Callable</span> 的方法，这样可将其用于需要 <span class="title">Callable</span> 的执行方法中。  </span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">&gt; 使用<span class="title">Executors</span>的工厂方法,可以简单粗暴的获取我们想要的线程池</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">### 简单使用</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"> * 1 方法返回一个固定大小的线程池,线程数目始终不变,当有新任务被提交过来,如果有空闲的线程,立即执行任务,没有空闲的线程,任务会被暂存在一个任务队列中.等待有空闲的线程来执行</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">```<span class="title">java</span></span></span><br><span class="line"><span class="class"> <span class="title">public</span> <span class="title">static</span> <span class="title">ExecutorService</span>  <span class="title">newFixedThreadPool</span>(10)</span>;</span><br></pre></td></tr></table></figure>
+<p> 查看他的实现,可以看到,其实他就是使用ThreadPoolService实现的</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>2 返回一个根据实际情况进行调整,没有固定大小的线程池,如果有空闲的线程,优先调用空闲的线程,没有空闲的线程,创建新的线程执行任务,<strong>他在执行的过程中通常会创建和所需线程数量相等的线程数,因此它是合理的Executor首选</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService  <span class="title">newCachedThreadPool</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>3 返回一个只有一个线程的线程池,任务被提交后,如果线程空闲,那么由此线程执行任务,多余的任务被保存进任务队列,按照先进先出的顺序,排队等待执行</li>
+</ul>
+<blockquote>
+<p>为什么单个线程还整一个线程池?  因为 new 出来的线程在执行任务时如果挂掉了,那么任务就不会被继续执行下去,而使用线程池,虽然只有一个线程,但是线程挂掉后,依然会创建出新的线程执行任务…(用于更新本地或远程日志,或者时间分发线程)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService  <span class="title">newSingleThreadExecutor</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>4 返回一个ScheduledExecutorService对象,线程池的大小是corePoolSize, ScheduledExecutorService 继承了ExecutorService接口,并且对他进行了升级,添加了 在给定的延迟后执行某些任务的,或者周期性执行某些任务的方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 简单使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">while (true) &#123;</span></span><br><span class="line"><span class="comment">scheduledExecutorService.schedule(new Runnable() &#123;</span></span><br><span class="line"><span class="comment">@Override</span></span><br><span class="line"><span class="comment">public void run() &#123;</span></span><br><span class="line"><span class="comment">    System.out.println("--&gt;" + Thread.currentThread().getName());</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">&#125;, 5, TimeUnit.SECONDS);</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ScheduledFuture&lt;String&gt; schedule = scheduledExecutorService.schedule(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">return</span> Thread.currentThread().getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, <span class="number">3</span>, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    System.out.println(schedule.get());</span><br><span class="line">&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>5 返回一个只有一个线程的线程池</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newSingleThreadScheduledExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DelegatedScheduledExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>JDK8新添加:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService newWorkStrealingPool</span><br></pre></td></tr></table></figure>
+<p>使用:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">ExecutorService pool = Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors());</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">50</span>;i++)&#123;</span><br><span class="line">    pool.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Date date = <span class="keyword">new</span> Date();</span><br><span class="line">            System.out.println(<span class="string">"线程"</span>+Thread.currentThread().getName()+<span class="string">"完成任务,时间为:"</span>+date.getTime());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (<span class="keyword">true</span>)&#123;&#125;<span class="comment">//主线程自旋,不然看不见效果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>任务窃取线程池,什么是任务窃取?就是让闲置的线程去执行本不属于他们的任务, 带并行级别,并行级别就是同一时刻,最多有多少条线程同时执行,达到减少竞争的效果,,和CPU数相关,如果不设置参数,默认就是CPU的个数.</li>
+</ul>
+<hr>
+<p><strong>参考书籍&lt;&lt;java编程思想&gt;&gt;Bruce Eckel著 &lt;<effective java="">&gt;</effective></strong></p>
+
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/01/22/多线程六 同步容器&amp;并发容器/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                多线程六 同步容器&amp;并发容器
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/01/17/多线程四 线程之间的通信/">
+                多线程四 线程之间的通信
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>

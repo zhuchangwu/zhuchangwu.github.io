@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>JAVA反射机制与动态代理 | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">JAVA反射机制与动态代理</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-03-18
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/java/">#java</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <blockquote>
+<p>承接上篇博客里面,类加载器把类加载把类加载进内存,同时创建出了一个唯一的Class对象,其实它本质上就是一个java类,只不过功能挺特殊的—说白了,就像当初,数据多了,用集合装,还多?写个类,用对象装, 类可以对一系列数据的描述,然后谁描述类呢–&gt;Class里面有类的基本信息 <strong>1.类的属性:Field 2. 方法:Method 3 .构造器:Constructor</strong>(这三个属性都有自己的对应类)</p>
+</blockquote>
+<a id="more"></a>
+<p>都说java是一门动态语言,怎么着他就动态了呢? reflection反射! 通过反射,我们可以动态的获取类的实例,平时我们自己写东西,用到反射的几率几乎没有,但是像Spring,Hibernate,Mybatis等等等等这些框架的底层到处都是反射</p>
+<p>初学spring时接触下面这个配置, <strong>Spring的控制反转</strong>,IOC,把对象交给Spring创建,依稀记得当初写一大堆xml配置文件,那时候很蒙!其中,把对象的创建权反转给Spring的时候,需要这样:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"小写类名"</span>  , <span class="attr">class</span>=<span class="string">"带包名的全类名"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"XXX"</span> <span class="attr">value</span>=<span class="string">"XXX"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p> <strong>她其实就是在通过反射,帮我们创建对象</strong></p>
+<hr>
+<p>言归正传,下面分如下几步展开</p>
+<p>1.获取class对象的三种方式</p>
+<ol>
+<li>抛弃 new , 动态构建任意一个类的对象</li>
+<li>获取一个类的任意成员变量和方法,不论是否被private修饰</li>
+<li>调用任意一个对象的方法</li>
+<li>跨越泛型检验</li>
+<li>动态代理</li>
+<li>反射&amp;泛型</li>
+</ol>
+<h3 id="一-获取class对象的三种方式"><a href="#一-获取class对象的三种方式" class="headerlink" title="一: 获取class对象的三种方式"></a>一: 获取class对象的三种方式</h3><p>图1</p>
+<ul>
+<li>源代码阶段(使用频率最多) </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1 注意,当我用ide 快捷生成 左半部分的时候,   Class&lt;?&gt; forName  即便&lt;?&gt;是问号,他也是泛型的</span></span><br><span class="line"><span class="comment">//Class&lt;?&gt; forName = Class.forName("com.atGongDa.entity.person");</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2 然后我们可以这样</span></span><br><span class="line"><span class="comment">// Class&lt;person&gt; personClass = (Class&lt;person&gt;) Class.forName("com.atGongDa.entity.person");</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//3 但是,在开发的时候,是不会写上泛型的,因为在开发框架的人们,在写它的时候,是不知道,程序员要传递进来什么类型</span></span><br><span class="line">Class forName = Class.forName(<span class="string">"com.atGongDa.entity.person"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">newInstance() 创建对象的实例, 注意这里获取的对象,和直接new 出来的对象是不一样的,不知直接调用类里面的方法</span></span><br><span class="line"><span class="comment">调用的是无参的 构造器, 这也是为什么要习惯性的写上一个无参的构造器,留着给反射用!!!</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">Object o = forName.newInstance();</span><br><span class="line">System.out.println(o);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>字节码阶段</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">类名.class</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对象阶段</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对象.getClass()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个意义不太大, 我们都拿到对象了, 它是啥类型,有什么,点进去看就行了,还getClass()干啥,南辕北辙</p>
+</blockquote>
+<h3 id="二-抛弃-new-动态构建任意一个类的对象-获取它的方法并执行"><a href="#二-抛弃-new-动态构建任意一个类的对象-获取它的方法并执行" class="headerlink" title="二. 抛弃 new , 动态构建任意一个类的对象,获取它的方法并执行"></a>二. 抛弃 new , 动态构建任意一个类的对象,获取它的方法并执行</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取Class对象,它里面它里面封装着类的属性和方法</span></span><br><span class="line">Class clazz= Class.forName(<span class="string">"com.atGongDa.entity.person"</span>);</span><br><span class="line"><span class="comment">// 创建类实例,不过直接使用它没意义(因为我最终的目的还是使用对象里面的方法和字段)</span></span><br><span class="line">Object o = clazz.newInstance();</span><br></pre></td></tr></table></figure>
+<p>获取类中的方法(包含它父类的方法),不包括获取不到私有的</p>
+<p>返回值: Method对象数组,里面的method对象是我们上面person中方法的抽象实体,类方法或实例方法（包括抽象方法）如果你去看它的API会发现它里面有一系列的方法,比如和它代表的方法执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method[] methods = clazz.getMethods();</span><br></pre></td></tr></table></figure>
+<p>获取所有的方法(包含私有的)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method[] declaredMethods = clazz.getDeclaredMethods();</span><br></pre></td></tr></table></figure>
+<p>获取指定的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method method = clazz.getDeclaredMethod(<span class="string">"text"</span>);</span><br></pre></td></tr></table></figure>
+<p>暴力反射,执行方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//执行方法: Method对象执行方法,</span></span><br><span class="line"> <span class="comment">// 两个参数</span></span><br><span class="line"> <span class="comment">//  谁的方法? 创建实例</span></span><br><span class="line"> <span class="comment">//  获取method对象</span></span><br><span class="line"> <span class="comment">// Method对象调用invoke()</span></span><br><span class="line"> Object o = clazz.newInstance();</span><br><span class="line"> method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">method.invoke(o,<span class="keyword">null</span>); <span class="comment">///参数就是原方法的参数</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="三-获取类的任意字段"><a href="#三-获取类的任意字段" class="headerlink" title="三. 获取类的任意字段"></a>三. 获取类的任意字段</h3><ul>
+<li>Field  也是个类,提供有关类或接口的单个字段的信息，以及对它的动态访问权限。反射的字段可能是一个类（静态）字段或实例字段。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">textField</span><span class="params">()</span> <span class="keyword">throws</span> NoSuchFieldException, IllegalAccessException </span>&#123;</span><br><span class="line">    <span class="comment">//获取所有字段</span></span><br><span class="line">    Field[] fields = person.class.getDeclaredFields();</span><br><span class="line">    <span class="keyword">for</span> (Field f:fields) &#123;</span><br><span class="line">        System.out.println(<span class="string">"字段=="</span>+f.getName());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取指定名字的字段</span></span><br><span class="line">    Field field = person.class.getDeclaredField(<span class="string">"neme"</span>);</span><br><span class="line">    System.out.println(field.getName());</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Field neme = person.class.getField("neme");</span></span><br><span class="line"><span class="comment">    System.out.println(neme.getName());*/</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">//获取指定对象的Field值</span></span><br><span class="line">    Object p  = <span class="keyword">new</span> person(<span class="string">"张武"</span>,<span class="number">11</span>);</span><br><span class="line">    <span class="comment">//暴力反射</span></span><br><span class="line">    field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Object o = field.get(p);</span><br><span class="line">    System.out.println(o);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//给指定对象的 当前字段设置值</span></span><br><span class="line">    field.set(p,<span class="string">"haha"</span>); <span class="comment">//filed 字段是上面的neme</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="四-工具方法"><a href="#四-工具方法" class="headerlink" title="四. 工具方法"></a>四. 工具方法</h3><ul>
+<li>很多框架底层都使用类似的方法,去配置文件里面读取我们的配置,然后把需要的截取出来,当作参数,传递到方法执行</li>
+</ul>
+<ol>
+<li>对象+方法名+可变参数</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* @Param obj 对象</span></span><br><span class="line"><span class="comment">* @Param methodName 方法名</span></span><br><span class="line"><span class="comment">* @Param avgs 方法参数,可变参数</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 要求,执行执行指定对象的指定方法</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke1</span><span class="params">(Object obj,String methodName,Object ... avgs)</span> <span class="keyword">throws</span> InvocationTargetException, IllegalAccessException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建 长度为avgs   类型为Class  的数组, (可变参数可以看作一个数组)</span></span><br><span class="line">    Class[] classes = <span class="keyword">new</span> Class[avgs.length];</span><br><span class="line">    <span class="comment">//循环 avgs.length 次 , 把每个入参的Class映射,传递进 Class数组中  ,得到的这个Class类型数组,就是getDeclaredMethod需要的第二个入参</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;avgs.length;i++)&#123;</span><br><span class="line">       classes[i] = avgs[i].getClass();</span><br><span class="line">    &#125;</span><br><span class="line">    Class clazz = obj.getClass();</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    @CallerSensitive</span></span><br><span class="line"><span class="comment">    public Method getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes)</span></span><br><span class="line"><span class="comment">    throws NoSuchMethodException, SecurityException &#123;</span></span><br><span class="line"><span class="comment">     可以看到他的第二个参数是Class类型的,但是具体是啥类型,不知道,所以使用上面啊那个for循环推到</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Method method = clazz.getDeclaredMethod(methodName,classes);</span><br><span class="line">        <span class="comment">//若 方法是私有的可访问</span></span><br><span class="line">        method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> method.invoke(obj,avgs);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>  <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2, 带包名的全路径+方法名+可变参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 工具方法</span></span><br><span class="line"><span class="comment"> * @Param String objName 对象</span></span><br><span class="line"><span class="comment"> * @Param methodName 方法名</span></span><br><span class="line"><span class="comment"> * @Param avgs 方法参数,可变参数</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 要求,执行执行指定对象的指定方法</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke2</span><span class="params">(String objName,String methodName,Object ... avgs)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Object o1 = Class.forName(objName).newInstance();</span><br><span class="line">   <span class="comment">// return  invoke1(o1,methodName,avgs);</span></span><br><span class="line">    Class[] classes = <span class="keyword">new</span> Class[avgs.length];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;avgs.length;i++)&#123;</span><br><span class="line">        classes[i]=avgs[i].getClass();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取Method 对象</span></span><br><span class="line">   Method declaredMethod = o1.getClass().getDeclaredMethod(methodName, classes);</span><br><span class="line">    System.out.println(<span class="string">"方法名=="</span>+declaredMethod.getName());</span><br><span class="line">    <span class="comment">//暴力反射</span></span><br><span class="line">    declaredMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">   <span class="keyword">return</span> declaredMethod.invoke(o1, avgs);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>如果本类无传递进来方法名,去父类中查找</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在 本类中查找 ,找不到,去父类中查找</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Method <span class="title">getMethod</span><span class="params">(Class clazz, String name, Class... avgs)</span></span>&#123;</span><br><span class="line">       <span class="keyword">for</span>(;clazz!=Object.class;clazz = clazz.getSuperclass())&#123;</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">             <span class="keyword">return</span>  clazz.getDeclaredMethod(name,avgs);</span><br><span class="line">           &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">               e.printStackTrace();</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="五-动态代理"><a href="#五-动态代理" class="headerlink" title="五.动态代理"></a>五.动态代理</h3><ul>
+<li>为啥要代理?</li>
+</ul>
+<p>代理的目的就是给现有的类的对象的功能进行增强, <strong>代理对象 = 原对象 + 增强方法</strong></p>
+<ul>
+<li>难道只有代理才能增强吗? </li>
+</ul>
+<p>当然不是,如果这个类是我们自己写的,手上有整套源码,我们直接改源代码就好了,问题是,大多数情况下,类是我们继承来的,没有源码让咱改,想增强?只能代理</p>
+<ul>
+<li>框架中的典型代表</li>
+</ul>
+<p>Spring AOP 的面向切面编程就把它使用的淋漓尽致, 来多少对象我不关心,让他们排队站好.我可以在他们身上横切一刀, 给他们集体增强</p>
+<p>注意点:</p>
+<ul>
+<li>为谁代理? –&gt; 我们自己创建被代理对象(<strong>这个被代理的对象必须是 一个接口的实现类</strong>)</li>
+</ul>
+<p>下面看看如何玩转动态代理</p>
+<p>API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   loader the class loader to define the proxy class</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   interfaces the list of interfaces for the proxy class</span></span><br><span class="line"><span class="comment"> *          to implement</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   h the invocation handler to dispatch method invocations to</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Proxy.newProxyInstance (ClassLoader loader,</span><br><span class="line">                        Class&lt;?&gt;[] interfaces,</span><br><span class="line">                        InvocationHandler h)  <span class="comment">//根据传递进去的被代理类的信息,生成代理对象</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>参数1: 被代理的对象用到什么类加载器,编译的时候是不知道的,所以第一个参数我们要把被代理对象使用的类加载器告诉代理对象</strong></p>
+</li>
+<li><p><strong>参数2: 被代理的对象要至少要实现了一个接口,大家看上面newProxyInstance的第二个参数,是一个Class&lt;?&gt;[]未知类型的Class对象的数组,代理对象要通过它找到他所实现的接口中有什么方法, 换句话说,我们只能代理接口中的方法(进而增强它的实现类中的方法)</strong></p>
+</li>
+</ul>
+<p>实例:</p>
+<p>接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Calcullator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">add</span><span class="params">(Integer i,Integer j)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">sub</span><span class="params">(Integer i,Integer j)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalcullatorImpl</span> <span class="keyword">implements</span> <span class="title">Calcullator</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">add</span><span class="params">(Integer i, Integer j)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> i+j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">sub</span><span class="params">(Integer i, Integer j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i*j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lastProxy</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Calcullator calcullator = <span class="keyword">new</span> CalcullatorImpl();</span><br><span class="line">  Calcullator c =  (Calcullator) Proxy.newProxyInstance(calcullator.getClass().getClassLoader(), <span class="keyword">new</span> Class[]&#123;Calcullator.class&#125;,</span><br><span class="line">        <span class="keyword">new</span> InvocationHandler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                logger.info(<span class="string">"开启事务"</span>);</span><br><span class="line">                    <span class="comment">// 执行方法</span></span><br><span class="line">                 <span class="keyword">try</span> &#123;</span><br><span class="line">                     Object result = method.invoke(calcullator, args);</span><br><span class="line">                     logger.info(<span class="string">"提交事务"</span>);</span><br><span class="line">                     <span class="keyword">return</span> result;</span><br><span class="line">                  &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                     logger.info(<span class="string">"回滚事务"</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">                 <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    System.out.println(c.add(<span class="number">1</span>,<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>划重点!这里有个坑</strong></p>
+<blockquote>
+<p>千万不要在 <strong>InvocationHander里面使用 proxy对象,不然就是个死循环</strong></p>
+</blockquote>
+<p>原因:<br>  当我们执行完c.add(1,2)时,c是我们增强后的对象,调用add,触发的回调函数,下一步就会执行InvocationHandler的invoke方法,而它的参数Object类型的proxy就是它最终要返回的对象,我们如果在这里面使用它了,会重新触发invoke方法,方法里面有调用它,再触发invoke,无限循环</p>
+<hr>
+<h3 id="六-泛型与反射"><a href="#六-泛型与反射" class="headerlink" title="六. 泛型与反射"></a>六. 泛型与反射</h3><ul>
+<li>反射越过泛型检查</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//反射越过泛型检验</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">text2</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//ArrayList&lt;Integer&gt;在这个集合中添加一个 String 字符串....</span></span><br><span class="line">    <span class="comment">//思路:泛型只是在编译期才有,但是真正运行起来就被擦出了...反射ArrayList&lt;Integer&gt;   拿到他的字节码文件(运行期)再添加字符串</span></span><br><span class="line">        ArrayList &lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(<span class="number">111</span>);   <span class="comment">//无错</span></span><br><span class="line">       <span class="comment">//list.add("abc");  //报错</span></span><br><span class="line">        Class clazz = Class.forName(<span class="string">"java.util.ArrayList"</span>);</span><br><span class="line">        Method add = clazz.getMethod(<span class="string">"add"</span> , Object.class);</span><br><span class="line">        add.invoke(list,<span class="string">"abc"</span>);  <span class="comment">//泛型反射</span></span><br><span class="line">    <span class="keyword">for</span> (Object a: list) &#123;</span><br><span class="line">        logger.info(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>反射在框架中的使用</li>
+</ul>
+<blockquote>
+<p>假设这样的情景 ,首先,我们拿着id去数据库中查询一个实体,我们的都知道,直接出来的数据肯定是 String字符串,但是我们使用的那些持久层的框架却能给我们返回一个 javaBean(查出来的数据封装在javaBean里面),模拟下它的实现</p>
+</blockquote>
+<p>首先准备下面的javaBean以及持久层的Dao</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@lombok</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@namePro</span>(name=<span class="string">"张三"</span>)</span><br><span class="line">    <span class="keyword">private</span>  String neme;</span><br><span class="line">    <span class="keyword">private</span>  Integer age;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">person</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"无参的构造器"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">person</span><span class="params">(String neme, Integer age)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"有参的构造器"</span>);</span><br><span class="line">        <span class="keyword">this</span>.neme = neme;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>personDao</p>
+<blockquote>
+<p><strong>这里有个比较有意思的事,原来我记得看到下面的personDao的时候,想都没想为什么它会这么写? 现在看看,好套路啊! 突然想起来 SpringDataElasticsearch,SpringDataJpa里面的Repository,Mybatis里面的通用mapper,类似让我们这样写, 只不过他们哪里都是接口,而我们现在是class类型. 底层全是反射,智慧与套路并存</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersonDao</span> <span class="keyword">extends</span>  <span class="title">Dao</span>&lt;<span class="title">person</span>&gt; </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>我的表演,从测试类入手</strong></p>
+</blockquote>
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///泛型与反射组合,很多框架经常使用下面这个方法</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">text1</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    PersonDao personDao = <span class="keyword">new</span> PersonDao();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//根据id 问dao要 person</span></span><br><span class="line">    <span class="comment">//从数据库中按照 i  把对象的信息找出来,但是这个时候, 从数据库里面拿出来是信息仅仅的一些字段的信息,</span></span><br><span class="line">    <span class="comment">// 我们的要求是:  当service层调用get()方法的时候, 我返回给他的是一个包装好的对象, 也就是说, 我通过反射创建T类型 的对象,然后返回给他</span></span><br><span class="line">    person p = personDao.get(<span class="number">1</span>);</span><br><span class="line">    logger.info(<span class="string">"p=="</span>+p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>get方法,主要做两件事 1. 创建实例 2. 查询数据库把数据添加到实例对象中</p>
+<ul>
+<li>先看看上面的测试类,我们直接new的是personDao,而它继承了Dao,在继承的时候我们指定了它的类型是person类型,为什么这么设计? 因为设计框架的人,根本不知道你会传递进来一个person还是一个animal,所以他在写Dao时,一定会给它加上泛型<t>   ( Dao就在下面)</t></li>
+<li>思考一下,它是入给创建实例的</li>
+</ul>
+<p>使用反射创建实例?我们知道一准是 通过Class.newInstance()方法,那么问题来了,1  .首先想想我们要谁的Class,person的class ,2. Class我咋整出来? 总不能使用T.class吧? 编译都过不去啊. 大家通过观察,发现person唯一出现的位置就是personDao的泛型的位置, 我们要做的就是把Dao的泛型取出来,赋给我们提前声明的Class clazz,这样一直全ok </p>
+<p>具体怎么做的?<br>大家可以看下面的解决方法: 在Dao的构造方法中着手</p>
+<p>持久层</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dao</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = Logger.getLogger(Dao.class);</span><br><span class="line"><span class="comment">//目标就是获取 T  对应的Class 对象 , 为什么像下面那么写呢? 因为  T.class 不存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Class&lt;T&gt; clazz;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Dao</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    logger.info(<span class="string">"dao 的无参构造器"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//结果:10:52:37,546  INFO Dao:14 - Dao's Constructor 's  this ==com.atGongDa.entity.PersonDao@56ef9176  全类名</span></span><br><span class="line">    <span class="comment">//为啥是personDao  因为this是当前调用这个函数的对象,而当前对象是我 new  PersonDao()</span></span><br><span class="line">    logger.info(<span class="string">"打印this的全类名 =="</span>+<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">"this的 Class对象"</span>+<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取Dao子类的父类</span></span><br><span class="line">    Class clazz1 = <span class="keyword">this</span>.getClass().getSuperclass();</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">"this的父类的Class对象=="</span>+clazz1);</span><br><span class="line">    <span class="comment">//this的父类的Class对象==class com.atGongDa.entity.Dao   结果还是没有T 泛型</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取Dao子类带泛型参数的父类,Dao&lt;person&gt;</span></span><br><span class="line">    Type type = <span class="keyword">this</span>.getClass().getGenericSuperclass();</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">"type=="</span>+type);  <span class="comment">//com.atGongDa.entity.Dao&lt;com.atGongDa.entity.person&gt;</span></span><br><span class="line">    <span class="comment">//注意: Type 是 Java 编程语言中所有类型的公共高级接口。它们包括原始类型、参数化类型、数组类型、类型变量和基本类型</span></span><br><span class="line">    <span class="comment">//我们要使用的是他的子接口  ParameterizedType  里面的</span></span><br><span class="line">    <span class="comment">/*Type[] getActualTypeArguments()返回表示此类型实际类型参数的 Type 对象的数组。</span></span><br><span class="line"><span class="comment">        注意，在某些情况下，返回的数组为空。如果此类型表示嵌套在参数化类型中的非参数化类型，则会发生这种情况。</span></span><br><span class="line"><span class="comment">        返回 :表示此类型的实际类型参数的 Type 对象的数组</span></span><br><span class="line"><span class="comment">    * */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取具体的泛型参数</span></span><br><span class="line">    <span class="keyword">if</span>(type <span class="keyword">instanceof</span> ParameterizedType)&#123;     <span class="comment">//这是</span></span><br><span class="line">        ParameterizedType parameterizedType = (ParameterizedType)type;</span><br><span class="line">        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();</span><br><span class="line">        <span class="comment">//这有个技巧,假如说我们仅仅想看看数组里面有什么,用工具Arrays.asList()</span></span><br><span class="line">        logger.info(<span class="string">"T=="</span>+ Arrays.asList(actualTypeArguments));<span class="comment">//[class com.atGongDa.entity.person]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(actualTypeArguments!=<span class="keyword">null</span>&amp;&amp;actualTypeArguments.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            Type arg = actualTypeArguments[<span class="number">0</span>];</span><br><span class="line">            logger.info(<span class="string">"arg=="</span>+arg);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (arg <span class="keyword">instanceof</span> Class)&#123;</span><br><span class="line">                clazz= (Class&lt;T&gt;) arg;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//从数据库中按照 i  把对象的信息找出来,但是这个时候, 从数据库里面拿出来是信息仅仅的一些字段的信息,</span></span><br><span class="line"><span class="comment">// 我们的要求是:  当service层调用get()方法的时候, 我返回给他的是一个包装好的对象, 也就是说, 我通过反射创建T类型 的对象,然后返回给他</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">(Integer i)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//问题是啥呢?  那么如何得到 Dao&lt;T&gt; T所对象的Class对象</span></span><br><span class="line">    <span class="comment">// T.class   没有</span></span><br><span class="line">    logger.info(<span class="string">"Dao get==&gt;"</span>+clazz);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建实例</span></span><br><span class="line">    T t1 = clazz.newInstance();</span><br><span class="line">    <span class="comment">//这里直接手动写属性名, 获取它的属性,把查出来的值放进去      </span></span><br><span class="line">    Field name = clazz.getDeclaredField(<span class="string">"neme"</span>);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  当然框架的设计者肯定不会这么做,因为它根本不知道现在的clazz是个啥! </span></span><br><span class="line"><span class="comment">     *  他们获取全部的属性,和结合数据库中查询出来的属性 封装clazz对象里面 (这也是为什么PO的属性名不能乱写,和数据表字段是有关联的)</span></span><br><span class="line"><span class="comment">     *  Field[] declaredFields = clazz.getDeclaredFields();</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    name.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    name.set(t1,<span class="string">"张三"</span>);</span><br><span class="line">    <span class="comment">//返回Class对象</span></span><br><span class="line">    <span class="keyword">return</span> t1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Class的另一种用法"><a href="#Class的另一种用法" class="headerlink" title="Class的另一种用法"></a>Class的另一种用法</h3><ul>
+<li>直接读取类路径下的配置文件</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> Object o = forName.newInstance();</span><br><span class="line">InputStream resourceAsStream = o.getClass().getClassLoader().getResourceAsStream(<span class="string">"123.properties"</span>);</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/03/18/初识JWT/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                初识JWT
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/03/16/JVM内存模型与类加载机制/">
+                JVM内存模型与类加载机制
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>

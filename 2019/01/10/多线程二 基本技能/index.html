@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="赐我白日梦">
+    
+    <meta name="description" content="随笔">
+    
+    
+    
+    
+    
+    
+    <title>多线程二 基本技能 | 随笔</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
+        }
+
+        .cube-loading.out {
+            display: none;
+        }
+
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
+
+        @media(min-width: 768px) {
+            .cube-loading:before {
+
+            }
+        }
+    </style>
+    
+</head></html>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
+    
+    <div class="cube-type">
+        <span class="cube-typed-title">senrenbankaの部落格</span>
+        <span class="cube-typed-cursor">|</span>
+    </div>
+    
+</header>
+
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">senrenbankaの部落格</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">多线程二 基本技能</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-01-10
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/多线程/">#多线程</a>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p><strong>线程驱动任务</strong>,而我们需要的就是一种任务的描述,而这个描述由Runable接口来提供,想定义任务,只需要实现Runable接口并重写里面的run()就好<br><a id="more"></a></p>
+</blockquote>
+<h3 id="Thread的构造方法"><a href="#Thread的构造方法" class="headerlink" title="Thread的构造方法"></a>Thread的构造方法</h3><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>描述   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thread()</td>
+<td>创建新线程对象</td>
+</tr>
+<tr>
+<td>Thread(String name)</td>
+<td>创建新线程对象</td>
+</tr>
+<tr>
+<td>Thread(Runnable target)</td>
+<td>创建新线程对象  </td>
+</tr>
+<tr>
+<td>Thread(Runnable target, String name)</td>
+<td>创建新线程对象,name为指定的线程名</td>
+</tr>
+<tr>
+<td>Thread(ThreadGroup group, Runnable target)</td>
+<td>分配新的 Thread 对象。</td>
+</tr>
+<tr>
+<td>Thread(Runnable target)</td>
+<td>创建新线程对象</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Thread构造器通常需要一个Runable对象,我们把需要执行的任务放在run()中,程序运行后,会自动执行Runable对象的run()方法,以便在新的线程中执行我们指定的任务. start()方法是告诉cpu线程处于就绪状态</p>
+</blockquote>
+<h3 id="一-继承Thread-创建线程"><a href="#一-继承Thread-创建线程" class="headerlink" title="一. 继承Thread  创建线程"></a>一. 继承Thread  创建线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo01</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="title">demo01</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.setName(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="title">demo01</span><span class="params">()</span></span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">"继承Thread类的线程执行了..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//new demo01()  执行Thread空参构造方法...</span></span><br><span class="line">        demo01 d = <span class="keyword">new</span> demo01();</span><br><span class="line">        demo01 d2 =<span class="keyword">new</span> demo01(<span class="string">"helloThread"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//线程就绪</span></span><br><span class="line">        d.start();</span><br><span class="line">        d2.start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">200</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="二-直接实现Runnable接口"><a href="#二-直接实现Runnable接口" class="headerlink" title="二. 直接实现Runnable接口"></a>二. 直接实现Runnable接口</h3><blockquote>
+<p>实现runable接口  其实demo02 <strong>本类并不是一个Thread  他是一个线程任务</strong>    </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo02</span>  <span class="keyword">implements</span>  <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">// while(true)</span></span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">"线程执行了..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       demo02  d = <span class="keyword">new</span> demo02();</span><br><span class="line">        Thread myThread = <span class="keyword">new</span>  Thread(d);</span><br><span class="line">        myThread.start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//lamaban表达式实现的run方法</span></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">while</span>(<span class="keyword">true</span>)</span><br><span class="line">            System.out.println(<span class="string">"lamaban表达式实现的run方法执行了..."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ).start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//直接写</span></span><br><span class="line">        <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"hello Thread.."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//实现Runable() +  继承Thread();</span></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Runnable接口里面的run"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)&#123;</span><br><span class="line">            <span class="comment">//子类覆盖了 父类的run方法...</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Thread子类里面的run"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>一般情况下,如果不是多继承,实现Runable接口和继承Thread类没啥区别</strong></p>
+</blockquote>
+<h3 id="三-Callable-创建既有返回值-又可以抛出异常的线程"><a href="#三-Callable-创建既有返回值-又可以抛出异常的线程" class="headerlink" title="三. Callable 创建既有返回值,又可以抛出异常的线程"></a>三. Callable 创建既有返回值,又可以抛出异常的线程</h3><p>Callable同样可以理解成是一个任务的描述方式,只不过他不能直接丢给Thread,而是交给一个叫FutrueTask的容器包装,  </p>
+<h4 id="Callable-amp-Runable的区别"><a href="#Callable-amp-Runable的区别" class="headerlink" title="Callable&amp;Runable的区别"></a><strong>Callable&amp;Runable的区别</strong></h4><ul>
+<li>Callable规定的方法是call() 而后者是run()</li>
+<li>Callable执行任务后可以拿到返回值,而后者不可以</li>
+<li>call()方法,可以抛出异常,而run()方法不行</li>
+<li>Callable更强大一些.运行Callable的任务,可以拿到一个Future的对象,我们可以<strong>先</strong>通过这个对象isDone()判断任务是否结束,然后调用get()获取运行的返回值<h4 id="Future接口"><a href="#Future接口" class="headerlink" title="Future接口"></a>Future接口</h4></li>
+<li>一来说多个线程之间是异步执行的,我们很难从一条线程拿到另一条线程的返回值,这个时候Futrue就出场了,对于Callable和Runable提交过来的任务,他可以进行查询任务是否完成 <strong>isDone()</strong> 获取执行结果<strong>get()</strong> 取消任务<strong>cancel()</strong><h4 id="FutureTask类"><a href="#FutureTask类" class="headerlink" title="FutureTask类"></a>FutureTask类</h4></li>
+<li>FutrueTask它的父类是RunableFuture而RunableFuture继承了Runable和Future,看他的血缘关系,FutureTask当然既可以作为任务被线程执行,又可以拿到它得到的Callable的返回值,</li>
+<li>此外我们可以知道<strong>它最终也是执行Callable类型的接口,如果传递进来的是Runable的实现,那么它会先把他转化成Callable</strong>,</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo03</span>  <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"hello Callable"</span>);</span><br><span class="line">        <span class="comment">//返回值的类型就是Callable接口的泛型</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//未来的任务</span></span><br><span class="line">        FutureTask&lt;Integer&gt; task = <span class="keyword">new</span> FutureTask&lt;&gt;(<span class="keyword">new</span> demo03());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(task).start();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"返回值的结果是:"</span>+task.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>刚才提到,Thread接收的任务是Runable类型的,现在FutureTask是个什么鬼?怎么把它传递进来的? 其实,FutrueTask实现了RunnableFuture接口,而这个接口继承了Runnable&amp;Future,一切也就那么顺其自然了</p>
+</blockquote>
+<p>当然我们知道,Runable里面的run()方法是由新new出来的线程异步执行的,那么现在重写的这个call()怎么个运行法?</p>
+<blockquote>
+<p>查看FutrueTask的源码,我们可以看到,call()是由FetureTask的run()执行的,<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (state != NEW ||</span><br><span class="line">           !UNSAFE.compareAndSwapObject(<span class="keyword">this</span>, runnerOffset,</span><br><span class="line">                                        <span class="keyword">null</span>, Thread.currentThread()))</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           Callable&lt;V&gt; c = callable;</span><br><span class="line">           <span class="keyword">if</span> (c != <span class="keyword">null</span> &amp;&amp; state == NEW) &#123;</span><br><span class="line">               V result;</span><br><span class="line">               <span class="keyword">boolean</span> ran;</span><br><span class="line">               <span class="keyword">try</span> &#123;</span><br><span class="line">                   result = c.call();</span><br><span class="line">                   ran = <span class="keyword">true</span>;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><strong>run()方法&amp;call()方法</strong></p>
+<ul>
+<li><p>Runable的Run方法 是由 线程异步调用的</p>
+<blockquote>
+<p>虽然是耗时的操作,如果可能出现阻塞,由新的线程中执行,会节省时间</p>
+</blockquote>
+</li>
+<li><p>Callable的 call 方法,同步调用的,是由Future的run方法调用的,而这个run方法,是对Runable接口里面run()的重写</p>
+<blockquote>
+<p>依然是耗时的操作</p>
+</blockquote>
+</li>
+</ul>
+<p>在往线程池中提交任务时 submit()方法同样可接受Callable对象,后续会详解<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;String&gt; future = threadPoolExecutor.submit(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span></span>&#123;</span><br><span class="line">                ai.getAndIncrement();</span><br><span class="line">                <span class="keyword">return</span> Thread.currentThread().getName();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="四-Thread常用API"><a href="#四-Thread常用API" class="headerlink" title="四. Thread常用API"></a>四. Thread常用API</h3><h4 id="1-interrupt-amp-isInterrupted"><a href="#1-interrupt-amp-isInterrupted" class="headerlink" title="1 . interrupt() &amp;　isInterrupted()"></a>1 . <strong>interrupt() &amp;　isInterrupted()</strong></h4><p>interrupted():</p>
+<ul>
+<li>作用: 中断当前线程,但是! 相比于废弃的stop() 并不是真正意义上的中断,而是打上了一个标记, 表示想要中断它.但是呢?在中断它之前要让他把该做的事,该跑的代码 跑完!</li>
+<li><p>特性:</p>
+<ul>
+<li>第一次执行interrupt()—-&gt; 标记当前线程是要被中断的</li>
+<li>第二次执行interrupt()—-&gt;  清除所有标记</li>
+</ul>
+<p>它要配合 isInterrupted() ,作为条件,判断当前的状态,去中断, 本函数多次调用不会 改变 当前线程的状态</p>
+</li>
+</ul>
+<p><strong>实例代码</strong></p>
+<h3 id="停不下来的线程"><a href="#停不下来的线程" class="headerlink" title="停不下来的线程"></a>停不下来的线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 停止不了的线程</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CanNotStop</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line"></span><br><span class="line">AtomicInteger value = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    value.getAndIncrement();</span><br><span class="line">    System.out.println(<span class="string">"当前的value== "</span>+value);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * isInterrupted()  方法, 判断当前线程的状态去中断线程,</span></span><br><span class="line"><span class="comment">    * 假如说,当前线程被标记为要去中断, 被isInterrupted()限制的Target方法不再执行,条件之外的代码,能且只能执行一次! 然后彻底被中断</span></span><br><span class="line"><span class="comment">    * */</span></span><br><span class="line">    <span class="keyword">while</span>(!isInterrupted()) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            sleep(<span class="number">200</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            sleep(<span class="number">200</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">"执行了.."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"你真的以为我被中断了吗?"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化</span></span><br><span class="line">    CanNotStop canNotStop = <span class="keyword">new</span> CanNotStop();</span><br><span class="line">    CanNotStop canNotStop2 = <span class="keyword">new</span> CanNotStop();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    canNotStop.start();</span><br><span class="line">    canNotStop2.start();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * 关于interrupt()方法,这个方法</span></span><br><span class="line"><span class="comment">    *         作用:</span></span><br><span class="line"><span class="comment">    *           中断当前线程,但是! 相比于废弃的stop() 并不是真正意义上的中断,而是打上了一个标记, 表示想要中断它.但是呢?在中断它之前要让他把该做的事,</span></span><br><span class="line"><span class="comment">    *     该跑的代码 跑完!</span></span><br><span class="line"><span class="comment">    *         特性:</span></span><br><span class="line"><span class="comment">    *            第一次执行interrupt()----&gt; 标记当前线程是要被中断的</span></span><br><span class="line"><span class="comment">    *           第二次执行interrupt()----&gt;  清除所有标记</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    *     它要配合 isInterrupted() ,作为条件,判断当前的状态,去中断, 本函数多次调用不会 改变 当前线程的状态</span></span><br><span class="line"><span class="comment">    * */</span></span><br><span class="line"></span><br><span class="line">    canNotStop.interrupt();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        sleep(<span class="number">200</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//被中断就相当于死掉了?</span></span><br><span class="line">    <span class="keyword">synchronized</span> (canNotStop)&#123;</span><br><span class="line">        canNotStop.notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这也称作是停止不了的线程,为啥这样说呢? 可以看到,执行 canNotStop.interrupt();代码的是谁? 没错主线程!细想一下,执行这个语句时,新创建的线程,本来就没有抢到CPU的执行权,也就是说他本来就是停止的… 他的原理就是打个标记,等到被打上标记的线程抢到CPU的执行权的时候,去判断一下就行了,如果存在被中断的标记,就什么事都不做,反之则执行任务.其实,它还活着</p>
+</blockquote>
+<h4 id="2-currentThread"><a href="#2-currentThread" class="headerlink" title="2 currentThread()"></a>2 currentThread()</h4><p>返回当前代码,正在被哪个线程调用</p>
+<h4 id="3-isAlive"><a href="#3-isAlive" class="headerlink" title="3 isAlive()"></a>3 isAlive()</h4><p>判断当前线程是否处于存活状态,线程处于正在运行或者等待运行的状态返回true,线程运行完毕返回false</p>
+<h4 id="4-sleep"><a href="#4-sleep" class="headerlink" title="4 sleep()"></a>4 sleep()</h4><p>指定在线程休眠的时间,在指定的时间后,重新进入就绪状态去竞争CPU的执行权</p>
+<h4 id="5-getId-amp-getName"><a href="#5-getId-amp-getName" class="headerlink" title="5 getId() &amp; getName()"></a>5 getId() &amp; getName()</h4><p>返回线程的id &amp; 名字</p>
+<h4 id="6-停止线程"><a href="#6-停止线程" class="headerlink" title="6 停止线程"></a>6 停止线程</h4><ul>
+<li><strong>异常停止</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> InterruptedException();</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>在睡眠中停止</strong></p>
+<ul>
+<li>先被<strong>打上停止的标记interrupt()</strong>,再遇到<strong>sleep()</strong>,<strong>程序直接进入catch块</strong></li>
+<li>先睡眠sleep(),再被打上Interrupt(),程序进入catch块,并且清除停止状态值,使之变成false;</li>
+</ul>
+</li>
+<li><p><strong>暴力停止</strong></p>
+<ul>
+<li>stop(),线程立即停止,不再执行后续的代码,<strong>已被废弃</strong></li>
+</ul>
+</li>
+<li><p><strong>return停止线程</strong></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.isInterrupted())&#123;</span><br><span class="line">           <span class="keyword">return</span>; </span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"if 后面的代码"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>推荐使用的是剖出异常的停止线程的方法,因为有了异常之后,可以在catch块中对异常进行处理,让程序更加流畅</p>
+</blockquote>
+<h3 id="7-yield"><a href="#7-yield" class="headerlink" title="7 yield()"></a>7 yield()</h3><ul>
+<li>让当前的线程放弃对cpu的使用权,但是也可能会发生,刚放弃就重新获取到了执行权的情况</li>
+<li>不会释放锁</li>
+</ul>
+<h4 id="8-暂停线程"><a href="#8-暂停线程" class="headerlink" title="8 暂停线程"></a>8 暂停线程</h4><ul>
+<li>suspend() 暂停线程<strong>被废弃</strong></li>
+<li>resume() 配合suspend()唤醒线程<strong>被废弃</strong></li>
+</ul>
+<hr>
+<h3 id="五-线程的优先级"><a href="#五-线程的优先级" class="headerlink" title="五. 线程的优先级"></a>五. 线程的优先级</h3><blockquote>
+<p>线程的优先级用处是,把任务的重要性告诉调度器,让任务的调度器,更倾向于优先级高的线程先执行,但是也存在优先级底的线程先执行的可能</p>
+</blockquote>
+<blockquote>
+<p>在&lt;&lt;java编程思想&gt;&gt;提到,在绝大多数情况下,都应该使线程按照默认的优先级规则执行,试图操作优先级让线程先执行,通常是一种错误</p>
+</blockquote>
+<blockquote>
+<p>此外,jdk中线程的优先级有是个,但是和操作系统都不能映射的很好,比如Windows系统是七个优先级,所以一般我们使用的是  <strong>MAX_PRIORITY    NORM_PRIORITY    MIN_PRIORITY</strong></p>
+</blockquote>
+<ul>
+<li>设置优先级</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setPriority(<span class="keyword">int</span> newPriority);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中newPriority的值由1-10 ,若不在这个范围内,抛出IllegalArgumentExeception()</p>
+<ul>
+<li>获取优先级</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getPriority();</span><br></pre></td></tr></table></figure>
+<p>特性:</p>
+<ul>
+<li>继承性: 若A线程启动了B线程,那么B线程的优先级和A相同</li>
+<li>规则性: 当线程的优先级差距太大时,谁先执行完,和代码的先后顺序无关</li>
+<li>随机性: 虽然线程优先级高的有更大的几率优先执行完run()里面的任务,但是这是不能百分百保证的</li>
+</ul>
+<hr>
+<h3 id="守护线程-daemon"><a href="#守护线程-daemon" class="headerlink" title="守护线程(daemon)"></a>守护线程(daemon)</h3><p>设置为守护线程, 它肯定会随着主线程的退而退出<br> java线程中有两类,一类是用户线程(非守护线程) 一类是守护线程. 它的特性就是 伴随,去守护用户线程,<br> 比如 java的GC(垃圾回收算法) 就是一个很称职的守护者!</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setDaemon(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>创建守护线程的ThreadFactory</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo02</span> <span class="keyword">implements</span> <span class="title">ThreadFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(Runnable r)</span> </span>&#123;</span><br><span class="line">        Thread thread = newThread(r);</span><br><span class="line">        thread.setDaemon(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span>  thread;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>定制拥有守护线程的线程池</strong>  </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newCachedThreadPool(<span class="keyword">new</span> demo02());</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>守护线程中的finally块</strong></li>
+</ul>
+<p>当再没有非守护线程后,守护线程中run方法中的finally代码块是不会执行而直接退出</p>
+<hr>
+<p><strong>参考书籍&lt;&lt;java编程思想&gt;&gt;Bruce Eckel著  &lt;&lt;Java多线程核心技术&gt;&gt; 高洪岩著</strong></p>
+
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2019/01/15/多线程三 synchronized&amp;volatile/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                多线程三 synchronized&amp;volatile
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2019/01/09/多线程一 多线程技能序言/">
+                多线程一 基本概念
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
+        </div>
+        <div class="cube-right">
+            
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="Search" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>赐我白日梦</span>
+    
+    
+    <a title="随笔">随笔</a>
+    
+    <div class="count">
+        <a class="count articles"><span>45</span>Article</a>
+        <a class="count tags"><span>21</span>Tags</a>
+        <a class="count categories"><span>20</span>Categories</a>
+    </div>
+</div>
+
+
+
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
+
+
+
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/06/07/TCP-IP-协议与-HTTP协议/" title="TCP/IP 协议与 HTTP协议">TCP/IP 协议与 HTTP协议</a>
+                </p>
+            </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/25/腾讯短信-Springboot-Redis-实现短信验证注册/" title="腾讯短信+Springboot+Redis 实现短信验证注册">腾讯短信+Springboot+Redis 实现短信验证注册</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/05/15/ubuntu16搭建文件服务器/" title="ubuntu16搭建文件服务器">ubuntu16搭建文件服务器</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>4</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/23/JS-实现动态轮播图/" title="JS 实现动态轮播图">JS 实现动态轮播图</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>5</span>
+                </p>
+                <p class="title">
+                    <a href="/2019/04/22/PLSQL/" title="PLSQL">PLSQL</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-categories cube-sidebar" id="cube-categories">
+    <div class="title">
+        <a href="/categories">Categories</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/categories/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/categories/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
+    <div class="title">
+        <a href="/tags">Tagcloud</a>
+    </div>
+    <div class="cube-boxs">
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Oracle/">#Oracle</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Elasticsearch/">#Elasticsearch</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Hibernate-Validator/">#Hibernate-Validator</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Linux/">#Linux</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mysql/">#mysql</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Redis/">#Redis</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/SpringMvc/">#SpringMvc</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/Thymeleaf/">#Thymeleaf</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx/">#nginx</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/C/">#C++</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/nginx-FDFS/">#nginx,FDFS</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/java/">#java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JWT/">#JWT</a>
+        </div>
+        
+        
+        <div class="cube-box-bg ">
+            <a href="/tags/多线程/">#多线程</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Java/">#Java</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JVM/">#JVM</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/JavaScript/">#JavaScript</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/RabbitMQ/">#RabbitMQ</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/爬虫/">#爬虫</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/mybatis/">#mybatis</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/Spring/">#Spring</a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 赐我白日梦
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+</footer>
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
+</body>
+</html>
