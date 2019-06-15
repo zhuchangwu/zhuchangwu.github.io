@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/14/IO流与装饰者模式/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/14/IO流与装饰者模式/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/14/IO流与装饰者模式/4.png">
-<meta property="og:updated_time" content="2019-06-15T06:48:49.749Z">
+<meta property="og:updated_time" content="2019-06-15T06:54:29.471Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IO流与装饰者模式">
 <meta name="twitter:description" content="java使用IO流来处理不同设备之间数据的交互;所有的IO操作实际上都是对 Stream 的操作 从功能上划分: 输入流: 当数据从源进入的编写的程序时,称它为输入流; 输出流: 从程序输出回另一个源成为输出流;  输入与输出是有参照物的,而这个参照物就是应用程序本身    从结构上划分:">
@@ -369,9 +369,10 @@
 <h4 id="从第三个维度上的划分"><a href="#从第三个维度上的划分" class="headerlink" title="从第三个维度上的划分:"></a>从第三个维度上的划分:</h4><ul>
 <li>节点流 : 从特定的地方读写的流类 , 比如, 从磁盘或者内存区域<blockquote>
 <p>例: 我们想从文件中读取数据,于是我们创建 FileInputStream() ,  这个流称为节点流</p>
-<ul>
-<li>过滤流 : 这种流会使用节点流作为输入输出(把节点流作为构造方法的参数)  FilterInputStream<br>过滤流也会包装过滤流—&gt; 装饰者设计模式</li>
-</ul>
+</blockquote>
+</li>
+<li>过滤流 : 这种流会使用节点流作为输入输出(把节点流作为构造方法的参数)  FilterInputStream<blockquote>
+<p>  过滤流也会包装过滤流—&gt; 装饰者设计模式</p>
 </blockquote>
 </li>
 </ul>
