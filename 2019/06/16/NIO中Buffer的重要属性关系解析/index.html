@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Buffer 是java NIO中三个核心概念之一 缓存, 在java的实现体系中Buffer作为顶级抽象类存在 简单说,Buffer在做什么?我们知道,在java IO中体系中, 因为InputStream和OutputStream是抽象类,而java又不可以多重继承,于是任何一个流要么只读,要么只写.而无法完成同时读写的工作   于是: Buffer来了 NIO中,对数据的读写,都是在Buff">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NIO中Buffer的重要属性关系解析">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/index.html">
+<meta property="og:site_name" content="赐我白日梦">
+<meta property="og:description" content="Buffer 是java NIO中三个核心概念之一 缓存, 在java的实现体系中Buffer作为顶级抽象类存在 简单说,Buffer在做什么?我们知道,在java IO中体系中, 因为InputStream和OutputStream是抽象类,而java又不可以多重继承,于是任何一个流要么只读,要么只写.而无法完成同时读写的工作   于是: Buffer来了 NIO中,对数据的读写,都是在Buff">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/3.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/4.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/5.png">
+<meta property="og:updated_time" content="2019-06-16T14:41:48.715Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NIO中Buffer的重要属性关系解析">
+<meta name="twitter:description" content="Buffer 是java NIO中三个核心概念之一 缓存, 在java的实现体系中Buffer作为顶级抽象类存在 简单说,Buffer在做什么?我们知道,在java IO中体系中, 因为InputStream和OutputStream是抽象类,而java又不可以多重继承,于是任何一个流要么只读,要么只写.而无法完成同时读写的工作   于是: Buffer来了 NIO中,对数据的读写,都是在Buff">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/">
+
+
+
+
+
+  <title>NIO中Buffer的重要属性关系解析 | 赐我白日梦</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">赐我白日梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/NIO中Buffer的重要属性关系解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="赐我白日梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NIO中Buffer的重要属性关系解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-16T16:47:52+08:00">
+                2019-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Buffer 是java NIO中三个核心概念之一 缓存, 在java的实现体系中Buffer作为顶级抽象类存在</p>
+<h3 id="简单说-Buffer在做什么"><a href="#简单说-Buffer在做什么" class="headerlink" title="简单说,Buffer在做什么?"></a>简单说,Buffer在做什么?</h3><p>我们知道,在java IO中体系中, 因为InputStream和OutputStream是抽象类,而java又不可以多重继承,于是任何一个流要么只读,要么只写.而无法完成同时读写的工作  </p>
+<p>于是: Buffer来了</p>
+<p>NIO中,对数据的<strong>读写</strong>,都是在Buffer中完成的,<strong>也就是说,同一个buffer我们可以先读后写</strong>, 它底层<strong>维护着一个数组</strong>,这个数组<strong>被三个重要的属性控制</strong>,有机的工作结合,使buffer可读可写;</p>
+<p>此外,Buffer是线程不安全的,并发访问需要同步</p>
+<a id="more"></a>
+<h3 id="三个重要属性"><a href="#三个重要属性" class="headerlink" title="三个重要属性:"></a>三个重要属性:</h3><ul>
+<li><strong>capacity: 容量</strong><ul>
+<li>Buffer中元素的个数</li>
+<li>永远不能为负数</li>
+<li>永远不会变化</li>
+</ul>
+</li>
+<li><strong>limit: 限制</strong><ul>
+<li>实际上它是Buffer所维护的那个数组中的一个下标</li>
+<li>limit是第一个不能被读,或者第一个不能被写的元素的index</li>
+<li>limit永远不会是负数</li>
+<li>永远不会超过capacity</li>
+</ul>
+</li>
+<li><strong>Position: 定位</strong><ul>
+<li>指数组中下一个<strong>将要被读</strong>或者<strong>将要被写</strong>的元素的索引</li>
+</ul>
+</li>
+</ul>
+<h3 id="图解-Buffer是如何维护的数组"><a href="#图解-Buffer是如何维护的数组" class="headerlink" title="图解,Buffer是如何维护的数组"></a>图解,Buffer是如何维护的数组</h3><img src="/2019/06/16/NIO中Buffer的重要属性关系解析/1.png" title="image">
+<blockquote>
+<p>一开始: 我们初始化它的大小为6 初始状态,Capacity和Limit都在最后一个不能被读或者不能被写的位置上</p>
+</blockquote>
+<hr>
+<img src="/2019/06/16/NIO中Buffer的重要属性关系解析/2.png" title="image">
+<blockquote>
+<p>接着我们读入两个数据.position跳转到下一个将被读的index</p>
+</blockquote>
+<hr>
+<p>接下来,准备写把buffer中的数据写出去两个, 于是我们需要反转数值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buffer.flip();</span><br></pre></td></tr></table></figure>
+<p>反转的逻辑:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">limit=position;</span><br><span class="line">position=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>于是从0写  ,写到哪个位置? 写到limi前</strong></p>
+<img src="/2019/06/16/NIO中Buffer的重要属性关系解析/3.png" title="image">
+<hr>
+<p>写完毕后:如下图:</p>
+<img src="/2019/06/16/NIO中Buffer的重要属性关系解析/4.png" title="image">
+<p>现在可以看到,pisition == limit</p>
+<p>如果再想读入新的数据,同样需要反转数据<code>flip()</code></p>
+<h2 id="但是此时-limit仍然是刚刚position的所在的最后的位置"><a href="#但是此时-limit仍然是刚刚position的所在的最后的位置" class="headerlink" title="但是此时,limit仍然是刚刚position的所在的最后的位置"></a><strong>但是此时,limit仍然是刚刚position的所在的最后的位置</strong></h2><h3 id="Buffer架构体系"><a href="#Buffer架构体系" class="headerlink" title="Buffer架构体系:"></a>Buffer架构体系:</h3><img src="/2019/06/16/NIO中Buffer的重要属性关系解析/5.png" title="image">
+<p>模拟Buffer实现一个相同的继承体系,进一步了解成员变量在他们之间是怎么维护的</p>
+<p>首先,和Buufer等级一样的顶级父类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ParentSupper</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> position;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    ParentSupper(<span class="keyword">int</span> position,<span class="keyword">int</span> capacity)&#123;</span><br><span class="line">        <span class="keyword">this</span>.position=position;</span><br><span class="line">        <span class="keyword">this</span>.capacity=capacity;</span><br><span class="line">        System.out.println(<span class="string">"ParentSupper 的构造方法执行了... "</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">nextPutIndex</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (position&gt;=capacity)&#123;</span><br><span class="line">             <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"索引异常"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> position++;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">nextGetIndex</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;=position)&#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"索引异常"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着是它的实现类, 和IntBuffer 等级一样<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> <span class="keyword">extends</span> <span class="title">ParentSupper</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 抽象类中的成员变量,必须放在构造方法中</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span>[] arr1;</span><br><span class="line">    <span class="keyword">int</span> tag;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// todo 执行父类的构造方法</span></span><br><span class="line">    Parent(<span class="keyword">int</span> a, <span class="keyword">int</span>[] arr1) &#123;</span><br><span class="line">        <span class="comment">// 调用父类的构造函数</span></span><br><span class="line">        <span class="keyword">super</span>(<span class="number">0</span>,a);</span><br><span class="line">        <span class="keyword">this</span>.arr1 = arr1;</span><br><span class="line">        <span class="keyword">this</span>.tag = a;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造器</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Parent <span class="title">allocate</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Child(capacity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 抽象的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> number)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>作为抽象类的它,有自己的抽象方法, get  put, 同时它里面维护着 核心数组, final不可变类型的, 抽象类中的变量不能单独存在,必须依附构造函数,于是我们添加它的构造函数</p>
+</blockquote>
+<p>再就是它的实现类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Child</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(capacity,<span class="keyword">new</span> <span class="keyword">int</span>[capacity]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// todo 重写父类的构造方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> arr1[nextGetIndex()];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        arr1[nextPutIndex()]=num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意,Child的类上并没有public 修饰,意味着他只是可以包内访问</p>
+</blockquote>
+<p>下面测试:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">text</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 初始化</span></span><br><span class="line">        Parent allocate = Parent.allocate(<span class="number">9</span>);</span><br><span class="line">         <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">             allocate.put(i);</span><br><span class="line">         &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=<span class="number">8</span>;i++)&#123;</span><br><span class="line">            System.out.println( allocate.get());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行流程是怎样的呢?</p>
+<p>当我们使用<br><code>Parent.allocate(10);</code>创建对象时,底层确实 new Child(int i), 同时把传递给Child, 而在Child()相应的构造函数中,接着调用的是spuer()方法,同时把10 传递给super也就是Parent,同时实例化了Parent的 数组, 在Supper的构造方法中,把0,和传递进来的10 传递给了SuperParent, 让他维护两个值</p>
+<p>思考, 各个部分之间的作用</p>
+<ul>
+<li>Buffer : 维护着当前数据的 position limit 和 capaciy值,这是数组的下标值,但是Buffer却没有数组</li>
+<li>Buffer的直接实现类,如IntBuffer , 依然是抽象类, 它有数组作为缓存, 数组的维护它交给了它的父类Buffer, 针对数组的初始化,读写,他交给了自己的实现类</li>
+</ul>
+<blockquote>
+<p>数组的维护工作是一样的,所以抽象成Buffer</p>
+</blockquote>
+<ul>
+<li>HeapIntBuffer: 它继承了IntBuffer, 同时把它的父类的数组进行了实例化,并且重写了父类的get put方法</li>
+</ul>
+<blockquote>
+<p>不同类型的数据,具体的读写是有区别的,所有抽象成不同的子类</p>
+</blockquote>
+<p>在回去看,allocate(); 显然我们得到的是最外层的子类对象,这也就意味着他是最强的那个对象,它拥有父类的数据,并且这个数据的读写由它的爷爷替自己把关,这就是Buffer的设计模式</p>
+<h3 id="Buffer中常见的API"><a href="#Buffer中常见的API" class="headerlink" title="Buffer中常见的API"></a>Buffer中常见的API</h3><h4 id="Buffer的所有子类全部定义了两套关于get-和-put-的方法"><a href="#Buffer的所有子类全部定义了两套关于get-和-put-的方法" class="headerlink" title="Buffer的所有子类全部定义了两套关于get() 和 put()的方法"></a>Buffer的所有子类全部定义了两套关于<code>get()</code> 和 <code>put()</code>的方法</h4><ul>
+<li>Relative: 相对的读写, 相对的读写都是从当前的position的位置开始,每次的get/put都会是position的位置发生改变</li>
+<li>Avsolute: 绝对的读写 , 用户指定索引, 从指定的索引里面get,或者直接往指定的索引里面put</li>
+</ul>
+<h4 id="clear"><a href="#clear" class="headerlink" title="clear()"></a><code>clear()</code></h4><p>将buffer置为初始状态的值,实际上就是让新读入buffer中的值,覆盖掉原来的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">position=<span class="number">0</span>;</span><br><span class="line">limit=capacity;</span><br></pre></td></tr></table></figure>
+<h4 id="flip"><a href="#flip" class="headerlink" title="flip()"></a><code>flip()</code></h4><p>反转buffer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">limit = position;</span><br><span class="line">positon=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="isReadOnly"><a href="#isReadOnly" class="headerlink" title="isReadOnly()"></a><code>isReadOnly()</code></h4><p>判断是否是只读的buffer</p>
+<h3 id="分片Buffer"><a href="#分片Buffer" class="headerlink" title="分片Buffer"></a>分片Buffer</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//限制前后 准备切片</span></span><br><span class="line">byteBuffer.position(<span class="number">2</span>);</span><br><span class="line">byteBuffer.limit(<span class="number">6</span>);</span><br><span class="line"><span class="comment">// 切片</span></span><br><span class="line">ByteBuffer slice = byteBuffer.slice();</span><br></pre></td></tr></table></figure>
+<p>新得到的buffer和原buffer共享内存空间</p>
+<h3 id="类型化的Buffer"><a href="#类型化的Buffer" class="headerlink" title="类型化的Buffer"></a>类型化的Buffer</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer allocate = ByteBuffer.allocate(<span class="number">123</span>);</span><br><span class="line">    allocate.putInt(<span class="number">1</span>);</span><br><span class="line">    allocate.putChar(<span class="string">'你'</span>);</span><br><span class="line">    allocate.putDouble(<span class="number">123.123123</span>);</span><br><span class="line">    allocate.putShort((<span class="keyword">short</span>) <span class="number">2</span>);</span><br><span class="line">    allocate.putLong(<span class="number">3L</span>);</span><br><span class="line"></span><br><span class="line">    allocate.flip();</span><br><span class="line"></span><br><span class="line">    System.out.println(allocate.getInt());</span><br><span class="line">    System.out.println(allocate.getChar());</span><br><span class="line">    System.out.println(allocate.getDouble());</span><br><span class="line">    System.out.println(allocate.getShort());</span><br><span class="line">    System.out.println(allocate.getLong());</span><br></pre></td></tr></table></figure>
+<p> 类型化  的put和get  但是呢!!! 怎么存进去的 就得怎么取出来 , 否者会出现乱码</p>
+<h3 id="NIO拷贝文件"><a href="#NIO拷贝文件" class="headerlink" title="NIO拷贝文件"></a>NIO拷贝文件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 获取输入流</span></span><br><span class="line">    FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(<span class="string">"123.txt"</span>);</span><br><span class="line">    FileOutputStream fileOutputStream = <span class="keyword">new</span> FileOutputStream(<span class="string">"output123.txt"</span>);</span><br><span class="line">    <span class="comment">// 获取一个通道,关联上数据</span></span><br><span class="line">    FileChannel channel = fileInputStream.getChannel();</span><br><span class="line">    FileChannel outputStreamChannel = fileOutputStream.getChannel();</span><br><span class="line">    ByteBuffer byteBuffer = ByteBuffer.allocate(<span class="number">128</span>);</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="comment">// todo 每次读满一次缓存后, 重新初始化buffer</span></span><br><span class="line">        byteBuffer.clear();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将数据读入 缓存</span></span><br><span class="line">        <span class="keyword">int</span> read = channel.read(byteBuffer);</span><br><span class="line">        System.out.println(<span class="string">"read == "</span>+read);</span><br><span class="line">        <span class="keyword">if</span> (read == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 反转   limit=position   position=0</span></span><br><span class="line">        byteBuffer.flip();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过channel 往输出流中写入缓存的数据</span></span><br><span class="line">        outputStreamChannel.write(byteBuffer);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    fileInputStream.close();</span><br><span class="line">    fileInputStream.close();</span><br><span class="line">    System.out.println(<span class="string">"结束..."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每次循环一开始,都要重置buffer,否则第一轮读取结束之后, <code>limit==position</code> 从而channel里面新的数据读不进去,而 <code>limit==position</code>也不会引发异常,随后的<code>flip()</code>将buffer反转,position为0, 使得当前buffer中的数据被循环写到文件中,成为死循环</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/14/IO流与装饰者模式/" rel="next" title="IO流与装饰者模式">
+                <i class="fa fa-chevron-left"></i> IO流与装饰者模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单说-Buffer在做什么"><span class="nav-number">1.</span> <span class="nav-text">简单说,Buffer在做什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三个重要属性"><span class="nav-number">2.</span> <span class="nav-text">三个重要属性:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图解-Buffer是如何维护的数组"><span class="nav-number">3.</span> <span class="nav-text">图解,Buffer是如何维护的数组</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#但是此时-limit仍然是刚刚position的所在的最后的位置"><span class="nav-number"></span> <span class="nav-text">但是此时,limit仍然是刚刚position的所在的最后的位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer架构体系"><span class="nav-number">1.</span> <span class="nav-text">Buffer架构体系:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer中常见的API"><span class="nav-number">2.</span> <span class="nav-text">Buffer中常见的API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Buffer的所有子类全部定义了两套关于get-和-put-的方法"><span class="nav-number">2.1.</span> <span class="nav-text">Buffer的所有子类全部定义了两套关于get() 和 put()的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clear"><span class="nav-number">2.2.</span> <span class="nav-text">clear()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flip"><span class="nav-number">2.3.</span> <span class="nav-text">flip()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#isReadOnly"><span class="nav-number">2.4.</span> <span class="nav-text">isReadOnly()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分片Buffer"><span class="nav-number">3.</span> <span class="nav-text">分片Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型化的Buffer"><span class="nav-number">4.</span> <span class="nav-text">类型化的Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NIO拷贝文件"><span class="nav-number">5.</span> <span class="nav-text">NIO拷贝文件</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
