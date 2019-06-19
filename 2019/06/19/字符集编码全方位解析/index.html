@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JWT,">
+  <meta name="keywords" content="java,">
 
 
 
@@ -79,23 +79,18 @@
 
 
 
-<meta name="description" content="做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录以及JWT和RSA是在微服务架构中的作用">
-<meta name="keywords" content="JWT">
+<meta name="description" content="是时候了解关于字符集编码了!!! ASCII最早计算机刚出世时,只有一ASCII编码方式, American Strand Code For Information Interchange , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了 但是问题来了,不光是">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初识JWT">
-<meta property="og:url" content="http://yoursite.com/2019/03/18/初识JWT/index.html">
+<meta property="og:title" content="字符集编码全方位解析">
+<meta property="og:url" content="http://yoursite.com/2019/06/19/字符集编码全方位解析/index.html">
 <meta property="og:site_name" content="赐我白日梦">
-<meta property="og:description" content="做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录以及JWT和RSA是在微服务架构中的作用">
+<meta property="og:description" content="是时候了解关于字符集编码了!!! ASCII最早计算机刚出世时,只有一ASCII编码方式, American Strand Code For Information Interchange , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了 但是问题来了,不光是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/1.png">
-<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/2.png">
-<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/3.png">
-<meta property="og:image" content="http://yoursite.com/2019/03/18/初识JWT/4.png">
-<meta property="og:updated_time" content="2019-03-18T10:35:39.655Z">
+<meta property="og:updated_time" content="2019-06-19T13:25:49.226Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="初识JWT">
-<meta name="twitter:description" content="做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录以及JWT和RSA是在微服务架构中的作用">
-<meta name="twitter:image" content="http://yoursite.com/2019/03/18/初识JWT/1.png">
+<meta name="twitter:title" content="字符集编码全方位解析">
+<meta name="twitter:description" content="是时候了解关于字符集编码了!!! ASCII最早计算机刚出世时,只有一ASCII编码方式, American Strand Code For Information Interchange , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了 但是问题来了,不光是">
 
 
 
@@ -125,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/18/初识JWT/">
+  <link rel="canonical" href="http://yoursite.com/2019/06/19/字符集编码全方位解析/">
 
 
 
 
 
-  <title>初识JWT | 赐我白日梦</title>
+  <title>字符集编码全方位解析 | 赐我白日梦</title>
   
 
 
@@ -263,12 +258,12 @@
   
   
 
-  <article class="post post-type-JWT" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/初识JWT/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/19/字符集编码全方位解析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="赐我白日梦">
@@ -285,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">初识JWT</h1>
+          <h1 class="post-title" itemprop="name headline">字符集编码全方位解析</h1>
         
 
         <div class="post-meta">
@@ -297,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T17:05:47+08:00">
-                2019-03-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-19T19:11:37+08:00">
+                2019-06-19
               </time>
             
 
@@ -307,28 +302,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/JWT/" itemprop="url" rel="index">
-                    <span itemprop="name">JWT</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -357,68 +330,43 @@
       
 
       
-        <blockquote>
-<p>做登录,微服务架构就要比单体应用多绕圈了,本篇博客会介绍啥是无状态登录以及JWT和RSA是在微服务架构中的作用</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="无状态登录原理"><a href="#无状态登录原理" class="headerlink" title="无状态登录原理"></a>无状态登录原理</h2><h3 id="先提一下啥是有状态登录"><a href="#先提一下啥是有状态登录" class="headerlink" title="先提一下啥是有状态登录"></a>先提一下啥是有状态登录</h3><p>单台tomcat的情况下:编码的流程如下</p>
-<ol>
-<li>前端提交表单里用户的输入的账号密码</li>
-<li>后台接受,查数据库,</li>
-<li>在数据库中找到用户的信息后,把用户的信息存放到session里面,返回给用户cookie</li>
-<li>以后用户的请求都会携带着cookie去访问后台,后台根据用户的cookie辨识用户的身份</li>
-</ol>
-<p>但是有缺点</p>
+        <p>是时候了解关于字符集编码了!!!</p>
+<h4 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h4><p>最早计算机刚出世时,只有一ASCII编码方式, <code>American Strand Code For Information Interchange</code> , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了</p>
+<p>但是问题来了,不光是美国,像法国等国家也普及计算机,很快ASCII就不够了</p>
+<h4 id="ISO-8859-1"><a href="#ISO-8859-1" class="headerlink" title="ISO-8859-1"></a>ISO-8859-1</h4><p>于是 ISO-8859 出现了, 它使用8 位 表示一个字符, 而且完全兼容ASCII编码表<br>ISO-8859-1相对于ASCII有两个优点:</p>
 <ul>
-<li>如果有千千万的用户都往session里面存放信息,</li>
-<li>session很难跨服务器,也就是说,用户每次请求,都必须访问同一台tomcat,新的tomcat不认识用户的cookie</li>
+<li>ISO-8859-1 可以表示 2^8个字符, 对ASCII</li>
+<li>ISO-8859-1 使用8位表示一个字符, 这使得他可以完全使用每个字节的每一位</li>
 </ul>
-<h3 id="无状态登录"><a href="#无状态登录" class="headerlink" title="无状态登录"></a>无状态登录</h3><p>微服务集群统一对外暴露的是Rest风格的接口,而Rest风格中一个很重要的规范就是:<strong>无状态</strong></p>
-<ul>
-<li>对于服务端,不再保存任何用户的信息,对于他们来说,所有的用户地位平等</li>
-<li>对于用户,他们需要自己携带着信息去访问服务端,携带的信息可以被所有服务端辨认,所以,对于用户,所有的服务地位平等</li>
-</ul>
-<p>具体如何实现呢?</p>
-<ul>
-<li>用户携带自己的信息访问服务端</li>
-<li>认证通过,将用户的信息加密成token(存放在cookie里),返回给客户端</li>
-<li>以后不论用户请求哪个微服务,都携带着token</li>
-<li>微服务对token进行解密,判断他是否有效</li>
-</ul>
-<img src="/2019/03/18/初识JWT/1.png" title="image">
+<p>然后这还是仅仅对西欧国家而言, 后来计算机普及到了亚洲<br><a id="more"></a></p>
+<h4 id="gb2312"><a href="#gb2312" class="headerlink" title="gb2312"></a>gb2312</h4><p>对我们国家来说,我们同样需要一种编码表,让计算机认识我们的汉字,于是  <strong>中华人民共和国</strong> 指定了gb2312 , 国标2312 , 它使用两个字节表示一个汉字, 容纳了几千个常用的汉字</p>
+<p>但是问题并没有打住,gb2312 并没有包含极少数的生僻字</p>
+<h4 id="gbk"><a href="#gbk" class="headerlink" title="gbk"></a>gbk</h4><p>gbk编码表弥补了 gb2312并不包含极少数的生僻字的现状</p>
+<p>然而,gbk依然不能表示全部的中国文字</p>
+<p>于是:</p>
+<h4 id="gb18030"><a href="#gb18030" class="headerlink" title="gb18030"></a>gb18030</h4><p>gb18030 的扩展,使他成为了最完整的汉字的编码集</p>
+<p>但是, 这却仅仅是对大陆而言</p>
+<h4 id="Big5"><a href="#Big5" class="headerlink" title="Big5"></a>Big5</h4><p>我们的宝岛台湾仍然使用 繁体字, 他们的编码表是 big5</p>
+<p>随着计算机的全球化,于是国际标准化组织出现了,他们想统一世界上的编码方式</p>
+<h4 id="unicode"><a href="#unicode" class="headerlink" title="unicode"></a>unicode</h4><p>国际标准化组织对全世界的编码方式进行了汇总, unicode 理论上是可以表示世界上全部的符号的, 它统一使用两个字节表示一个字符, 算算看,他可以表示 256^256个字符</p>
+<p>现在unnicode的出现,不再担心不能表示全所有的字符了,但是问题又来了,对于原来的欧美国家来说, 本来一个ISO-8859-1 就够他们使用的,结果来个unicode, 缓存容量急剧上升,这是个不好的事情, 于是主角来了</p>
+<h4 id="UTF-Unicode-translation-format"><a href="#UTF-Unicode-translation-format" class="headerlink" title="UTF(Unicode translation format)"></a>UTF(Unicode translation format)</h4><p>UTF 有三个分支, UTF-8 UTF-16 UTF-32;</p>
+<p>其中UTF-8 使用的变长的字节表示 , 也就是说,假如是当前的字符是a, 它会使用一个字节表示, 假如是汉字,他使用三个字节表示 . </p>
+<p>UTF-16  和 unicode 一样的都是使用两个字节</p>
+<p><strong>UTF和Unicode的关系    Unicode是一种编码方式,而utf是一种存储格式</strong></p>
+<p>比如说我们的文件是utf-8这种存储格式的, 即传进去的数据都是用utf-8</p>
 <hr>
-<p>整个登录.授权.鉴权的过程token的安全性至关重要,而JWT就是一门有关于如何生成一个不可仿造的token的规范</p>
-<h3 id="JWT-Json-Web-Token"><a href="#JWT-Json-Web-Token" class="headerlink" title="JWT(Json Web Token)"></a>JWT(Json Web Token)</h3><p>他是JSON风格轻量级的授权和身份认证规范，可实现无状态、分布式的Web应用授权,而且它不是技术,和语言无关,java有对这个规范的实现 叫做 <strong>jjwt</strong>   – <a href="https://github.com/jwtk/jjwt" target="_blank" rel="noopener">点击进入jjwt的github项目</a></p>
-<img src="/2019/03/18/初识JWT/2.png" title="image">
-<p>从图可以看出,头部和载荷被串改后,生成的编码会发生改变,因此保证了token的安全 ,还有,载荷部分可解密,因此不要往里面放入敏感的信息(比如密码 )</p>
-<p>只要密钥不泄露,别人就无法伪造任何信息</p>
-<p>jwt的交互过程</p>
-<img src="/2019/03/18/初识JWT/3.png" title="image">
-<h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><p>先说一下常见的加密方式</p>
-<ul>
-<li>对称加密，如AES<ul>
-<li>基本原理：将明文分成N个组，然后使用密钥对各个组进行加密，形成各自的密文，最后把所有的分组密文进行合并，形成最终的密文。</li>
-<li>优势：算法公开、计算量小、加密速度快、加密效率高</li>
-<li>缺陷：双方都使用同样密钥，安全性得不到保证</li>
-</ul>
-</li>
-<li>非对称加密，如RSA<ul>
-<li>基本原理：同时生成两把密钥：私钥和公钥，私钥隐秘保存，公钥可以下发给信任客户端</li>
-<li>私钥加密，持有私钥或公钥才可以解密</li>
-<li>公钥加密，持有私钥才可解密</li>
-<li>优点：安全，难以破解</li>
-<li>缺点：算法比较耗时</li>
-</ul>
-</li>
-<li>不可逆加密，如MD5，SHA</li>
-<li>基本原理：加密过程中不需要使用密钥，输入明文后由系统直接经过加密算法处理成密文，这种加密后的数据是无法被解密的，无法根据密文推算出明文。</li>
-</ul>
-<img src="/2019/03/18/初识JWT/4.png" title="image">
-<p>jwt(是一种非对称加密算法) JWT不一定非要搭配RSA算法,但是拥有RSA算法公钥私钥的特性,会使我们的业务逻辑变的简单,做到校验变少</p>
-<ul>
-<li>通过认证,我们使用私钥加密给他令牌token</li>
-<li>提供公钥就好给对外提供服务的微服务—–省去了他们远程访问,授权中心(JWT)</li>
-</ul>
+<p>磁盘上文件都是有自己的存储格式的, 比如常用的文本文件的存储格式都是utf-8</p>
+<p>如下图:我们想实现 数据从源文件拷贝到目标文件</p>
+<h1 id="图1"><a href="#图1" class="headerlink" title="图1"></a>图1</h1><p>假如源文件的存储方式是utf-8, 但是我们使用ISO-8859-1对它进行解码, ISO-8859-1碰到一个字节就认为他是一个字符,这显然和utf-8的动态编码相冲突, 因此我们解码得到的结果无异于全是乱码</p>
+<p>紧接着,我们使用ISO-8859-1对得到的乱码,进行编码,同样对于ISO-8859-1来说,他是认识这些乱码的,而且ISO-8859-1并没有和utf-8一样充分了利用了每一个字节的每一位,于是它把他们按位编码会数据原始的状态</p>
+<p>在然后,我们把编码后的数据写到 用uft-8存储的目标文件,对于目标文件来说,得到的数据就是源文件中编码形态 故不会出现乱码</p>
+<hr>
+<p>如果我们想用 utf-16类型的编码器,对 utf-8类型的文件进行编解码呢?</p>
+<p>结果要么会报错,要么就行出异常<code>MalformedInputException</code> 一个难看的参数</p>
+<p>试想,如果utf-8存储格式的文件中, 只有一个数据 1, 他就是1字节, 而utf-16默认是两个字节, 编码后的结果也全部是FEFF0031这样的, 对于utf-16来说,他是无法对1进行解码的,直接会报错</p>
+<hr>
+<p>源文件和目标文件的 存储格式也要相同,这决定了他们对数据字节的划分不同,得到的结果自然不同</p>
 
       
     </div>
@@ -436,7 +384,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JWT/" rel="tag"><i class="fa fa-tag"></i> JWT</a>
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
           
         </div>
       
@@ -449,8 +397,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/18/JAVA反射机制与动态代理/" rel="next" title="JAVA反射机制与动态代理">
-                <i class="fa fa-chevron-left"></i> JAVA反射机制与动态代理
+              <a href="/2019/06/16/NIO中Buffer的重要属性关系解析/" rel="next" title="NIO中Buffer的重要属性关系解析">
+                <i class="fa fa-chevron-left"></i> NIO中Buffer的重要属性关系解析
               </a>
             
           </div>
@@ -458,10 +406,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/18/Thyleaf实现页面静态化/" rel="prev" title="Thymeleaf实现页面静态化">
-                Thymeleaf实现页面静态化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -595,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#无状态登录原理"><span class="nav-number">1.</span> <span class="nav-text">无状态登录原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#先提一下啥是有状态登录"><span class="nav-number">1.1.</span> <span class="nav-text">先提一下啥是有状态登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无状态登录"><span class="nav-number">1.2.</span> <span class="nav-text">无状态登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-Json-Web-Token"><span class="nav-number">1.3.</span> <span class="nav-text">JWT(Json Web Token)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA"><span class="nav-number">1.4.</span> <span class="nav-text">RSA</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII"><span class="nav-number">1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISO-8859-1"><span class="nav-number">2.</span> <span class="nav-text">ISO-8859-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gb2312"><span class="nav-number">3.</span> <span class="nav-text">gb2312</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gbk"><span class="nav-number">4.</span> <span class="nav-text">gbk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gb18030"><span class="nav-number">5.</span> <span class="nav-text">gb18030</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Big5"><span class="nav-number">6.</span> <span class="nav-text">Big5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unicode"><span class="nav-number">7.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-Unicode-translation-format"><span class="nav-number">8.</span> <span class="nav-text">UTF(Unicode translation format)</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#图1"><span class="nav-number"></span> <span class="nav-text">图1</span></a></li></div>
             
 
           </div>
