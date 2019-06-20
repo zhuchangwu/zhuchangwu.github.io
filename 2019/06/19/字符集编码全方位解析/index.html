@@ -87,10 +87,12 @@
 <meta property="og:site_name" content="赐我白日梦">
 <meta property="og:description" content="是时候了解关于字符集编码了!!! ASCII最早计算机刚出世时,只有一ASCII编码方式, American Strand Code For Information Interchange , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了 但是问题来了,不光是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-19T13:25:49.226Z">
+<meta property="og:image" content="http://yoursite.com/2019/06/19/字符集编码全方位解析/1.jpg">
+<meta property="og:updated_time" content="2019-06-19T13:33:13.684Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符集编码全方位解析">
 <meta name="twitter:description" content="是时候了解关于字符集编码了!!! ASCII最早计算机刚出世时,只有一ASCII编码方式, American Strand Code For Information Interchange , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了 但是问题来了,不光是">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/19/字符集编码全方位解析/1.jpg">
 
 
 
@@ -332,13 +334,13 @@
       
         <p>是时候了解关于字符集编码了!!!</p>
 <h4 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h4><p>最早计算机刚出世时,只有一ASCII编码方式, <code>American Strand Code For Information Interchange</code> , ASCII 使用7位 标识一个字符, 对于只认识 0 1 的计算机来说, ASCII 可以记录 2^7 个字符, 针对欧美国家来说, abc… 再加上一些运算符号 ,ASCII足够用了</p>
-<p>但是问题来了,不光是美国,像法国等国家也普及计算机,很快ASCII就不够了</p>
+<p>但是问题来了,不光是美国,像法国等国家也普及计算机,很快ASCII就不够了<br><a id="more"></a></p>
 <h4 id="ISO-8859-1"><a href="#ISO-8859-1" class="headerlink" title="ISO-8859-1"></a>ISO-8859-1</h4><p>于是 ISO-8859 出现了, 它使用8 位 表示一个字符, 而且完全兼容ASCII编码表<br>ISO-8859-1相对于ASCII有两个优点:</p>
 <ul>
 <li>ISO-8859-1 可以表示 2^8个字符, 对ASCII</li>
 <li>ISO-8859-1 使用8位表示一个字符, 这使得他可以完全使用每个字节的每一位</li>
 </ul>
-<p>然后这还是仅仅对西欧国家而言, 后来计算机普及到了亚洲<br><a id="more"></a></p>
+<p>然后这还是仅仅对西欧国家而言, 后来计算机普及到了亚洲</p>
 <h4 id="gb2312"><a href="#gb2312" class="headerlink" title="gb2312"></a>gb2312</h4><p>对我们国家来说,我们同样需要一种编码表,让计算机认识我们的汉字,于是  <strong>中华人民共和国</strong> 指定了gb2312 , 国标2312 , 它使用两个字节表示一个汉字, 容纳了几千个常用的汉字</p>
 <p>但是问题并没有打住,gb2312 并没有包含极少数的生僻字</p>
 <h4 id="gbk"><a href="#gbk" class="headerlink" title="gbk"></a>gbk</h4><p>gbk编码表弥补了 gb2312并不包含极少数的生僻字的现状</p>
@@ -357,8 +359,8 @@
 <p>比如说我们的文件是utf-8这种存储格式的, 即传进去的数据都是用utf-8</p>
 <hr>
 <p>磁盘上文件都是有自己的存储格式的, 比如常用的文本文件的存储格式都是utf-8</p>
-<p>如下图:我们想实现 数据从源文件拷贝到目标文件</p>
-<h1 id="图1"><a href="#图1" class="headerlink" title="图1"></a>图1</h1><p>假如源文件的存储方式是utf-8, 但是我们使用ISO-8859-1对它进行解码, ISO-8859-1碰到一个字节就认为他是一个字符,这显然和utf-8的动态编码相冲突, 因此我们解码得到的结果无异于全是乱码</p>
+<p>如下图:我们想实现 数据从源文件拷贝到目标文件<br><img src="/2019/06/19/字符集编码全方位解析/1.jpg" title="image"></p>
+<p>假如源文件的存储方式是utf-8, 但是我们使用ISO-8859-1对它进行解码, ISO-8859-1碰到一个字节就认为他是一个字符,这显然和utf-8的动态编码相冲突, 因此我们解码得到的结果无异于全是乱码</p>
 <p>紧接着,我们使用ISO-8859-1对得到的乱码,进行编码,同样对于ISO-8859-1来说,他是认识这些乱码的,而且ISO-8859-1并没有和utf-8一样充分了利用了每一个字节的每一位,于是它把他们按位编码会数据原始的状态</p>
 <p>在然后,我们把编码后的数据写到 用uft-8存储的目标文件,对于目标文件来说,得到的数据就是源文件中编码形态 故不会出现乱码</p>
 <hr>
@@ -406,6 +408,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/20/NIO零拷贝的深入分析/" rel="prev" title="NIO零拷贝的深入分析">
+                NIO零拷贝的深入分析 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -484,7 +490,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -539,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII"><span class="nav-number">1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISO-8859-1"><span class="nav-number">2.</span> <span class="nav-text">ISO-8859-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gb2312"><span class="nav-number">3.</span> <span class="nav-text">gb2312</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gbk"><span class="nav-number">4.</span> <span class="nav-text">gbk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gb18030"><span class="nav-number">5.</span> <span class="nav-text">gb18030</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Big5"><span class="nav-number">6.</span> <span class="nav-text">Big5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unicode"><span class="nav-number">7.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-Unicode-translation-format"><span class="nav-number">8.</span> <span class="nav-text">UTF(Unicode translation format)</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#图1"><span class="nav-number"></span> <span class="nav-text">图1</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII"><span class="nav-number">1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISO-8859-1"><span class="nav-number">2.</span> <span class="nav-text">ISO-8859-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gb2312"><span class="nav-number">3.</span> <span class="nav-text">gb2312</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gbk"><span class="nav-number">4.</span> <span class="nav-text">gbk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gb18030"><span class="nav-number">5.</span> <span class="nav-text">gb18030</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Big5"><span class="nav-number">6.</span> <span class="nav-text">Big5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unicode"><span class="nav-number">7.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-Unicode-translation-format"><span class="nav-number">8.</span> <span class="nav-text">UTF(Unicode translation format)</span></a></li></ol></div>
             
 
           </div>
