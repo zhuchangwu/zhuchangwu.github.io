@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/20/NIO零拷贝的深入分析/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/20/NIO零拷贝的深入分析/5.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/20/NIO零拷贝的深入分析/6.png">
-<meta property="og:updated_time" content="2019-06-20T03:50:07.471Z">
+<meta property="og:updated_time" content="2019-06-20T04:18:36.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NIO零拷贝的深入分析">
 <meta name="twitter:description" content="深入分析通过Socket进行数据文件传递中的传统IO的弊端以及NIO的零拷贝实现原理,及用户空间和内核空间的切换方式">
@@ -337,7 +337,7 @@
 
       
         <p>深入分析通过Socket进行数据文件传递中的传统IO的弊端以及NIO的零拷贝实现原理,及用户空间和内核空间的切换方式<br><a id="more"></a></p>
-<h3 id="传统的IO流程"><a href="#传统的IO流程" class="headerlink" title="传统的IO流程"></a>传统的IO流程</h3><img src="/2019/06/20/NIO零拷贝的深入分析/1.png" width="1">
+<h3 id="传统的IO流程"><a href="#传统的IO流程" class="headerlink" title="传统的IO流程"></a>传统的IO流程</h3><img src="/2019/06/20/NIO零拷贝的深入分析/1.png" title="image">
 <p>在这个过程中:</p>
 <ol>
 <li><strong>数据从磁盘拷贝进内核空间缓冲区</strong></li>
@@ -351,7 +351,7 @@
 <p>IO操作涉及到本地方法，java担心,当使用native本地方法对<strong>堆内数组</strong>进行操作时发生GC, 因为堆内内存是受JVM影响的,一旦发生了垃圾回收机制就使得全部数据都是错乱的,而堆外内存是不受JVM控制的.</p>
 </blockquote>
 <p>就这样, 前前后后一共发生了4次数据的拷贝,用户空间模式和内核空间模式来回切换了4次, 其中用户空间参与的第二次和第三次拷贝并没有对数据进行任何改动,它仅仅是起到了中转的作用; 这恰恰是传统的IO的局限性</p>
-<h3 id="NIO的零拷贝"><a href="#NIO的零拷贝" class="headerlink" title="NIO的零拷贝"></a>NIO的零拷贝</h3><img src="/2019/06/20/NIO零拷贝的深入分析/2.png" width="2">
+<h3 id="NIO的零拷贝"><a href="#NIO的零拷贝" class="headerlink" title="NIO的零拷贝"></a>NIO的零拷贝</h3><img src="/2019/06/20/NIO零拷贝的深入分析/2.png" title="image">
 <p>在NIO的数据传递模型中可以看到,用户明显少了用户空间缓冲区缓存数据的步骤, 减少了两次不必要的数据的拷贝,以及不必要的上下文切换, 具体如下:</p>
 <ol>
 <li><strong>数据从磁盘写入内核空间缓冲区</strong></li>
@@ -362,9 +362,9 @@
 <ul>
 <li>数据从内核空间缓冲区拷贝进了Socket缓冲区</li>
 </ul>
-<p><strong>这种现状也是有办法解决的</strong><br>在2.X版本的linux中,NIO的零拷贝模型如下:<br><img src="/2019/06/20/NIO零拷贝的深入分析/3.png" width="3"></p>
+<p><strong>这种现状也是有办法解决的</strong><br>在2.X版本的linux中,NIO的零拷贝模型如下:<br><img src="/2019/06/20/NIO零拷贝的深入分析/3.png" title="image"></p>
 <p>这个模型中充分利用了<strong>Scatter/Gather</strong> 分散和汇聚的特性</p>
-<img src="/2019/06/20/NIO零拷贝的深入分析/5.png" width="5">
+<img src="/2019/06/20/NIO零拷贝的深入分析/5.png" title="image">
 <p>这张图是最完美的零拷贝模型,</p>
 <ol>
 <li><strong>首先文件从磁盘中加载进内核空间缓冲区</strong></li>
@@ -379,7 +379,7 @@
 </blockquote>
 <p>从而实现了真正的零拷贝</p>
 <h3 id="回到Java"><a href="#回到Java" class="headerlink" title="回到Java"></a>回到Java</h3><p>除了上面的第一张图片以外,其他图片中数据全部在内核缓冲区,这部分空间对于人来说其实是一个黑盒,于是java提供了封装类帮我们和这块黑盒打交道</p>
-<h4 id="mappedByteBuffer"><a href="#mappedByteBuffer" class="headerlink" title="mappedByteBuffer"></a>mappedByteBuffer</h4><img src="/2019/06/20/NIO零拷贝的深入分析/6.png" width="6"> 
+<h4 id="mappedByteBuffer"><a href="#mappedByteBuffer" class="headerlink" title="mappedByteBuffer"></a>mappedByteBuffer</h4><img src="/2019/06/20/NIO零拷贝的深入分析/6.png" title="image"> 
 <p>这是他的继承体系,和HeadByteBuffer位于同一级,我们称它为内存映射文件 <strong>他是通道的调用map()方法得来的</strong>, 这个mappedByteBuffer相对于普通的buffer而言,他并没有板板整整的维护自己的数组,相反直接关联着堆外内存,针对它的任何修改,操作系统都会自动的同步到文件中</p>
 <p>如下修改内存buffer，却更新了文件<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile randomAccessFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"123.txt"</span>, <span class="string">"rw"</span>);  <span class="comment">//class sun.nio.ch.FileChannelImpl</span></span><br><span class="line">FileChannel channel = randomAccessFile.getChannel();</span><br><span class="line">System.out.println(channel.getClass());</span><br><span class="line">MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, <span class="number">0</span>, <span class="number">5</span>);</span><br><span class="line"><span class="comment">// todo 接下来我们直接修改内存中的内容就行了,不需要修改文件</span></span><br><span class="line">mappedByteBuffer.put(<span class="number">0</span>, (<span class="keyword">byte</span>) <span class="string">'a'</span>);</span><br><span class="line">mappedByteBuffer.put(<span class="number">3</span>, (<span class="keyword">byte</span>) <span class="string">'b'</span>);</span><br><span class="line">  randomAccessFile.close();</span><br><span class="line">    channel.close();</span><br></pre></td></tr></table></figure></p>
 <p>关于<code>FileChannel.MapMode</code>文件通道的映射模型 是个枚举:</p>
