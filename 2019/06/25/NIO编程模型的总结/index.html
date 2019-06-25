@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Nio,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="终于,这两天的考试熬过去了, 兴致冲冲的来整理笔记来, 这篇博客是我近几天的NIO印象笔记汇总,记录了对Selector及Selector的重要参数的理解,对Channel的理解,常见的Channel,对NIO事件驱动的编程模型的理解,NIO与传统IO的对比,NIO的TCP/IP编程的实践. Channel什么是Channel这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另">
+<meta name="keywords" content="Nio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NIO编程模型的总结">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/index.html">
+<meta property="og:site_name" content="赐我白日梦">
+<meta property="og:description" content="终于,这两天的考试熬过去了, 兴致冲冲的来整理笔记来, 这篇博客是我近几天的NIO印象笔记汇总,记录了对Selector及Selector的重要参数的理解,对Channel的理解,常见的Channel,对NIO事件驱动的编程模型的理解,NIO与传统IO的对比,NIO的TCP/IP编程的实践. Channel什么是Channel这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/0.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/3.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/5.png">
+<meta property="og:updated_time" content="2019-06-25T07:44:06.579Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NIO编程模型的总结">
+<meta name="twitter:description" content="终于,这两天的考试熬过去了, 兴致冲冲的来整理笔记来, 这篇博客是我近几天的NIO印象笔记汇总,记录了对Selector及Selector的重要参数的理解,对Channel的理解,常见的Channel,对NIO事件驱动的编程模型的理解,NIO与传统IO的对比,NIO的TCP/IP编程的实践. Channel什么是Channel这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/25/NIO编程模型的总结/">
+
+
+
+
+
+  <title>NIO编程模型的总结 | 赐我白日梦</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">赐我白日梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/25/NIO编程模型的总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赐我白日梦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="赐我白日梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NIO编程模型的总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-25T15:38:20+08:00">
+                2019-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>终于,这两天的考试熬过去了, 兴致冲冲的来整理笔记来, 这篇博客是我近几天的NIO印象笔记汇总,记录了对Selector及Selector的重要参数的理解,对Channel的理解,常见的Channel,对NIO事件驱动的编程模型的理解,NIO与传统IO的对比,NIO的TCP/IP编程的实践.</p>
+<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><h4 id="什么是Channel"><a href="#什么是Channel" class="headerlink" title="什么是Channel"></a>什么是Channel</h4><p>这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另一端的实体, 这个字节缓冲区就是ByteBuffer, 另一端的实体可以是一个File 或者是 Socket ;</p>
+<p>或者基于IO的网络编程, 数据的交互借助于InputStream或者是OutputStream, 而Channel可以理解成对Stream的又一层封装;在这种编程模型中 服务端想和客户端进行交互,就需要从服务端自己的ServerSocketChannel中获取前来连接的客户端的SocketChannel,并把他注册关联上感性趣的事件且自己的Selector选择器上, 这样一旦客户端把Buffer中的数据推送进channel, 服务端就可以感知,进而处理</p>
+<a id="more"></a>
+<h4 id="常用的Chanenl"><a href="#常用的Chanenl" class="headerlink" title="常用的Chanenl"></a>常用的Chanenl</h4><img src="/2019/06/25/NIO编程模型的总结/0.png" title="image">
+<ul>
+<li>文件通道: FileChannel</li>
+<li>套接字通道<ul>
+<li>服务端: ServerSocketChannel</li>
+<li>客户端: SocketChannel</li>
+</ul>
+</li>
+<li>数据包通道: DataGramSocket</li>
+</ul>
+<h4 id="Channel-与-Stream"><a href="#Channel-与-Stream" class="headerlink" title="Channel 与 Stream"></a>Channel 与 Stream</h4><p>Channel的NIO编程模型中一大组件,它类似IO中的Stream,但是两者也有本质的区别;</p>
+<p>为什么说是类似呢? 看下面的两段代码, 需求是磁盘上的文件进行读写</p>
+<p><strong>在IO编程中</strong>,我们第一步可能要像下面这样获取输入流,按字节把磁盘上的数据读取到程序中,再进行下一步操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(<span class="string">"123.txt"</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>在NIO编程中</strong>,目标是需要先获取通道,再基于Channel进行读写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(<span class="string">"123.txt"</span>);</span><br><span class="line">FileChannel channel = fileInputStream.channel();</span><br></pre></td></tr></table></figure>
+<p>对用户来说,在IO / NIO 中这两种都直接关联这磁盘上的数据文件,数据的读写首先都是获取Stream和Channel,所以说他们相似;</p>
+<p><strong>但是:</strong> 对于Stream来说,所有的Stream都是单向的,对我们的程序来说,Stream要么只能是从里面获取数据的输入流,要么是往里面输入数据的输出流,因为InputStream和outputStream都是抽象类,在java中是不支持多继承的, 而通道不同,他是双向的,对一个通道可读可写</p>
+<h4 id="怎么理解-Channel可以是双向的"><a href="#怎么理解-Channel可以是双向的" class="headerlink" title="怎么理解 Channel可以是双向的?"></a>怎么理解 Channel可以是双向的?</h4><p>如上图,凡是同时实现了readable,writeable接口的类,都双向的通道. 下面是典型的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SocketChannel</span><br><span class="line">在NIO网络编程中,服务端可以通过ServerSocketChannel获取客户端的SocketChannel</span><br><span class="line">这个SocketChannel可以read() 客户端的消息存入Buffer, 往客户端 write()buffer里的内容</span><br><span class="line">socketChannel1.read(byteBuffer);</span><br><span class="line">socketChannel1.write(byteBuffer);</span><br></pre></td></tr></table></figure>
+<p>对于一个channel,我们既能从中获取数据,也能往外read数据</p>
+<h4 id="基于channel的文件拷贝方式和传统的IO拷贝的竞速"><a href="#基于channel的文件拷贝方式和传统的IO拷贝的竞速" class="headerlink" title="基于channel的文件拷贝方式和传统的IO拷贝的竞速"></a>基于channel的文件拷贝方式和传统的IO拷贝的竞速</h4><p>效率最低的按字节拷贝</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  <span class="keyword">void</span> <span class="title">text4</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"开始: ... "</span>);</span><br><span class="line">        FileInputStream    fis = <span class="keyword">new</span> FileInputStream(<span class="string">"123.txt"</span>);</span><br><span class="line">        FileOutputStream   fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"output123.txt"</span>);</span><br><span class="line">    <span class="keyword">int</span> read=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">long</span> start =<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((read=fis.read())!=-<span class="number">1</span>)&#123;</span><br><span class="line">        fos.write(read);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">"耗时: "</span>+(System.currentTimeMillis()-start) );</span><br><span class="line">    fis.close();</span><br><span class="line">    fos.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个3901KB的文件的拷贝,在我的机器上跑出了 <code>1561097384707</code> 的好成绩; 实属无奈,擦点以为编译器卡死</p>
+<hr>
+<p>以NIO,channel+buffer的模型,拷贝文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (</span><br><span class="line">    FileInputStream  fis = <span class="keyword">new</span> FileInputStream(<span class="string">"123.txt"</span>);</span><br><span class="line">    FileOutputStream   fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"output123.txt"</span>);</span><br><span class="line">)&#123;</span><br><span class="line">    <span class="comment">//1.获取通道</span></span><br><span class="line">    FileChannel   inChannel = fis.getChannel();</span><br><span class="line">    FileChannel   outChannel = fos.getChannel();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.分配指定大小的缓冲区</span></span><br><span class="line">    ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">    <span class="comment">//3.将通道中的数据缓冲区中</span></span><br><span class="line">    <span class="keyword">while</span> (inChannel.read(buffer) != -<span class="number">1</span>) &#123;</span><br><span class="line">        buffer.flip();<span class="comment">//切换成都数据模式</span></span><br><span class="line">        <span class="comment">//4.将缓冲区中的数据写入通道中</span></span><br><span class="line">        outChannel.write(buffer);</span><br><span class="line">        buffer.clear();<span class="comment">//清空缓冲区</span></span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">"总耗时:"</span> + (System.currentTimeMillis() - start));</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>速度明显提升 大约平均耗时 <code>110</code></p>
+<hr>
+<p>NIO+零拷贝  复制文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接获取通道</span></span><br><span class="line">  FileChannel inChannel2 = FileChannel.open(Paths.get(<span class="string">"123.txt"</span>), StandardOpenOption.READ);</span><br><span class="line">  FileChannel outChannel2 = FileChannel.open(Paths.get(<span class="string">"output123.txt"</span>), StandardOpenOption.WRITE, StandardOpenOption.READ, StandardOpenOption.CREATE);</span><br><span class="line">  <span class="comment">//内存映射文件</span></span><br><span class="line">  MappedByteBuffer inMappedBuf = inChannel2.map(FileChannel.MapMode.READ_ONLY, <span class="number">0</span>, inChannel2.size());</span><br><span class="line">  MappedByteBuffer outMappedBuf = outChannel2.map(FileChannel.MapMode.READ_WRITE, <span class="number">0</span>, inChannel2.size());</span><br><span class="line">  <span class="comment">//直接对缓冲区进行数据读写操作</span></span><br><span class="line">  <span class="keyword">byte</span>[] dst = <span class="keyword">new</span> <span class="keyword">byte</span>[inMappedBuf.limit()];</span><br><span class="line">  <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">  inMappedBuf.get(dst);</span><br><span class="line">  outMappedBuf.put(dst);</span><br><span class="line">  System.out.println(<span class="string">"耗费的时间为："</span> + ( System.currentTimeMillis() - start));</span><br><span class="line"></span><br><span class="line">  inChannel2.close();</span><br><span class="line">  outChannel2.close();</span><br></pre></td></tr></table></figure>
+<p>或者 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 通道之间的数据传输（直接缓冲区）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    FileChannel inChannel3 = FileChannel.open(Paths.get(<span class="string">"123.txt"</span>), StandardOpenOption.READ);</span><br><span class="line">    FileChannel outChannel3 = FileChannel.open(Paths.get(<span class="string">"output123.txt"</span>), StandardOpenOption.WRITE, StandardOpenOption.READ, StandardOpenOption.CREATE);</span><br><span class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">    inChannel3.transferTo(<span class="number">0</span>, inChannel3.size(), outChannel3);</span><br><span class="line">    System.out.println(<span class="string">"耗时: "</span>+(System.currentTimeMillis()-start) );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等价于</span></span><br><span class="line">    <span class="comment">// outChannel3.transferFrom(inChannel3, 0, inChannel3.size());</span></span><br><span class="line"></span><br><span class="line">    inChannel3.close();</span><br><span class="line">    outChannel3.close();</span><br></pre></td></tr></table></figure>
+<p>零拷贝仅需要耗时 <code>6</code> 就可以完成</p>
+<hr>
+<h4 id="NIO的非阻塞与IO的阻塞"><a href="#NIO的非阻塞与IO的阻塞" class="headerlink" title="NIO的非阻塞与IO的阻塞"></a>NIO的非阻塞与IO的阻塞</h4><p>什么是阻塞? 举个例子, 如果有一天我碰到了不会的作业题,于是我给老师发了条短息请教咋做, 这时,假如我进入了阻塞模式,我就会一直瞅着手机,别的也不干,就等着老师回信息, 假如我进入了非阻塞的模式,发完短信后跳过这个题,去做别的题</p>
+<p>常见的阻塞比如, 键盘录入, Socket的accept()以及IO的read write, 全部会卡在那行代码直到执行完毕才会往下执行, 这种风格的好处是显而易见的, 及其容易的进行顺序编程</p>
+<p>但是在NIO中,channel的read,write可以是阻塞的,也可以是非阻塞的,这取决于channel是否阻塞, 一般在进行网络编程时,要搭配上selector选择器,一起用, 同时channel我们也会设置成非阻塞的, 想想也不能让服务器的读写阻塞住,因为它可不是面对一两个用户,我们需要它可以一遍一遍的正常流水运行</p>
+<p>在客户端,connect方法不再是阻塞的,和服务端进行数据交互之前,java提供了检查机确保连接百分百健康, 如果服务端没有接受连接,客户端是是没办法进一步操作的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (selectionKey.isConnectable()) &#123;</span><br><span class="line"><span class="comment">// 强转成 有连接事件发生的Channel</span></span><br><span class="line">client = (SocketChannel) selectionKey.channel();</span><br><span class="line"><span class="comment">// 完成连接</span></span><br><span class="line"><span class="keyword">if</span> (client.isConnectionPending()) &#123;</span><br><span class="line">client.finishConnect();</span><br></pre></td></tr></table></figure>
+<p>从通道中的read和write方法也不是阻塞的,即可返回,可以让服务端的业务代码很流畅的执行完,再接受新的请求,处理新请求</p>
+<img src="/2019/06/25/NIO编程模型的总结/3.png" title="image">
+<h3 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h3><blockquote>
+<p>Selector选择器NIO的第三个组件,三者的关系图如上所示</p>
+</blockquote>
+<h4 id="什么是selector-作用是什么"><a href="#什么是selector-作用是什么" class="headerlink" title="什么是selector? 作用是什么?"></a>什么是selector? 作用是什么?</h4><p>selector是选择器的意思, 和它直接关联的组件是Channel, 没错,它的作用就是不断的轮询绑定在他身上的所有channel. 一旦有通道发生了它感兴趣的事件,接着处理此事件 </p>
+<h4 id="selector维护了什么"><a href="#selector维护了什么" class="headerlink" title="selector维护了什么?"></a>selector维护了什么?</h4><p>无论是服务端的Selector 还是客户端的Selector 它都维护了三个Set集合 , 里面封装的是 SelectionKey, 他是channel注册进Selector的产物,一般是使用它反向获取channel</p>
+<ol>
+<li><strong>key set</strong></li>
+</ol>
+<ul>
+<li>他是一个全集,<strong>每当channel通过register方法注册进选择器时,于此同时也会把包含自己信息的key添加到这个全集中来</strong> 注册的信息就会以SelectionKey的封装形式保存在这个集合中, 选择器每次轮询的channel,就是这里面的channel</li>
+</ul>
+<ol start="2">
+<li><strong>selected key</strong></li>
+</ol>
+<ul>
+<li><p>感兴趣的key的集合, 举个例子, 通道1注册进选择器时,告诉选择器,我可能会给你发信息,你得盯着我,读我给你的信息, 于是选择器对通道1感性趣的事件是 read, 那么在选择器轮询channel时, 一旦通道1出现了write操作,就会被选择器感知,开始read </p>
+</li>
+<li><p><strong>每次遍历selected key时我们会执行这行代码:</strong><code>Set&lt;SelectionKey&gt; selectionKeys = selector.selectedKeys();</code> 它的意思是,我们取出了 选择器的感性事件的set集合,只要程序还在运行,只要选择器一旦被<code>open()</code>,除非我们手动的<code>close()</code> 否则选择器对象就不会被释放,所以它的感兴趣的set集合是不会被自动会收到,<strong>于是我们就得收到的把处理过的感兴趣的事件对应的SelectionKey移除出这个set集合</strong>,不然下一次轮询时,这个事件还会再一次被处理,并且无限制的处理下去</p>
+</li>
+<li><p>key有且仅有两种方式从 selected-key-set 中剔除 1. 通过Set的remove()方法,  2.通过迭代器的remove()方法</p>
+</li>
+</ul>
+<ol start="3">
+<li>cannelled key</li>
+</ol>
+<ul>
+<li>取消的key的集合,代表原来感兴趣的事件,现在不感兴趣了. 下一次轮询,进行<code>select()</code> 本集合中的SelectionKey会从key set中移除, 意味着它所关联的channel将会被选择器丢弃掉,不再进行监听</li>
+<li>关闭channel 或者是调用了<code>cancel()</code>方法都会将key添加到cannelled key 集合中</li>
+<li>使用场景: 一般会在客户端主动断开连接的时候使用它. </li>
+</ul>
+<h4 id="selector的select-方法"><a href="#selector的select-方法" class="headerlink" title="selector的select()方法"></a>selector的<code>select()</code>方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select(<span class="keyword">long</span>); <span class="comment">// 设置超时时间</span></span><br><span class="line"></span><br><span class="line">selectNow(); <span class="comment">// 立即返回,不阻塞</span></span><br><span class="line"></span><br><span class="line">select(); 阻塞轮询</span><br></pre></td></tr></table></figure>
+<p>select()过程的细节:</p>
+<ul>
+<li><strong>第一步</strong>, cannelled-key中的每一个元素会从全集key set中剔除,表示这些可以关联的通道不会被注册</li>
+<li><strong>第二步</strong>操作系统帮我们轮询每一个通道是否有选择器感性趣的事情发生<ul>
+<li>对于一条准备就绪的channel(发生事件通道),他至少会发生下面两件事之一: <ul>
+<li>它的key会被添加进selected-key-set中,来标识它将被选中,进而处理<ul>
+<li>如果它的key,已经存在于这个集合中了,下一步就是它的 read-operation将被更新</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>第三步</strong>: 如果在轮询时发现了有任何key被放置在了cannelled-key-set中,重复第一步,不再注册它关联的通道</li>
+</ul>
+<h4 id="romove-key-和-cannel-key-的区别"><a href="#romove-key-和-cannel-key-的区别" class="headerlink" title="romove key 和 cannel key 的区别"></a>romove key 和 cannel key 的区别</h4><p>前者是把key从selected key set集合,也就是被选中的集合中剔除出去,表示当前的事件已经处理完了</p>
+<p>后者是表示,把key从全集中剔除出去, 表示想要废弃这个key关联的channel</p>
+<h4 id="selector的创建"><a href="#selector的创建" class="headerlink" title="selector的创建"></a>selector的创建</h4><p>他是根据不同操作系统提供的不同的<code>Provider</code>使用<code>provide()</code>创建出来的</p>
+<h3 id="NIO编程模型"><a href="#NIO编程模型" class="headerlink" title="NIO编程模型"></a>NIO编程模型</h3><img src="/2019/06/25/NIO编程模型的总结/5.png" title="image">
+<p>如上图, 在NIO网络编程模式中,不再是传统的多线程编程模型,当有新的客户端的连接到来,不再重新开辟新的线程去跑本次连接,而是统一,一条线程处理所有的连接, 而一次连接本质上就是一个Channel, NIO网络编程模型是基于事件驱动型的; 即,有了提前约定好的事件发生,接着处理事件,没有时间发生,选择器就一直轮询 下面解释上图的流程</p>
+<ol>
+<li><p>服务端创建代表服务端的Channel,绑定好端口,设置成非阻塞的通道 并且初始化选择器,然后开始轮询绑定在自己身上的通道,此时的通道只有一个<code>ServerSocketChannel</code>,而选择器只关心<code>ServerSocketChannel</code>上发生的<code>OP_ACCEPT</code>事件,而又没有客户端来链接 所以他被阻塞在了<code>select()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">"Server..."</span>);</span><br><span class="line"><span class="comment">// 获取服务端的SerSokcetChannel</span></span><br><span class="line">ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();</span><br><span class="line"><span class="comment">// todo 一定要把他配置成 非阻塞的</span></span><br><span class="line">serverSocketChannel.configureBlocking(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从通道中获取 服务端的对象</span></span><br><span class="line">ServerSocket serverSocket = serverSocketChannel.socket();</span><br><span class="line">serverSocket.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">8899</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建选择器</span></span><br><span class="line">Selector selector = Selector.open();</span><br><span class="line"><span class="comment">// 把通到注册到 选择器上</span></span><br><span class="line">serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="comment">// 阻塞式等待 channel上有事件发生</span></span><br><span class="line">            <span class="keyword">int</span> select = selector.select();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端 创建代表自己的SocketChannel, 创建选择器,把自己的注册在上面,如下代码, 初始化自己,SocketChannel, 把客户端的通道注册进选择器,并告诉选择器<code>SocketChannel</code>的感兴趣事件是<code>OP_CONNECT</code>连接事件; 当执行到下面的<code>socketChannel.connect(new InetSocketAddress(&quot;localhost&quot;, 8899));</code> 连接的请求就已经发送出去了,也就是说,如果没有意外,执行完这一行代码,服务端的<code>select()</code>方法已经返回了, 但是客户端的<code>connect()</code>是非阻塞的,立即返回,故在客户端依然会继续执行, 进而判断一下是否是真的连接上了</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取客户端的通道</span></span><br><span class="line">SocketChannel socketChannel = SocketChannel.open();</span><br><span class="line">socketChannel.configureBlocking(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">Selector selector = Selector.open();</span><br><span class="line"><span class="comment">// 把客户端的通道注册进选择器</span></span><br><span class="line">socketChannel.register(selector, SelectionKey.OP_CONNECT);</span><br><span class="line"><span class="comment">// todo 连接客户端, 执行完这行代码后, 服务端就能就收到通知!!!</span></span><br><span class="line">socketChannel.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">"localhost"</span>, <span class="number">8899</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">    <span class="keyword">int</span> number = selector.select(); <span class="comment">// 选择器阻塞式的 等待 Channel上发生它关心的事件</span></span><br><span class="line">    System.out.println(<span class="string">" 发生了感兴趣的事件: "</span> + number);</span><br><span class="line">    Set&lt;SelectionKey&gt; keySet = selector.selectedKeys();</span><br><span class="line"><span class="comment">// 验证</span></span><br><span class="line">    <span class="keyword">for</span> (SelectionKey selectionKey : keySet) &#123;</span><br><span class="line">        SocketChannel client = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">if</span> (selectionKey.isConnectable()) &#123;</span><br><span class="line">    <span class="comment">// 强转成 有连接事件发生的Channel</span></span><br><span class="line">    client = (SocketChannel) selectionKey.channel();</span><br><span class="line">    <span class="comment">// 完成连接</span></span><br><span class="line">    <span class="keyword">if</span> (client.isConnectionPending()) &#123;</span><br><span class="line">        client.finishConnect();</span><br><span class="line">        ByteBuffer byteBuffer = ByteBuffer.allocate(<span class="number">512</span>);</span><br><span class="line">        byteBuffer.put((LocalDate.now() + <span class="string">"连接成功"</span>).getBytes());</span><br><span class="line">        byteBuffer.flip();</span><br><span class="line">        client.write(byteBuffer);</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>对于服务端,轮询了这么久,终于有连接进来了,于是进一步处理, 判断如果当前的连接是请求建立连接的话,就去建立连接, 对于服务端来说,建立连接就是然服务端记住客户端, 客户端是谁呢?<code>SocketChanel</code>, 怎么获取呢? <code>serverSocketChannel1.accept();</code> 怎么建立连接呢? 实际上就是把当前的客户端的channel注册在服务端的选择器上,并告诉它自己关心的事件啥, 当然一开始建立连接时, 服务端肯定首先要做的就是监听客户端发送过来的数据,于是 绑定上感兴趣的事件是<code>read</code>, <strong>并且不要忘了,每次遍历感兴趣的key的集合时,都要及时的把当前的key剔除</strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">selectionKeys.forEach(selectionKey -&gt; &#123;</span><br><span class="line">    SocketChannel socketChannel = <span class="keyword">null</span>;</span><br><span class="line">    String sendKey = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (selectionKey.isAcceptable()) &#123;</span><br><span class="line">            <span class="comment">// 1. 用户请求建立连接, 根据SelectionKey 获取服务端的通道</span></span><br><span class="line">            <span class="comment">// todo 当前的这个SelecttionKey 是有 ServerSocketChannel 和 selector 联系生成的, 因此我们 强制转换回 ServerSocketChannel</span></span><br><span class="line">            ServerSocketChannel serverSocketChannel1 = (ServerSocketChannel) selectionKey.channel();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// todo  !!!!!!!  这是重点, 这里的accept是非阻塞的 !!!!!!!!</span></span><br><span class="line">            <span class="comment">// 根据服务的 通道  获取到客户端的通道</span></span><br><span class="line">            socketChannel = serverSocketChannel1.accept();</span><br><span class="line">            System.out.println(<span class="string">"socketChannel.class: "</span> + socketChannel.getClass());</span><br><span class="line">            <span class="comment">// todo 配置成非阻塞的</span></span><br><span class="line">            socketChannel.configureBlocking(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// todo 新获取的通道 注册进选择器</span></span><br><span class="line">            socketChannel.register(selector, SelectionKey.OP_READ);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 保存客户端的信息</span></span><br><span class="line">            String key = <span class="string">"[ "</span> + UUID.randomUUID().toString() + <span class="string">" ]"</span>;</span><br><span class="line">            clientMap.put(key, socketChannel);</span><br><span class="line">            <span class="comment">// todo   把 拥有当前事件SelectionKey 剔除</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>对于客户端,如果它想往服务端发送键盘录入的内容时,获取键盘录入对象是免不了的事, 但是这对象会阻塞,于是客户端不得不开启一条新的线程运行读取键盘录入,让自己具有键盘录入的功能,同时又不会被阻塞, 如果客户端想要接受服务端推送回来的数据怎么办呢? 于是我们就得告诉客户端的选择器,添加一个感兴趣的事件,read, 这样,一旦服务端有数据推送过来的,客户端的选择器就会感知到这个事件,并且这个事件的selectionKay是可读的,这样一个比较完善的客户端就ok了</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">executorService.submit(() -&gt; &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 清空上面的缓存</span></span><br><span class="line">            byteBuffer.clear();</span><br><span class="line">            BufferedReader bufferedReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">            String msg = bufferedReader.readLine();</span><br><span class="line">            byteBuffer.put(msg.getBytes());</span><br><span class="line">            byteBuffer.flip();</span><br><span class="line">            finalClient.write(byteBuffer);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上面的代码是发生了 请求连接事件</span></span><br><span class="line"><span class="comment">// todo 给客户端注册一个读取客户端返回数据的事件</span></span><br><span class="line">client.register(selector, SelectionKey.OP_READ);</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>服务端在建立连接时,就给客户端的通道绑定了感兴趣的事件是read, 于是当客户端往channel中write数据了,服务端就会来到下面的代码块, 如果是群聊的话, 我们就得知道,往哪些用户转发信息, 于是我们提前构造了map,这个map存放就是一个一个和服务的channel建立连接的SocketChannel; 只需要遍历map, 往里面的chanel,write数据即可</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (selectionKey.isReadable()) &#123;</span><br><span class="line">   System.out.println(<span class="string">"readable..."</span>);</span><br><span class="line">   <span class="comment">// 获取客户端的通道</span></span><br><span class="line">   socketChannel = (SocketChannel) selectionKey.channel();</span><br><span class="line">   System.out.println(<span class="string">"当前的客户端 通道实例:　socketChannel == "</span> + socketChannel);</span><br><span class="line">   <span class="comment">// 获取当前 是哪个客户端发起的信息</span></span><br><span class="line">   ByteBuffer byteBuffer = ByteBuffer.allocate(<span class="number">512</span>);</span><br><span class="line">   <span class="comment">// 读取客户端发送的消息</span></span><br><span class="line">   <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;<span class="comment">// todo todo todo  很重要的一点!!!  read方法是非阻塞的, 很可能还有没读取到数据就返回了</span></span><br><span class="line">       <span class="keyword">int</span> read = socketChannel.read(byteBuffer);</span><br><span class="line">       System.out.println(<span class="string">"read == : "</span> + read);</span><br><span class="line">       <span class="keyword">if</span> (read &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// 往其他客户端写</span></span><br><span class="line">   byteBuffer.flip();</span><br><span class="line">   Charset charset = Charset.forName(<span class="string">"utf-8"</span>);</span><br><span class="line">   String msg = String.valueOf(charset.decode(byteBuffer).array());</span><br><span class="line">   <span class="comment">// Buffer转字符串</span></span><br><span class="line">   System.out.println(<span class="string">"收到客户端: "</span> + socketChannel + <span class="string">"  发送的消息: "</span> + msg);</span><br><span class="line">   <span class="comment">// 遍历map</span></span><br><span class="line">   <span class="keyword">for</span> (Map.Entry&lt;String, SocketChannel&gt; map : clientMap.entrySet()) &#123;</span><br><span class="line">       <span class="keyword">if</span> (socketChannel == map.getValue()) &#123;</span><br><span class="line">           sendKey = map.getKey();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// todo 转发给全部的客户端发送</span></span><br><span class="line">   <span class="keyword">for</span> (Map.Entry&lt;String, SocketChannel&gt; map : clientMap.entrySet()) &#123;</span><br><span class="line">       SocketChannel socketChannel1 = map.getValue();</span><br><span class="line">       ByteBuffer byteBuffer1 = ByteBuffer.allocate(<span class="number">512</span>);</span><br><span class="line">       <span class="comment">// 把信息放进 byteBuffer1中</span></span><br><span class="line">       String message = msg + <span class="string">" : "</span> + sendKey;</span><br><span class="line">       byteBuffer1.put(message.getBytes());</span><br><span class="line">       byteBuffer.flip();</span><br><span class="line">       socketChannel1.write(byteBuffer);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>客户端断开了怎么办呢?  在一台电脑上,手动将一个客户端停掉,服务端会运行到<code>selectionKey.isReadable()</code> 并且进入这个if块, 当它尝试从里面读取的时候,就发现这个连接已经坏掉了,于是报错,强制断开连接, 因为还要继续轮询,全集key set 中依然保存着当前的客户端的channel, 所以会一直报错下去, 怎么办呢? 如下</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  selectionKey.cancel();  常规</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 这样也能取消这个键</span></span><br><span class="line">    socketChannel.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e1) &#123;</span><br><span class="line">    e1.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当然我们现在还要多一步,  因为他还在我们的map里面  不然一会发消息的时候,会出错</span></span><br><span class="line"><span class="comment">// todo 移除出map 中失效的 channel</span></span><br><span class="line"><span class="comment">// todo 遍历map</span></span><br><span class="line"><span class="keyword">for</span> (Map.Entry&lt;String, SocketChannel&gt; map : clientMap.entrySet()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (socketChannel == map.getValue()) &#123;</span><br><span class="line">        sendKey = map.getKey();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">clientMap.remove(sendKey, socketChannel);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nio/" rel="tag"><i class="fa fa-tag"></i> Nio</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/20/NIO零拷贝的深入分析/" rel="next" title="NIO零拷贝的深入分析">
+                <i class="fa fa-chevron-left"></i> NIO零拷贝的深入分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="赐我白日梦">
+            
+              <p class="site-author-name" itemprop="name">赐我白日梦</p>
+              <p class="site-description motion-element" itemprop="description">随笔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Channel"><span class="nav-number">1.</span> <span class="nav-text">Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Channel"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的Chanenl"><span class="nav-number">1.2.</span> <span class="nav-text">常用的Chanenl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Channel-与-Stream"><span class="nav-number">1.3.</span> <span class="nav-text">Channel 与 Stream</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么理解-Channel可以是双向的"><span class="nav-number">1.4.</span> <span class="nav-text">怎么理解 Channel可以是双向的?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于channel的文件拷贝方式和传统的IO拷贝的竞速"><span class="nav-number">1.5.</span> <span class="nav-text">基于channel的文件拷贝方式和传统的IO拷贝的竞速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO的非阻塞与IO的阻塞"><span class="nav-number">1.6.</span> <span class="nav-text">NIO的非阻塞与IO的阻塞</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Selector"><span class="nav-number">2.</span> <span class="nav-text">Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是selector-作用是什么"><span class="nav-number">2.1.</span> <span class="nav-text">什么是selector? 作用是什么?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#selector维护了什么"><span class="nav-number">2.2.</span> <span class="nav-text">selector维护了什么?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#selector的select-方法"><span class="nav-number">2.3.</span> <span class="nav-text">selector的select()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#romove-key-和-cannel-key-的区别"><span class="nav-number">2.4.</span> <span class="nav-text">romove key 和 cannel key 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#selector的创建"><span class="nav-number">2.5.</span> <span class="nav-text">selector的创建</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NIO编程模型"><span class="nav-number">3.</span> <span class="nav-text">NIO编程模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赐我白日梦</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <!--
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
