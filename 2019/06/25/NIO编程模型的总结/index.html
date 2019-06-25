@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/0.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/25/NIO编程模型的总结/5.png">
-<meta property="og:updated_time" content="2019-06-25T07:44:06.579Z">
+<meta property="og:updated_time" content="2019-06-25T07:49:50.100Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NIO编程模型的总结">
 <meta name="twitter:description" content="终于,这两天的考试熬过去了, 兴致冲冲的来整理笔记来, 这篇博客是我近几天的NIO印象笔记汇总,记录了对Selector及Selector的重要参数的理解,对Channel的理解,常见的Channel,对NIO事件驱动的编程模型的理解,NIO与传统IO的对比,NIO的TCP/IP编程的实践. Channel什么是Channel这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另">
@@ -335,9 +335,7 @@
 
       
         <p>终于,这两天的考试熬过去了, 兴致冲冲的来整理笔记来, 这篇博客是我近几天的NIO印象笔记汇总,记录了对Selector及Selector的重要参数的理解,对Channel的理解,常见的Channel,对NIO事件驱动的编程模型的理解,NIO与传统IO的对比,NIO的TCP/IP编程的实践.</p>
-<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><h4 id="什么是Channel"><a href="#什么是Channel" class="headerlink" title="什么是Channel"></a>什么是Channel</h4><p>这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另一端的实体, 这个字节缓冲区就是ByteBuffer, 另一端的实体可以是一个File 或者是 Socket ;</p>
-<p>或者基于IO的网络编程, 数据的交互借助于InputStream或者是OutputStream, 而Channel可以理解成对Stream的又一层封装;在这种编程模型中 服务端想和客户端进行交互,就需要从服务端自己的ServerSocketChannel中获取前来连接的客户端的SocketChannel,并把他注册关联上感性趣的事件且自己的Selector选择器上, 这样一旦客户端把Buffer中的数据推送进channel, 服务端就可以感知,进而处理</p>
-<a id="more"></a>
+<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><h4 id="什么是Channel"><a href="#什么是Channel" class="headerlink" title="什么是Channel"></a>什么是Channel</h4><p>这个概念绝对是一级概念,Channel是一个管道,用于连接字节缓冲区和另一端的实体, 这个字节缓冲区就是ByteBuffer, 另一端的实体可以是一个File 或者是 Socket ;<br><a id="more"></a><br>或者基于IO的网络编程, 数据的交互借助于InputStream或者是OutputStream, 而Channel可以理解成对Stream的又一层封装;在这种编程模型中 服务端想和客户端进行交互,就需要从服务端自己的ServerSocketChannel中获取前来连接的客户端的SocketChannel,并把他注册关联上感性趣的事件且自己的Selector选择器上, 这样一旦客户端把Buffer中的数据推送进channel, 服务端就可以感知,进而处理</p>
 <h4 id="常用的Chanenl"><a href="#常用的Chanenl" class="headerlink" title="常用的Chanenl"></a>常用的Chanenl</h4><img src="/2019/06/25/NIO编程模型的总结/0.png" title="image">
 <ul>
 <li>文件通道: FileChannel</li>
